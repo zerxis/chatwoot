@@ -53,6 +53,10 @@
           "ENABLE": "สร้างการสนทนาใหม่จากการกล่าวถึงในทวีต"
         }
       },
+      "MICROSOFT": {
+        "HELP": "To add your Microsoft account as a channel, you need to authenticate your Microsoft account by clicking on 'Sign in with Microsoft' ",
+        "ERROR_MESSAGE": "There was an error connecting to Microsoft, please try again"
+      },
       "WEBSITE_CHANNEL": {
         "TITLE": "ช่องเว็บไซต์",
         "DESC": "สร้างช่องสำหรับเว็บของคุณเเละเริ่มที่จะช่วยเหลือลูกค้าของคุณด้วยวิดเจ็ต",
@@ -134,7 +138,7 @@
         "PHONE_NUMBER": {
           "LABEL": "หมายเลขโทรศัพท์",
           "PLACEHOLDER": "กรุณากรอกหมายเลขโทรศัพท์ที่จะส่งข้อความ",
-          "ERROR": "กรุณากรอกหมายเลขโทรศัพท์ให้ถูกต้องต้องเริ่มด้วย \"+\""
+          "ERROR": "Please provide a valid phone number that starts with a `+` sign and does not contain any spaces."
         },
         "API_CALLBACK": {
           "TITLE": "ลิ้งเรียกกลับ",
@@ -185,7 +189,7 @@
           "PHONE_NUMBER": {
             "LABEL": "หมายเลขโทรศัพท์",
             "PLACEHOLDER": "กรุณากรอกหมายเลขโทรศัพท์ที่จะส่งข้อความ",
-            "ERROR": "กรุณากรอกหมายเลขโทรศัพท์ให้ถูกต้องต้องเริ่มด้วย \"+\""
+            "ERROR": "Please provide a valid phone number that starts with a `+` sign and does not contain any spaces."
           },
           "SUBMIT_BUTTON": "สร้างช่องทาง Bandwidth",
           "API": {
@@ -214,7 +218,7 @@
         "PHONE_NUMBER": {
           "LABEL": "หมายเลขโทรศัพท์",
           "PLACEHOLDER": "กรุณากรอกหมายเลขโทรศัพท์ที่จะส่งข้อความ",
-          "ERROR": "กรุณากรอกหมายเลขโทรศัพท์ให้ถูกต้องต้องเริ่มด้วย \"+\""
+          "ERROR": "Please provide a valid phone number that starts with a `+` sign and does not contain any spaces."
         },
         "PHONE_NUMBER_ID": {
           "LABEL": "Phone number ID",
@@ -239,7 +243,9 @@
         },
         "API_CALLBACK": {
           "TITLE": "ลิ้งเรียกกลับ",
-          "SUBTITLE": "You have to configure the webhook URL in facebook developer portal with the URL mentioned here."
+          "SUBTITLE": "You have to configure the webhook URL and the verification token in the Facebook Developer portal with the values shown below.",
+          "WEBHOOK_URL": "ลิ้ง Webhook",
+          "WEBHOOK_VERIFICATION_TOKEN": "Webhook Verification Token"
         },
         "SUBMIT_BUTTON": "สร้างช่องทาง WhatsApp",
         "API": {
@@ -357,7 +363,7 @@
     },
     "FINISH": {
       "TITLE": "กล่องข้อความของคุณพร้อมใช้แล้ว!",
-      "MESSAGE": "ตอนนี้คุณสามารถมีส่วนร่วมกับลูกค้าของคุณผ่านช่องทางใหม่ได้แล้ว ขอให้มีความสุขกับการคุย ",
+      "MESSAGE": "ตอนนี้คุณสามารถมีส่วนร่วมกับลูกค้าของคุณผ่านช่องทางใหม่ได้แล้ว ขอให้มีความสุขกับการคุย",
       "BUTTON_TEXT": "พาฉันไปที่นั่น",
       "MORE_SETTINGS": "ตั้งค่าเพิ่มเติม",
       "WEBSITE_SUCCESS": "คุณได้สร้างช่องทางเว็บไซต์สำเร็จแล้ว คัดลอกโค้ดข้างล่างแล้วนำไปแปะที่เว็บไซต์ของคุณ ครั้งถัดไปที่ลูกค้าใช้ live chat การสนทนาจะปรากฎที่กล่องข้อความของคุณโดยอัตโนมัติ"
@@ -383,6 +389,10 @@
         "DISABLED": "ปิด"
       },
       "ENABLE_CONTINUITY_VIA_EMAIL": {
+        "ENABLED": "เปิด",
+        "DISABLED": "ปิด"
+      },
+      "LOCK_TO_SINGLE_CONVERSATION": {
         "ENABLED": "เปิด",
         "DISABLED": "ปิด"
       },
@@ -413,7 +423,9 @@
       "CONFIGURATION": "ตั้งค่า",
       "CAMPAIGN": "แคมเปญ",
       "PRE_CHAT_FORM": "แบบสอบถามก่อนแชท",
-      "BUSINESS_HOURS": "เวลาทำการ"
+      "BUSINESS_HOURS": "เวลาทำการ",
+      "WIDGET_BUILDER": "Widget Builder",
+      "BOT_CONFIGURATION": "Bot Configuration"
     },
     "SETTINGS": "ตั้งค่า",
     "FEATURES": {
@@ -437,6 +449,8 @@
       "ENABLE_CSAT_SUB_TEXT": "เปิดหรือปิด CSAT(แบบสอบถามความพีงพอใจลูกค้า) หลังจากเสร็จสิ้นการสนทนา",
       "ENABLE_CONTINUITY_VIA_EMAIL": "เปิดให้มีการสนทนาต่อทางอีเมลได้",
       "ENABLE_CONTINUITY_VIA_EMAIL_SUB_TEXT": "การสนทนาจะสามารถดำเนินการต่อผ่านทางอีเมลได้ หากลูกค้าให้อีเมลไว้",
+      "LOCK_TO_SINGLE_CONVERSATION": "Lock to single conversation",
+      "LOCK_TO_SINGLE_CONVERSATION_SUB_TEXT": "Enable or disable multiple conversations for the same contact in this inbox",
       "INBOX_UPDATE_TITLE": "ตั้งค่ากล่องข้อความ",
       "INBOX_UPDATE_SUB_TEXT": "อัปเดตกล่องข้อความ",
       "AUTO_ASSIGNMENT_SUB_TEXT": "เปิดหรือปิดระบบมอบหมายงานอัตโนมัติสำหรับข้อความใหม่ให้กับพนักงานในกล่องสนทนานี้",
@@ -538,6 +552,10 @@
       },
       "ENABLE_SSL": "เปิดใช้ SSL"
     },
+    "MICROSOFT": {
+      "TITLE": "Microsoft",
+      "SUBTITLE": "Reauthorize your MICROSOFT account"
+    },
     "SMTP": {
       "TITLE": "SMTP",
       "SUBTITLE": "ตั้งค่า SMTP",
@@ -574,6 +592,88 @@
       "OPEN_SSL_VERIFY_MODE": "เปิดโหมดตรวจสอบ SSL",
       "AUTH_MECHANISM": "การตรวจสอบสิทธิ์"
     },
-    "NOTE": "หมายเหตุ: "
+    "NOTE": "หมายเหตุ: ",
+    "WIDGET_BUILDER": {
+      "WIDGET_OPTIONS": {
+        "AVATAR": {
+          "LABEL": "Website Avatar",
+          "DELETE": {
+            "API": {
+              "SUCCESS_MESSAGE": "Avatar deleted successfully",
+              "ERROR_MESSAGE": "เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง"
+            }
+          }
+        },
+        "WEBSITE_NAME": {
+          "LABEL": "ชื่อเว็บไซต์",
+          "PLACE_HOLDER": "กรอกชื่อเว็บไซต์ของคุณ (เช่น SnowBoltz Inc)",
+          "ERROR": "Please enter a valid website name"
+        },
+        "WELCOME_HEADING": {
+          "LABEL": "ข้อความยินดีต้อนรับส่วนหัว",
+          "PLACE_HOLDER": "Hi there!"
+        },
+        "WELCOME_TAGLINE": {
+          "LABEL": "ข้อความยินดีต้อนรับส่วนล่าง",
+          "PLACE_HOLDER": "เราทำให้การติดต่อกับเราเป็นเรื่องง่าย ถามเราได้ทุกอย่างหรือแบ่งปันความคิดเห็นของคุณ"
+        },
+        "REPLY_TIME": {
+          "LABEL": "Reply Time",
+          "IN_A_FEW_MINUTES": "ในไม่กี่นาที",
+          "IN_A_FEW_HOURS": "ในไม่กี่ชั่วโมง",
+          "IN_A_DAY": "ในหนึ่งวัน"
+        },
+        "WIDGET_COLOR_LABEL": "สีของวิดเจ็ต",
+        "WIDGET_BUBBLE_POSITION_LABEL": "Widget Bubble Position",
+        "WIDGET_BUBBLE_TYPE_LABEL": "Widget Bubble Type",
+        "WIDGET_BUBBLE_LAUNCHER_TITLE": {
+          "DEFAULT": "คุยกับเรา",
+          "LABEL": "Widget Bubble Launcher Title",
+          "PLACE_HOLDER": "คุยกับเรา"
+        },
+        "UPDATE": {
+          "BUTTON_TEXT": "Update Widget Settings",
+          "API": {
+            "SUCCESS_MESSAGE": "Widget settings updated successfully",
+            "ERROR_MESSAGE": "Unable to update widget settings"
+          }
+        },
+        "WIDGET_VIEW_OPTION": {
+          "PREVIEW": "Preview",
+          "SCRIPT": "Script"
+        },
+        "WIDGET_BUBBLE_POSITION": {
+          "LEFT": "Left",
+          "RIGHT": "Right"
+        },
+        "WIDGET_BUBBLE_TYPE": {
+          "STANDARD": "Standard",
+          "EXPANDED_BUBBLE": "Expanded Bubble"
+        }
+      },
+      "WIDGET_SCREEN": {
+        "DEFAULT": "Default",
+        "CHAT": "Chat"
+      },
+      "REPLY_TIME": {
+        "IN_A_FEW_MINUTES": "ปกติจะตอบกลับภายในไม่กี่นาที",
+        "IN_A_FEW_HOURS": "ปกติจะตอบกลับในไม่กี่ชั่วโมง",
+        "IN_A_DAY": "ปกติจะตอบกลับภายใน 1 วัน"
+      },
+      "FOOTER": {
+        "START_CONVERSATION_BUTTON_TEXT": "เริ่มการสนทนา",
+        "CHAT_INPUT_PLACEHOLDER": "พิมพ์ข้อความ"
+      },
+      "BODY": {
+        "TEAM_AVAILABILITY": {
+          "ONLINE": "We are Online",
+          "OFFLINE": "เราไม่อยู่"
+        },
+        "USER_MESSAGE": "Hi",
+        "AGENT_MESSAGE": "Hello"
+      },
+      "BRANDING_TEXT": "Powered by Chatwoot",
+      "SCRIPT_SETTINGS": "\n      window.chatwootSettings = {options};"
+    }
   }
 }

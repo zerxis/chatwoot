@@ -1,9 +1,13 @@
 <template>
-  <div class="conversation-details-wrap">
+  <div
+    class="conversation-details-wrap"
+    :class="{ 'with-border-left': !isOnExpandedLayout }"
+  >
     <conversation-header
       v-if="currentChat.id"
       :chat="currentChat"
       :is-contact-panel-open="isContactPanelOpen"
+      :show-back-button="isOnExpandedLayout"
       @contact-panel-toggle="onToggleContactPanel"
     />
     <woot-tabs
@@ -26,7 +30,7 @@
         :is-contact-panel-open="isContactPanelOpen"
         @contact-panel-toggle="onToggleContactPanel"
       />
-      <empty-state v-else />
+      <empty-state v-else :is-on-expanded-layout="isOnExpandedLayout" />
       <div v-show="showContactPanel" class="conversation-sidebar-wrap">
         <contact-panel
           v-if="showContactPanel"
@@ -38,7 +42,7 @@
     </div>
     <dashboard-app-frame
       v-else
-      :key="currentChat.id"
+      :key="currentChat.id + '-' + activeIndex"
       :config="dashboardApps[activeIndex - 1].content"
       :current-chat="currentChat"
     />
@@ -68,6 +72,10 @@ export default {
       required: false,
     },
     isContactPanelOpen: {
+      type: Boolean,
+      default: true,
+    },
+    isOnExpandedLayout: {
       type: Boolean,
       default: true,
     },
@@ -134,8 +142,11 @@ export default {
   flex-direction: column;
   min-width: 0;
   width: 100%;
-  border-left: 1px solid var(--color-border);
   background: var(--color-background-light);
+
+  &.with-border-left {
+    border-left: 1px solid var(--color-border);
+  }
 }
 
 .dashboard-app--tabs {
@@ -155,10 +166,14 @@ export default {
 .conversation-sidebar-wrap {
   height: auto;
   flex: 0 0;
-  overflow: hidden;
+  z-index: var(--z-index-low);
   overflow: auto;
   background: white;
-  flex-basis: 28rem;
+  flex-basis: 100%;
+
+  @include breakpoint(medium up) {
+    flex-basis: 28rem;
+  }
 
   @include breakpoint(large up) {
     flex-basis: 30em;

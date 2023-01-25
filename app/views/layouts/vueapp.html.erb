@@ -4,7 +4,7 @@
     <title>
       <%= @global_config['INSTALLATION_NAME'] %>
     </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=0"/>
     <% if @global_config['DISPLAY_MANIFEST'] %>
       <meta name="msapplication-TileColor" content="#1f93ff">
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
@@ -33,6 +33,7 @@
     <script>
       window.chatwootConfig = {
         hostURL: '<%= ENV.fetch('FRONTEND_URL', '') %>',
+        helpCenterURL: '<%= ENV.fetch('HELPCENTER_URL', '') %>',
         fbAppId: '<%= ENV.fetch('FB_APP_ID', nil) %>',
         fbApiVersion: '<%= @global_config['FACEBOOK_API_VERSION'] %>',
         signupEnabled: '<%= @global_config['ENABLE_ACCOUNT_SIGNUP'] %>',
@@ -50,11 +51,10 @@
       }
       window.errorLoggingConfig = '<%= ENV.fetch('SENTRY_DSN', '')%>'
     </script>
-    <% if @global_config['ANALYTICS_TOKEN'].present? && @global_config['ANALYTICS_HOST'].present? %>
+    <% if @global_config['ANALYTICS_TOKEN'].present? %>
     <script>
       window.analyticsConfig = {
         token: '<%= @global_config['ANALYTICS_TOKEN'] %>',
-        host: '<%= @global_config['ANALYTICS_HOST'] %>',
       }
     </script>
     <% end %>

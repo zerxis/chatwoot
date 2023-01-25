@@ -1,12 +1,18 @@
 <template>
-  <li class="sidebar-item">
+  <li v-show="isMenuItemVisible" class="sidebar-item">
     <div v-if="hasSubMenu" class="secondary-menu--wrap">
-      <span class="secondary-menu--title fs-small">
+      <span class="secondary-menu--header fs-small">
         {{ $t(`SIDEBAR.${menuItem.label}`) }}
       </span>
-      <div v-if="isHelpCenterSidebar" class="submenu-icons">
-        <fluent-icon icon="search" class="submenu-icon" size="16" />
-        <fluent-icon icon="add" class="submenu-icon" size="16" />
+      <div v-if="menuItem.showNewButton" class="submenu-icons">
+        <woot-button
+          size="tiny"
+          variant="clear"
+          color-scheme="secondary"
+          icon="add"
+          class="submenu-icon"
+          @click="onClickOpen"
+        />
       </div>
     </div>
     <router-link
@@ -21,15 +27,11 @@
         size="14"
       />
       {{ $t(`SIDEBAR.${menuItem.label}`) }}
-      <span
-        v-if="isHelpCenterSidebar"
-        class="count-view"
-        :class="computedClass"
-      >
+      <span v-if="showChildCount(menuItem.count)" class="count-view">
         {{ `${menuItem.count}` }}
       </span>
       <span
-        v-if="menuItem.label === 'AUTOMATION'"
+        v-if="menuItem.beta"
         data-view-component="true"
         label="Beta"
         class="beta"
@@ -48,7 +50,7 @@
         :should-truncate="child.truncateLabel"
         :icon="computedInboxClass(child)"
         :warning-icon="computedInboxErrorClass(child)"
-        :is-help-center-sidebar="isHelpCenterSidebar"
+        :show-child-count="showChildCount(child.count)"
         :child-item-count="child.count"
       />
       <router-link
@@ -57,10 +59,10 @@
         :to="menuItem.toState"
         custom
       >
-        <li>
+        <li class="menu-item--new">
           <a
             :href="href"
-            class="button small clear menu-item--new secondary"
+            class="button small link clear secondary"
             :class="{ 'is-active': isActive }"
             @click="e => newLinkClick(e, navigate)"
           >
@@ -85,6 +87,10 @@ import {
 } from 'dashboard/helper/inbox';
 
 import SecondaryChildNavItem from './SecondaryChildNavItem';
+import {
+  isOnMentionsView,
+  isOnUnattendedView,
+} from '../../../store/modules/conversations/helpers/actionHelpers';
 
 export default {
   components: { SecondaryChildNavItem },
@@ -94,20 +100,45 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    isHelpCenterSidebar: {
-      type: Boolean,
-      default: false,
-    },
   },
   computed: {
-    ...mapGetters({ activeInbox: 'getSelectedInbox' }),
+    ...mapGetters({
+      activeInbox: 'getSelectedInbox',
+      accountId: 'getCurrentAccountId',
+      isFeatureEnabledonAccount: 'accounts/isFeatureEnabledonAccount',
+      globalConfig: 'globalConfig/get',
+    }),
     hasSubMenu() {
       return !!this.menuItem.children;
     },
-    isInboxConversation() {
+    isMenuItemVisible() {
+      if (this.menuItem.globalConfigFlag) {
+        return !!this.globalConfig[this.menuItem.globalConfigFlag];
+      }
+      if (this.menuItem.featureFlag) {
+        return this.isFeatureEnabledonAccount(
+          this.accountId,
+          this.menuItem.featureFlag
+        );
+      }
+      return true;
+    },
+    isAllConversations() {
       return (
         this.$store.state.route.name === 'inbox_conversation' &&
         this.menuItem.toStateName === 'home'
+      );
+    },
+    isMentions() {
+      return (
+        isOnMentionsView({ route: this.$route }) &&
+        this.menuItem.toStateName === 'conversation_mentions'
+      );
+    },
+    isUnattended() {
+      return (
+        isOnUnattendedView({ route: this.$route }) &&
+        this.menuItem.toStateName === 'conversation_unattended'
       );
     },
     isTeamsSettings() {
@@ -116,7 +147,7 @@ export default {
         this.menuItem.toStateName === 'settings_teams_list'
       );
     },
-    isInboxsSettings() {
+    isInboxSettings() {
       return (
         this.$store.state.route.name === 'settings_inbox_show' &&
         this.menuItem.toStateName === 'settings_inbox_list'
@@ -134,16 +165,25 @@ export default {
         this.menuItem.toStateName === 'settings_applications'
       );
     },
+    isCurrentRoute() {
+      return this.$store.state.route.name.includes(this.menuItem.toStateName);
+    },
 
     computedClass() {
-      // If active Inbox is present
-      // donot highlight conversations
+      // If active inbox is present, do not highlight conversations
       if (this.activeInbox) return ' ';
+      if (
+        this.isAllConversations ||
+        this.isMentions ||
+        this.isUnattended ||
+        this.isCurrentRoute
+      ) {
+        return 'is-active';
+      }
       if (this.hasSubMenu) {
         if (
-          this.isInboxConversation ||
           this.isTeamsSettings ||
-          this.isInboxsSettings ||
+          this.isInboxSettings ||
           this.isIntegrationsSettings ||
           this.isApplicationsSettings
         ) {
@@ -151,6 +191,7 @@ export default {
         }
         return ' ';
       }
+
       return '';
     },
   },
@@ -181,7 +222,13 @@ export default {
       }
     },
     showItem(item) {
-      return this.isAdmin && item.newLink !== undefined;
+      return this.isAdmin && !!item.newLink;
+    },
+    onClickOpen() {
+      this.$emit('open');
+    },
+    showChildCount(count) {
+      return Number.isInteger(count);
     },
   },
 };
@@ -194,13 +241,22 @@ export default {
 .secondary-menu--wrap {
   display: flex;
   justify-content: space-between;
+  margin-top: var(--space-small);
 }
 
+.secondary-menu--header {
+  color: var(--s-700);
+  display: flex;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--space-normal);
+  margin: var(--space-small) 0;
+  padding: 0 var(--space-small);
+}
 .secondary-menu--title {
   color: var(--s-600);
   display: flex;
-  font-weight: var(--font-weight-bold);
-  line-height: var(--space-two);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--space-normal);
   margin: var(--space-small) 0;
   padding: 0 var(--space-small);
 }
@@ -212,6 +268,7 @@ export default {
   padding: var(--space-small);
   font-weight: var(--font-weight-medium);
   border-radius: var(--border-radius-normal);
+  color: var(--s-700);
 
   &:hover {
     background: var(--s-25);
@@ -227,6 +284,11 @@ export default {
     background: var(--w-25);
     color: var(--w-500);
     border-color: var(--w-25);
+  }
+
+  &.is-active .count-view {
+    background: var(--w-75);
+    color: var(--w-600);
   }
 }
 
@@ -257,22 +319,19 @@ export default {
   top: -1px;
 }
 
-.sidebar-item .button.menu-item--new {
-  display: inline-flex;
-  height: var(--space-medium);
-  margin: var(--space-smaller) 0;
-  padding: var(--space-smaller);
-  color: var(--s-500);
+.sidebar-item .menu-item--new {
+  padding: var(--space-small) 0;
 
-  &:hover {
-    color: var(--w-500);
+  .button {
+    display: inline-flex;
+    color: var(--s-500);
   }
 }
 
 .beta {
   padding-right: var(--space-smaller) !important;
   padding-left: var(--space-smaller) !important;
-  margin-left: var(--space-half) !important;
+  margin-left: var(--space-smaller) !important;
   display: inline-block;
   font-size: var(--font-size-micro);
   font-weight: var(--font-weight-medium);
@@ -291,11 +350,6 @@ export default {
   font-weight: var(--font-weight-bold);
   margin-left: var(--space-smaller);
   padding: var(--space-zero) var(--space-smaller);
-
-  &.is-active {
-    background: var(--w-50);
-    color: var(--w-500);
-  }
 }
 
 .submenu-icons {
@@ -303,13 +357,8 @@ export default {
   align-items: center;
 
   .submenu-icon {
+    padding: 0;
     margin-left: var(--space-small);
-    color: var(--s-600);
-
-    &:hover {
-      cursor: pointer;
-      color: var(--w-500);
-    }
   }
 }
 </style>

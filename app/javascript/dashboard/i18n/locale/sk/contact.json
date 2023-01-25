@@ -3,9 +3,11 @@
     "NOT_AVAILABLE": "NIe je k dispozícii",
     "EMAIL_ADDRESS": "E-mailová adresa",
     "PHONE_NUMBER": "Telefónne číslo",
+    "IDENTIFIER": "Identifier",
     "COPY_SUCCESSFUL": "Úspešne nakopírované",
     "COMPANY": "Spoločnosť",
     "LOCATION": "Lokácia",
+    "BROWSER_LANGUAGE": "Browser Language",
     "CONVERSATION_TITLE": "Detaily konverzácie",
     "VIEW_PROFILE": "Ukáž profil",
     "BROWSER": "Prehliadač",
@@ -183,7 +185,7 @@
       "SUBMIT": "Poslať správu",
       "CANCEL": "Zrušiť",
       "SUCCESS_MESSAGE": "Správa poslaná!",
-      "GO_TO_CONVERSATION": "View",
+      "GO_TO_CONVERSATION": "Zobraziť",
       "ERROR_MESSAGE": "Nepodarilo sa odoslať! Skúste to znova"
     }
   },

@@ -10,6 +10,7 @@
     @mouseenter="onCardHover"
     @mouseleave="onCardLeave"
     @click="cardClick(chat)"
+    @contextmenu="openContextMenu($event)"
   >
     <label v-if="hovered || selected" class="checkbox-wrapper" @click.stop>
       <input
@@ -86,11 +87,33 @@
       </p>
       <div class="conversation--meta">
         <span class="timestamp">
-          {{ dynamicTime(chat.timestamp) }}
+          <time-ago
+            :last-activity-timestamp="chat.timestamp"
+            :created-at-timestamp="chat.created_at"
+          />
         </span>
         <span class="unread">{{ unreadCount > 9 ? '9+' : unreadCount }}</span>
       </div>
+      <card-labels :conversation-id="chat.id" />
     </div>
+    <woot-context-menu
+      v-if="showContextMenu"
+      ref="menu"
+      :x="contextMenu.x"
+      :y="contextMenu.y"
+      @close="closeContextMenu"
+    >
+      <conversation-context-menu
+        :status="chat.status"
+        :inbox-id="inbox.id"
+        :has-unread-messages="hasUnread"
+        @update-conversation="onUpdateConversation"
+        @assign-agent="onAssignAgent"
+        @assign-label="onAssignLabel"
+        @assign-team="onAssignTeam"
+        @mark-as-unread="markAsUnread"
+      />
+    </woot-context-menu>
   </div>
 </template>
 <script>
@@ -104,7 +127,10 @@ import router from '../../../routes';
 import { frontendURL, conversationUrl } from '../../../helper/URLHelper';
 import InboxName from '../InboxName';
 import inboxMixin from 'shared/mixins/inboxMixin';
-
+import ConversationContextMenu from './contextMenu/Index.vue';
+import alertMixin from 'shared/mixins/alertMixin';
+import TimeAgo from 'dashboard/components/ui/TimeAgo';
+import CardLabels from './conversationCardComponents/CardLabels.vue';
 const ATTACHMENT_ICONS = {
   image: 'image',
   audio: 'headphones-sound-wave',
@@ -116,11 +142,20 @@ const ATTACHMENT_ICONS = {
 
 export default {
   components: {
+    CardLabels,
     InboxName,
     Thumbnail,
+    ConversationContextMenu,
+    TimeAgo,
   },
 
-  mixins: [inboxMixin, timeMixin, conversationMixin, messageFormatterMixin],
+  mixins: [
+    inboxMixin,
+    timeMixin,
+    conversationMixin,
+    messageFormatterMixin,
+    alertMixin,
+  ],
   props: {
     activeLabel: {
       type: String,
@@ -162,6 +197,11 @@ export default {
   data() {
     return {
       hovered: false,
+      showContextMenu: false,
+      contextMenu: {
+        x: null,
+        y: null,
+      },
     };
   },
   computed: {
@@ -208,7 +248,7 @@ export default {
     },
 
     unreadCount() {
-      return this.unreadMessagesCount(this.chat);
+      return this.chat.unread_count;
     },
 
     hasUnread() {
@@ -292,15 +332,57 @@ export default {
       const action = checked ? 'select-conversation' : 'de-select-conversation';
       this.$emit(action, this.chat.id, this.inbox.id);
     },
+    openContextMenu(e) {
+      e.preventDefault();
+      this.$emit('context-menu-toggle', true);
+      this.contextMenu.x = e.pageX || e.clientX;
+      this.contextMenu.y = e.pageY || e.clientY;
+      this.showContextMenu = true;
+    },
+    closeContextMenu() {
+      this.$emit('context-menu-toggle', false);
+      this.showContextMenu = false;
+      this.contextMenu.x = null;
+      this.contextMenu.y = null;
+    },
+    onUpdateConversation(status, snoozedUntil) {
+      this.closeContextMenu();
+      this.$emit(
+        'update-conversation-status',
+        this.chat.id,
+        status,
+        snoozedUntil
+      );
+    },
+    async onAssignAgent(agent) {
+      this.$emit('assign-agent', agent, [this.chat.id]);
+      this.closeContextMenu();
+    },
+    async onAssignLabel(label) {
+      this.$emit('assign-label', [label.title], [this.chat.id]);
+      this.closeContextMenu();
+    },
+    async onAssignTeam(team) {
+      this.$emit('assign-team', team, this.chat.id);
+      this.closeContextMenu();
+    },
+    async markAsUnread() {
+      this.$emit('mark-as-unread', this.chat.id);
+      this.closeContextMenu();
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
 .conversation {
-  align-items: center;
+  align-items: flex-start;
 
   &:hover {
     background: var(--color-background-light);
+  }
+
+  &::v-deep .user-thumbnail-box {
+    margin-top: var(--space-normal);
   }
 }
 
@@ -310,8 +392,10 @@ export default {
 
 .has-inbox-name {
   &::v-deep .user-thumbnail-box {
-    margin-top: var(--space-normal);
-    align-items: flex-start;
+    margin-top: var(--space-large);
+  }
+  .checkbox-wrapper {
+    margin-top: var(--space-large);
   }
   .conversation--meta {
     margin-top: var(--space-normal);
@@ -356,6 +440,7 @@ export default {
   margin-top: var(--space-minus-micro);
   vertical-align: middle;
 }
+
 .checkbox-wrapper {
   height: 40px;
   width: 40px;
@@ -365,6 +450,7 @@ export default {
   border-radius: 100%;
   margin-top: var(--space-normal);
   cursor: pointer;
+
   &:hover {
     background-color: var(--w-100);
   }

@@ -3,9 +3,11 @@
     "NOT_AVAILABLE": "Μη Διαθέσιμο",
     "EMAIL_ADDRESS": "Διεύθυνση Email",
     "PHONE_NUMBER": "Αριθμός τηλεφώνου",
+    "IDENTIFIER": "Κωδικός",
     "COPY_SUCCESSFUL": "Αντιγράφτηκε με επιτυχία στο πρόχειρο",
     "COMPANY": "Εταιρία",
     "LOCATION": "Θέση",
+    "BROWSER_LANGUAGE": "Γλώσσα Περιήγησης",
     "CONVERSATION_TITLE": "Λεπτομέρειες συνομιλίας",
     "VIEW_PROFILE": "Προβολή Προφίλ",
     "BROWSER": "Φυλλομετρητής",
@@ -150,8 +152,8 @@
     },
     "DELETE_AVATAR": {
       "API": {
-        "SUCCESS_MESSAGE": "Contact avatar deleted successfully",
-        "ERROR_MESSAGE": "Could not delete the contact avatar. Please try again later."
+        "SUCCESS_MESSAGE": "Το avatar της επαφής διαγράφηκε επιτυχώς",
+        "ERROR_MESSAGE": "Δεν ήταν δυνατή η διαγραφή του avatar της επαφής. Παρακαλώ προσπαθήστε ξανά αργότερα."
       }
     },
     "SUCCESS_MESSAGE": "Η επαφή αποθηκεύτηκε με επιτυχία",

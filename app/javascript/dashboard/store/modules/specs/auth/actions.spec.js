@@ -80,7 +80,42 @@ describe('#actions', () => {
         ],
       ]);
       expect(dispatch.mock.calls).toEqual([
-        ['agents/updatePresence', { 1: 'offline' }],
+        [
+          'agents/updateSingleAgentPresence',
+          { availabilityStatus: 'offline', id: 1 },
+        ],
+      ]);
+    });
+  });
+
+  describe('#updateAutoOffline', () => {
+    it('sends correct actions if API is success', async () => {
+      axios.post.mockResolvedValue({
+        data: {
+          id: 1,
+          name: 'John',
+          accounts: [
+            {
+              account_id: 1,
+              auto_offline: false,
+            },
+          ],
+        },
+        headers: { expiry: 581842904 },
+      });
+      await actions.updateAutoOffline(
+        { commit, dispatch },
+        { autoOffline: false, accountId: 1 }
+      );
+      expect(commit.mock.calls).toEqual([
+        [
+          types.default.SET_CURRENT_USER,
+          {
+            id: 1,
+            name: 'John',
+            accounts: [{ account_id: 1, auto_offline: false }],
+          },
+        ],
       ]);
     });
   });
@@ -160,6 +195,17 @@ describe('#actions', () => {
         {}
       );
       expect(commit.mock.calls).toEqual([]);
+    });
+  });
+
+  describe('#setActiveAccount', () => {
+    it('sends correct mutations if account id is available', async () => {
+      actions.setActiveAccount(
+        {
+          commit,
+        },
+        { accountId: 1 }
+      );
     });
   });
 });

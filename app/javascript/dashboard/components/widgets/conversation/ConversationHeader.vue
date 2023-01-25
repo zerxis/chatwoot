@@ -1,65 +1,73 @@
 <template>
   <div class="conv-header">
-    <div class="user">
-      <Thumbnail
-        :src="currentContact.thumbnail"
-        size="40px"
-        :badge="inboxBadge"
-        :username="currentContact.name"
-        :status="currentContact.availability_status"
-      />
-      <div class="user--profile__meta">
-        <h3 class="user--name text-truncate">
-          <span class="margin-right-smaller">{{ currentContact.name }}</span>
-          <fluent-icon
-            v-if="!isHMACVerified"
-            v-tooltip="$t('CONVERSATION.UNVERIFIED_SESSION')"
-            size="14"
-            class="hmac-warning__icon"
-            icon="warning"
-          />
-        </h3>
-        <div class="conversation--header--actions">
-          <inbox-name :inbox="inbox" class="margin-right-small" />
-          <span
-            v-if="isSnoozed"
-            class="snoozed--display-text margin-right-small"
-          >
-            {{ snoozedDisplayText }}
-          </span>
-          <woot-button
-            class="user--profile__button margin-right-small"
-            size="small"
-            variant="link"
-            @click="$emit('contact-panel-toggle')"
-          >
-            {{ contactPanelToggleText }}
-          </woot-button>
+    <div class="conversation-header--details">
+      <div class="user">
+        <back-button v-if="showBackButton" :back-url="backButtonUrl" />
+        <Thumbnail
+          :src="currentContact.thumbnail"
+          :badge="inboxBadge"
+          :username="currentContact.name"
+          :status="currentContact.availability_status"
+        />
+        <div class="user--profile__meta">
+          <h3 class="user--name text-truncate">
+            <span class="margin-right-smaller">{{ currentContact.name }}</span>
+            <fluent-icon
+              v-if="!isHMACVerified"
+              v-tooltip="$t('CONVERSATION.UNVERIFIED_SESSION')"
+              size="14"
+              class="hmac-warning__icon"
+              icon="warning"
+            />
+          </h3>
+          <div class="conversation--header--actions text-truncate">
+            <inbox-name
+              v-if="hasMultipleInboxes"
+              :inbox="inbox"
+              class="margin-right-small"
+            />
+            <span
+              v-if="isSnoozed"
+              class="snoozed--display-text margin-right-small"
+            >
+              {{ snoozedDisplayText }}
+            </span>
+            <woot-button
+              class="user--profile__button margin-right-small"
+              size="small"
+              variant="link"
+              @click="$emit('contact-panel-toggle')"
+            >
+              {{ contactPanelToggleText }}
+            </woot-button>
+          </div>
         </div>
       </div>
-    </div>
-    <div
-      class="header-actions-wrap"
-      :class="{ 'has-open-sidebar': isContactPanelOpen }"
-    >
-      <more-actions :conversation-id="currentChat.id" />
+      <div
+        class="header-actions-wrap"
+        :class="{ 'has-open-sidebar': isContactPanelOpen }"
+      >
+        <more-actions :conversation-id="currentChat.id" />
+      </div>
     </div>
   </div>
 </template>
 <script>
+import { hasPressedAltAndOKey } from 'shared/helpers/KeyboardHelpers';
 import { mapGetters } from 'vuex';
-import MoreActions from './MoreActions';
-import Thumbnail from '../Thumbnail';
 import agentMixin from '../../../mixins/agentMixin.js';
+import BackButton from '../BackButton';
+import differenceInHours from 'date-fns/differenceInHours';
 import eventListenerMixins from 'shared/mixins/eventListenerMixins';
 import inboxMixin from 'shared/mixins/inboxMixin';
-import { hasPressedAltAndOKey } from 'shared/helpers/KeyboardHelpers';
-import wootConstants from '../../../constants';
-import differenceInHours from 'date-fns/differenceInHours';
 import InboxName from '../InboxName';
-
+import MoreActions from './MoreActions';
+import Thumbnail from '../Thumbnail';
+import wootConstants from '../../../constants';
+import { conversationListPageURL } from 'dashboard/helper/URLHelper';
 export default {
   components: {
+    BackButton,
     InboxName,
     MoreActions,
     Thumbnail,
@@ -74,6 +82,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    showBackButton: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     ...mapGetters({
@@ -82,6 +94,19 @@ export default {
     }),
     chatMetadata() {
       return this.chat.meta;
+    },
+    backButtonUrl() {
+      const {
+        params: { accountId, inbox_id: inboxId, label, teamId },
+        name,
+      } = this.$route;
+      return conversationListPageURL({
+        accountId,
+        inboxId,
+        label,
+        teamId,
+        conversationType: name === 'conversation_mentions' ? 'mention' : '',
+      });
     },
     isHMACVerified() {
       if (!this.isAWebWidgetInbox) {
@@ -125,6 +150,9 @@ export default {
       const { inbox_id: inboxId } = this.chat;
       return this.$store.getters['inboxes/getInbox'](inboxId);
     },
+    hasMultipleInboxes() {
+      return this.$store.getters['inboxes/getInboxes'].length > 1;
+    },
   },
 
   methods: {
@@ -138,14 +166,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.text-truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+@import '~dashboard/assets/scss/woot';
 
 .conv-header {
   flex: 0 0 var(--space-jumbo);
+  flex-direction: row;
+
+  @include breakpoint(medium up) {
+    flex-direction: column;
+  }
+}
+
+.conversation-header--details {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  @include breakpoint(medium up) {
+    flex-direction: row;
+  }
 }
 
 .option__desc {

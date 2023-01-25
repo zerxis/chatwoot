@@ -6,7 +6,8 @@
       'hide--quoted': !showQuotedContent,
     }"
   >
-    <div v-dompurify-html="message" class="text-content" />
+    <div v-if="!isEmail" v-dompurify-html="message" class="text-content" />
+    <letter v-else class="text-content" :html="message" />
     <button
       v-if="displayQuotedButton"
       class="quoted-text--button"
@@ -25,13 +26,12 @@
 </template>
 
 <script>
+import Letter from 'vue-letter';
+
 export default {
+  components: { Letter },
   props: {
     message: {
-      type: String,
-      default: '',
-    },
-    readableTime: {
       type: String,
       default: '',
     },
@@ -65,14 +65,16 @@ export default {
     padding-left: var(--space-two);
   }
   table {
-    all: revert;
+    margin: 0;
+    border: 0;
 
     td {
-      all: revert;
+      margin: 0;
+      border: 0;
     }
 
     tr {
-      all: revert;
+      border-bottom: 0 !important;
     }
   }
 

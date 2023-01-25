@@ -6,17 +6,14 @@ import authRoute from './auth/auth.routes';
 import dashboard from './dashboard/dashboard.routes';
 import login from './login/login.routes';
 import store from '../store';
+import { validateLoggedInRoutes } from '../helper/routeHelpers';
+import AnalyticsHelper from '../helper/AnalyticsHelper';
 
 const routes = [...login.routes, ...dashboard.routes, ...authRoute.routes];
 
 window.roleWiseRoutes = {
   agent: [],
   administrator: [],
-};
-
-const getUserRole = ({ accounts } = {}, accountId) => {
-  const currentAccount = accounts.find(account => account.id === accountId);
-  return currentAccount ? currentAccount.role : null;
 };
 
 // generateRoleWiseRoute - updates window object with agent/admin route
@@ -47,10 +44,6 @@ const authIgnoreRoutes = [
   'auth_password_edit',
 ];
 
-function routeIsAccessibleFor(route, role) {
-  return window.roleWiseRoutes[role].includes(route);
-}
-
 const routeValidators = [
   {
     protected: false,
@@ -68,12 +61,8 @@ const routeValidators = [
   {
     protected: true,
     loggedIn: true,
-    handler: (to, getters) => {
-      const user = getters.getCurrentUser;
-      const userRole = getUserRole(user, Number(to.params.accountId));
-      const isAccessible = routeIsAccessibleFor(to.name, userRole);
-      return isAccessible ? null : `accounts/${to.params.accountId}/dashboard`;
-    },
+    handler: (to, getters) =>
+      validateLoggedInRoutes(to, getters.getCurrentUser, window.roleWiseRoutes),
   },
   {
     protected: false,
@@ -129,6 +118,11 @@ export const validateRouteAccess = (to, from, next, { getters }) => {
 export const initalizeRouter = () => {
   const userAuthentication = store.dispatch('setUser');
   router.beforeEach((to, from, next) => {
+    AnalyticsHelper.page(to.name || '', {
+      path: to.path,
+      name: to.name,
+    });
+
     if (validateSSOLoginParams(to)) {
       clearBrowserSessionCookies();
       next();

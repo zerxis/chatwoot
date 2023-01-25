@@ -2,8 +2,10 @@ class Api::V1::Accounts::CategoriesController < Api::V1::Accounts::BaseControlle
   before_action :portal
   before_action :check_authorization
   before_action :fetch_category, except: [:index, :create]
+  before_action :set_current_page, only: [:index]
 
   def index
+    @current_locale = params[:locale]
     @categories = @portal.categories.search(params)
   end
 
@@ -48,5 +50,9 @@ class Api::V1::Accounts::CategoriesController < Api::V1::Accounts::BaseControlle
     params.require(:category).permit(
       :name, :description, :position, :slug, :locale, :parent_category_id, :associated_category_id
     )
+  end
+
+  def set_current_page
+    @current_page = params[:page] || 1
   end
 end

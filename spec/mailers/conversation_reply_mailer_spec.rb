@@ -54,15 +54,15 @@ RSpec.describe ConversationReplyMailer, type: :mailer do
 
       it 'renders the subject in conversation as reply' do
         conversation.additional_attributes = { 'mail_subject': 'Mail Subject' }
-        conversation.save
-        new_message.save
+        conversation.save!
+        new_message.save!
         expect(mail.subject).to eq('Re: Mail Subject')
       end
 
       it 'not have private notes' do
         # make the message private
         private_message.private = true
-        private_message.save
+        private_message.save!
 
         expect(mail.body.decoded).not_to include(private_message.content)
         expect(mail.body.decoded).to include(message.content)
@@ -104,7 +104,7 @@ RSpec.describe ConversationReplyMailer, type: :mailer do
       let(:mail) { described_class.reply_without_summary(message_2.conversation, message_2.id).deliver_now }
 
       before do
-        message_2.save
+        message_2.save!
       end
 
       it 'renders the default subject' do
@@ -113,14 +113,14 @@ RSpec.describe ConversationReplyMailer, type: :mailer do
 
       it 'renders the subject in conversation' do
         conversation.additional_attributes = { 'mail_subject': 'Mail Subject' }
-        conversation.save
+        conversation.save!
         expect(mail.subject).to eq('Mail Subject')
       end
 
       it 'not have private notes' do
         # make the message private
         private_message.private = true
-        private_message.save
+        private_message.save!
         expect(mail.body.decoded).not_to include(private_message.content)
       end
 
@@ -166,6 +166,22 @@ RSpec.describe ConversationReplyMailer, type: :mailer do
         mail = described_class.email_reply(message)
         expect(mail.delivery_method.settings.empty?).to be false
         expect(mail.delivery_method.settings[:address]).to eq 'smtp.gmail.com'
+        expect(mail.delivery_method.settings[:port]).to eq 587
+      end
+    end
+
+    context 'when smtp enabled for microsoft email channel' do
+      let(:ms_smtp_email_channel) do
+        create(:channel_email, imap_login: 'smtp@outlook.com',
+                               imap_enabled: true, account: account, provider: 'microsoft', provider_config: { access_token: 'access_token' })
+      end
+      let(:conversation) { create(:conversation, assignee: agent, inbox: ms_smtp_email_channel.inbox, account: account).reload }
+      let(:message) { create(:message, conversation: conversation, account: account, message_type: 'outgoing', content: 'Outgoing Message 2') }
+
+      it 'use smtp mail server' do
+        mail = described_class.email_reply(message)
+        expect(mail.delivery_method.settings.empty?).to be false
+        expect(mail.delivery_method.settings[:address]).to eq 'smtp.office365.com'
         expect(mail.delivery_method.settings[:port]).to eq 587
       end
     end

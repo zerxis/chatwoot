@@ -4,7 +4,7 @@
       <fluent-icon :icon="icon" size="12" class="label--icon" />
     </span>
     <span
-      v-if="variant === 'smooth'"
+      v-if="variant === 'smooth' && title && !icon"
       :style="{ background: color }"
       class="label-color-dot"
     />
@@ -72,7 +72,9 @@ export default {
       return this.color || getContrastingTextColor(this.bgColor);
     },
     labelClass() {
-      return `label ${this.colorScheme} ${this.small ? 'small' : ''}`;
+      return `label ${this.colorScheme} ${this.variant} ${
+        this.small ? 'small' : ''
+      }`;
     },
     labelStyle() {
       if (this.bgColor) {
@@ -115,14 +117,16 @@ export default {
   height: var(--space-medium);
 
   &.small {
-    font-size: var(--font-size-micro);
+    font-size: var(--font-size-mini);
     padding: var(--space-micro) var(--space-smaller);
     line-height: 1.2;
-    letter-spacing: 0.15px;
+    height: var(--space-two);
   }
 
   .label--icon {
     cursor: pointer;
+  }
+  .label-color-dot {
     margin-right: var(--space-smaller);
   }
 
@@ -146,6 +150,9 @@ export default {
     a {
       color: var(--w-900);
     }
+    .label-color-dot {
+      background: var(--w-600);
+    }
   }
   &.secondary {
     background: var(--s-100);
@@ -153,6 +160,9 @@ export default {
     border: 1px solid var(--s-200);
     a {
       color: var(--s-900);
+    }
+    .label-color-dot {
+      background: var(--s-600);
     }
   }
   &.success {
@@ -162,6 +172,9 @@ export default {
     a {
       color: var(--g-900);
     }
+    .label-color-dot {
+      background: var(--g-600);
+    }
   }
   &.alert {
     background: var(--r-100);
@@ -169,6 +182,9 @@ export default {
     border: 1px solid var(--r-200);
     a {
       color: var(--r-900);
+    }
+    .label-color-dot {
+      background: var(--r-600);
     }
   }
   &.warning {
@@ -178,6 +194,15 @@ export default {
     a {
       color: var(--y-900);
     }
+    .label-color-dot {
+      background: var(--y-900);
+    }
+  }
+
+  &.smooth {
+    background: transparent;
+    border: 1px solid var(--s-100);
+    color: var(--s-700);
   }
 }
 
@@ -198,14 +223,22 @@ export default {
 }
 
 .label-action--button {
-  margin-bottom: var(--space-minus-micro);
+  display: flex;
+  margin-right: var(--space-smaller);
 }
 
 .label-color-dot {
   display: inline-block;
-  width: var(--space-one);
-  height: var(--space-one);
+  width: var(--space-slab);
+  height: var(--space-slab);
   border-radius: var(--border-radius-small);
   margin-right: var(--space-smaller);
+  box-shadow: var(--shadow-small);
+}
+.label.small .label-color-dot {
+  width: var(--space-small);
+  height: var(--space-small);
+  border-radius: var(--border-radius-small);
+  box-shadow: var(--shadow-small);
 }
 </style>

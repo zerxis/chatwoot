@@ -1,9 +1,8 @@
 import Cookies from 'js-cookie';
 import {
-  wootOn,
-  addClass,
+  addClasses,
   loadCSS,
-  removeClass,
+  removeClasses,
   onLocationChangeListener,
 } from './DOMHelpers';
 import {
@@ -11,7 +10,7 @@ import {
   widgetHolder,
   createBubbleHolder,
   createBubbleIcon,
-  bubbleImg,
+  bubbleSVG,
   chatBubble,
   closeBubble,
   bubbleHolder,
@@ -22,6 +21,7 @@ import {
   addUnreadClass,
   removeUnreadClass,
 } from './bubbleHelpers';
+import { isWidgetColorLighter } from 'shared/helpers/colorHelper';
 import { dispatchWindowEvent } from 'shared/helpers/CustomEventHelper';
 import { CHATWOOT_ERROR, CHATWOOT_READY } from '../widget/constants/sdkEvents';
 import { SET_USER_ERROR } from '../widget/constants/errorTypes';
@@ -56,7 +56,8 @@ export const IFrameHelper = {
       widgetUrl = `${widgetUrl}&cw_conversation=${cwCookie}`;
     }
     iframe.src = widgetUrl;
-
+    iframe.allow =
+      'camera;microphone;fullscreen;display-capture;picture-in-picture;clipboard-write;';
     iframe.id = 'chatwoot_live_chat_widget';
     iframe.style.visibility = 'hidden';
 
@@ -68,7 +69,7 @@ export const IFrameHelper = {
       holderClassName += ` woot-widget-holder--flat`;
     }
 
-    addClass(widgetHolder, holderClassName);
+    addClasses(widgetHolder, holderClassName);
     widgetHolder.appendChild(iframe);
     body.appendChild(widgetHolder);
     IFrameHelper.initPostMessageCommunication();
@@ -99,7 +100,7 @@ export const IFrameHelper = {
     };
   },
   initWindowSizeListener: () => {
-    wootOn(window, 'resize', () => IFrameHelper.toggleCloseButton());
+    window.addEventListener('resize', () => IFrameHelper.toggleCloseButton());
   },
   preventDefaultScroll: () => {
     widgetHolder.addEventListener('wheel', event => {
@@ -127,7 +128,7 @@ export const IFrameHelper = {
 
   setupAudioListeners: () => {
     const { baseUrl = '' } = window.$chatwoot;
-    getAlertAudio(baseUrl, 'widget').then(() =>
+    getAlertAudio(baseUrl, { type: 'widget', alertTone: 'ding' }).then(() =>
       initOnEvents.forEach(event => {
         document.removeEventListener(
           event,
@@ -241,9 +242,9 @@ export const IFrameHelper = {
         event.unreadMessageCount > 0 &&
         !bubbleElement.classList.contains('unread-notification')
       ) {
-        addClass(bubbleElement, 'unread-notification');
+        addClasses(bubbleElement, 'unread-notification');
       } else if (event.unreadMessageCount === 0) {
-        removeClass(bubbleElement, 'unread-notification');
+        removeClasses(bubbleElement, 'unread-notification');
       }
     },
 
@@ -278,13 +279,18 @@ export const IFrameHelper = {
       closeBtnClassName += ' woot-widget-bubble--flat';
     }
 
+    if (isWidgetColorLighter(widgetColor)) {
+      className += ' woot-widget-bubble-color--lighter';
+      closeBtnClassName += ' woot-widget-bubble-color--lighter';
+    }
+
     const chatIcon = createBubbleIcon({
       className,
-      src: bubbleImg,
+      path: bubbleSVG,
       target: chatBubble,
     });
 
-    addClass(closeBubble, closeBtnClassName);
+    addClasses(closeBubble, closeBtnClassName);
 
     chatIcon.style.background = widgetColor;
     closeBubble.style.background = widgetColor;

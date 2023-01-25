@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 require Rails.root.join 'spec/models/concerns/assignment_handler_shared.rb'
-require Rails.root.join 'spec/models/concerns/round_robin_handler_shared.rb'
+require Rails.root.join 'spec/models/concerns/auto_assignment_handler_shared.rb'
 
 RSpec.describe Conversation, type: :model do
   describe 'associations' do
@@ -12,14 +12,14 @@ RSpec.describe Conversation, type: :model do
 
   describe 'concerns' do
     it_behaves_like 'assignment_handler'
-    it_behaves_like 'round_robin_handler'
+    it_behaves_like 'auto_assignment_handler'
   end
 
   describe '.before_create' do
     let(:conversation) { build(:conversation, display_id: nil) }
 
     before do
-      conversation.save
+      conversation.save!
       conversation.reload
     end
 
@@ -109,12 +109,25 @@ RSpec.describe Conversation, type: :model do
       Current.user = old_assignee
     end
 
+    it 'sends conversation updated event if labels are updated' do
+      conversation.update(label_list: [label.title])
+      changed_attributes = conversation.previous_changes
+      expect(Rails.configuration.dispatcher).to have_received(:dispatch)
+        .with(
+          described_class::CONVERSATION_UPDATED,
+          kind_of(Time),
+          conversation: conversation,
+          notifiable_assignee_change: false,
+          changed_attributes: changed_attributes,
+          performed_by: nil
+        ).exactly(2).times
+    end
+
     it 'runs after_update callbacks' do
       conversation.update(
         status: :resolved,
         contact_last_seen_at: Time.now,
-        assignee: new_assignee,
-        label_list: [label.title]
+        assignee: new_assignee
       )
       status_change = conversation.status_change
       changed_attributes = conversation.previous_changes
@@ -428,10 +441,12 @@ RSpec.describe Conversation, type: :model do
         meta: {
           sender: conversation.contact.push_event_data,
           assignee: conversation.assignee,
+          team: conversation.team,
           hmac_verified: conversation.contact_inbox.hmac_verified
         },
         id: conversation.display_id,
         messages: [],
+        labels: [],
         inbox_id: conversation.inbox_id,
         status: conversation.status,
         contact_inbox: conversation.contact_inbox,
@@ -440,6 +455,7 @@ RSpec.describe Conversation, type: :model do
         channel: 'Channel::WebWidget',
         snoozed_until: conversation.snoozed_until,
         custom_attributes: conversation.custom_attributes,
+        first_reply_created_at: nil,
         contact_last_seen_at: conversation.contact_last_seen_at.to_i,
         agent_last_seen_at: conversation.agent_last_seen_at.to_i,
         unread_count: 0
@@ -581,12 +597,17 @@ RSpec.describe Conversation, type: :model do
   end
 
   describe '#delete conversation' do
+    include ActiveJob::TestHelper
+
     let!(:conversation) { create(:conversation) }
 
     let!(:notification) { create(:notification, notification_type: 'conversation_creation', primary_actor: conversation) }
 
     it 'delete associated notifications if conversation is deleted' do
-      conversation.destroy!
+      perform_enqueued_jobs do
+        conversation.destroy!
+      end
+
       expect { notification.reload }.to raise_error ActiveRecord::RecordNotFound
     end
   end

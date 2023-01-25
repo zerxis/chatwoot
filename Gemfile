@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
-ruby '3.0.4'
+ruby '3.1.3'
 
 ##-- base gems for rails --##
 gem 'rack-cors', require: 'rack/cors'
-gem 'rails', '~>6.1'
+gem 'rails', '~> 6.1', '>= 6.1.6.1'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
@@ -37,6 +37,8 @@ gem 'json_schemer'
 gem 'rack-attack'
 # a utility tool for streaming, flexible and safe downloading of remote files
 gem 'down', '~> 5.0'
+# authentication type to fetch and send mail over oauth2.0
+gem 'gmail_xoauth'
 
 ##-- for active storage --##
 gem 'aws-sdk-s3', require: false
@@ -56,7 +58,7 @@ gem 'activerecord-import'
 gem 'dotenv-rails'
 gem 'foreman'
 gem 'puma'
-gem 'webpacker', '~> 5.x'
+gem 'webpacker', '~> 5.4', '>= 5.4.3'
 # metrics on heroku
 gem 'barnes'
 
@@ -91,9 +93,10 @@ gem 'google-cloud-dialogflow'
 
 ##-- apm and error monitoring ---#
 gem 'ddtrace'
+gem 'elastic-apm'
 gem 'newrelic_rpm'
 gem 'scout_apm'
-gem 'sentry-rails', '~> 5.3'
+gem 'sentry-rails', '~> 5.3', '>= 5.3.1'
 gem 'sentry-ruby', '~> 5.3'
 gem 'sentry-sidekiq', '~> 5.3'
 
@@ -104,7 +107,12 @@ gem 'sidekiq-cron', '~> 1.3'
 
 ##-- Push notification service --##
 gem 'fcm'
-gem 'webpush'
+
+# Ref: https://github.com/mastodon/mastodon/pull/18449
+# ref: https://github.com/zaru/webpush/pull/106
+# lets switch to web-push gem once the above PR is merged
+# https://github.com/zaru/webpush/pull/106#issuecomment-1342925261
+gem 'webpush', git: 'https://github.com/ClearlyClaire/webpush.git', ref: 'f14a4d52e201128b1b00245d11b6de80d6cfdcd9'
 
 ##-- geocoding / parse location from ip --##
 # http://www.rubygeocoder.com/
@@ -129,6 +137,15 @@ gem 'pg_search'
 
 # Subscriptions, Billing
 gem 'stripe'
+
+## - helper gems --##
+## to populate db with sample data
+gem 'faker'
+
+# Can remove this in rails 7
+gem 'net-imap', require: false
+gem 'net-pop', require: false
+gem 'net-smtp', require: false
 
 group :production, :staging do
   # we dont want request timing out in development while using byebug
@@ -155,6 +172,8 @@ group :test do
   gem 'database_cleaner'
   # mock http calls
   gem 'webmock'
+  # test profiling
+  gem 'test-prof'
 end
 
 group :development, :test do
@@ -166,11 +185,11 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'climate_control'
   gem 'factory_bot_rails'
-  gem 'faker'
   gem 'listen'
   gem 'mock_redis'
   gem 'pry-rails'
-  gem 'rspec-rails', '~> 5.0.0'
+  gem 'rspec_junit_formatter'
+  gem 'rspec-rails', '~> 5.0.3'
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
@@ -181,3 +200,5 @@ group :development, :test do
   gem 'spring'
   gem 'spring-watcher-listen'
 end
+# worked with microsoft refresh token
+gem 'omniauth-oauth2'

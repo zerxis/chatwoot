@@ -6,6 +6,9 @@
     </h2>
     <p v-if="headerContent" class="small-12 column wrap-content">
       {{ headerContent }}
+      <span v-if="headerContentValue" class="content-value">
+        {{ headerContentValue }}
+      </span>
     </p>
     <slot />
   </div>
@@ -22,6 +25,10 @@ export default {
       type: String,
       default: '',
     },
+    headerContentValue: {
+      type: String,
+      default: '',
+    },
     headerImage: {
       type: String,
       default: '',
@@ -32,5 +39,10 @@ export default {
 <style scoped lang="scss">
 .wrap-content {
   word-wrap: break-word;
+  margin-top: var(--space-small);
+
+  .content-value {
+    font-weight: var(--font-weight-bold);
+  }
 }
 </style>

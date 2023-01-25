@@ -1,7 +1,12 @@
 import Vue from 'vue';
 import types from '../mutation-types';
 import authAPI from '../../api/auth';
-import { setUser, clearCookiesOnLogout } from '../utils/api';
+
+import {
+  setUser,
+  clearCookiesOnLogout,
+  clearLocalStorageOnLogout,
+} from '../utils/api';
 import { getLoginRedirectURL } from '../../helper/URLHelper';
 
 const initialState = {
@@ -41,6 +46,14 @@ export const getters = {
       account => account.id === $getters.getCurrentAccountId
     );
     return currentAccount.availability;
+  },
+
+  getCurrentUserAutoOffline($state, $getters) {
+    const { accounts = [] } = $state.currentUser;
+    const [currentAccount = {}] = accounts.filter(
+      account => account.id === $getters.getCurrentAccountId
+    );
+    return currentAccount.auto_offline;
   },
 
   getCurrentAccountId(_, __, rootState) {
@@ -84,12 +97,17 @@ export const getters = {
 
 // actions
 export const actions = {
-  login(_, { ssoAccountId, ...credentials }) {
+  login(_, { ssoAccountId, ssoConversationId, ...credentials }) {
     return new Promise((resolve, reject) => {
       authAPI
         .login(credentials)
         .then(response => {
-          window.location = getLoginRedirectURL(ssoAccountId, response.data);
+          clearLocalStorageOnLogout();
+          window.location = getLoginRedirectURL({
+            ssoAccountId,
+            ssoConversationId,
+            user: response.data,
+          });
           resolve();
         })
         .catch(error => {
@@ -155,7 +173,19 @@ export const actions = {
       const userData = response.data;
       const { id } = userData;
       commit(types.SET_CURRENT_USER, response.data);
-      dispatch('agents/updatePresence', { [id]: params.availability });
+      dispatch('agents/updateSingleAgentPresence', {
+        id,
+        availabilityStatus: params.availability,
+      });
+    } catch (error) {
+      // Ignore error
+    }
+  },
+
+  updateAutoOffline: async ({ commit }, { accountId, autoOffline }) => {
+    try {
+      const response = await authAPI.updateAutoOffline(accountId, autoOffline);
+      commit(types.SET_CURRENT_USER, response.data);
     } catch (error) {
       // Ignore error
     }
@@ -164,6 +194,14 @@ export const actions = {
   setCurrentUserAvailability({ commit, state: $state }, data) {
     if (data[$state.currentUser.id]) {
       commit(types.SET_CURRENT_USER_AVAILABILITY, data[$state.currentUser.id]);
+    }
+  },
+
+  setActiveAccount: async (_, { accountId }) => {
+    try {
+      await authAPI.setActiveAccount({ accountId });
+    } catch (error) {
+      // Ignore error
     }
   },
 };

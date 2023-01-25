@@ -11,20 +11,20 @@ describe('#mutations', () => {
     });
   });
 
-  describe('#MARK_MESSAGE_READ', () => {
+  describe('#UPDATE_MESSAGE_UNREAD_COUNT', () => {
     it('mark conversation as read', () => {
       const state = { allConversations: [{ id: 1 }] };
       const lastSeen = new Date().getTime() / 1000;
-      mutations[types.MARK_MESSAGE_READ](state, { id: 1, lastSeen });
+      mutations[types.UPDATE_MESSAGE_UNREAD_COUNT](state, { id: 1, lastSeen });
       expect(state.allConversations).toEqual([
-        { id: 1, agent_last_seen_at: lastSeen },
+        { id: 1, agent_last_seen_at: lastSeen, unread_count: 0 },
       ]);
     });
 
     it('doesnot send any mutation if chat doesnot exist', () => {
       const state = { allConversations: [] };
       const lastSeen = new Date().getTime() / 1000;
-      mutations[types.MARK_MESSAGE_READ](state, { id: 1, lastSeen });
+      mutations[types.UPDATE_MESSAGE_UNREAD_COUNT](state, { id: 1, lastSeen });
       expect(state.allConversations).toEqual([]);
     });
   });
@@ -34,6 +34,19 @@ describe('#mutations', () => {
       const state = { selectedChatId: 1 };
       mutations[types.CLEAR_CURRENT_CHAT_WINDOW](state);
       expect(state.selectedChatId).toEqual(null);
+    });
+  });
+
+  describe('#ASSIGN_TEAM', () => {
+    it('clears current chat window', () => {
+      const state = { allConversations: [{ id: 1, meta: {} }] };
+      mutations[types.ASSIGN_TEAM](state, {
+        team: { id: 1, name: 'Team 1' },
+        conversationId: 1,
+      });
+      expect(state.allConversations).toEqual([
+        { id: 1, meta: { team: { id: 1, name: 'Team 1' } } },
+      ]);
     });
   });
 
@@ -90,6 +103,7 @@ describe('#mutations', () => {
               created_at: 1602256198,
             },
           ],
+          unread_count: 0,
           timestamp: 1602256198,
         },
       ]);
@@ -117,6 +131,7 @@ describe('#mutations', () => {
               created_at: 1602256198,
             },
           ],
+          unread_count: 0,
           timestamp: 1602256198,
         },
       ]);
@@ -185,18 +200,6 @@ describe('#mutations', () => {
           status: 'resolved',
         },
       ]);
-    });
-
-    describe('#SET_CONVERSATION_LAST_SEEN', () => {
-      it('sets conversation last seen timestamp', () => {
-        const state = {
-          conversationLastSeen: null,
-        };
-
-        mutations[types.SET_CONVERSATION_LAST_SEEN](state, 1649856659);
-
-        expect(state.conversationLastSeen).toEqual(1649856659);
-      });
     });
 
     describe('#UPDATE_CONVERSATION_CUSTOM_ATTRIBUTES', () => {

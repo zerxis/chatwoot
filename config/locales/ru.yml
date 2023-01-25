@@ -23,9 +23,9 @@ ru:
     reset_password_failure: Ой! Мы не смогли найти пользователя с указанным email.
   errors:
     validations:
-      presence: не должен быть пустым
+      presence: Не должен быть пустым
     webhook:
-      invalid: Invalid events
+      invalid: Недопустимые события
     signup:
       disposable_email: Мы не разрешаем одноразовые почтовые ящики
       invalid_email: Вы ввели неверный email
@@ -44,6 +44,8 @@ ru:
     categories:
       locale:
         unique: Должны быть уникальными в категории и портале
+    dyte:
+      invalid_message_type: "Invalid message type. Action not permitted"
     inboxes:
       imap:
         socket_error: Пожалуйста, проверьте сетевое подключение, адрес IMAP и повторите попытку.
@@ -96,7 +98,7 @@ ru:
   conversations:
     messages:
       instagram_story_content: "%{story_sender} упомянул Вас в истории: "
-      instagram_deleted_story_content: This story is no longer available.
+      instagram_deleted_story_content: Эта история больше недоступна.
       deleted: Это сообщение было удалено
     activity:
       status:
@@ -137,6 +139,10 @@ ru:
     online:
       delete: "%{contact_name} в сети, повторите попытку позже"
   integration_apps:
+    dyte:
+      name: "Dyte"
+      description: "Dyte is tool that helps you to add live audio & video to your application with just a few lines of code. This integration allows you to give an option to your agents to have a video or voice call with your customers from without leaving Chatwoot."
+      meeting_name: "%{agent_name} has started a meeting"
     slack:
       name: "Slack"
       description: "Slack это сервис, который позволяет объединить рабочие коммуникации в одном месте. При интеграции с Slack вы будете получать уведомления обо всех новых разговорах прямо в Slack."
@@ -149,3 +155,11 @@ ru:
     fullcontact:
       name: "Полная карточка контакта"
       description: "Интеграция с FullContact помогает получить всю информацию о профиле посетителей. Определяйте пользователей как только они поделится своим электронным адресом и предложите им индивидуальное обслуживание клиентов. Подключите ваш FullContact к своей учетной записи, поделившись API ключом FullContact."
+  public_portal:
+    search:
+      search_placeholder: Поиск статьи по названию или содержанию...
+      empty_placeholder: Результаты не найдены.
+      loading_placeholder: Идёт поиск...
+      results_title: Результаты поиска
+    hero:
+      sub_title: Ищите здесь статьи или выберите категории, указанные ниже.

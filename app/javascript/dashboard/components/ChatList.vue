@@ -1,5 +1,11 @@
 <template>
-  <div class="conversations-list-wrap">
+  <div
+    class="conversations-list-wrap"
+    :class="{
+      hide: !showConversationList,
+      'list--full-width': isOnExpandedLayout,
+    }"
+  >
     <slot />
     <div
       class="chat-list__top"
@@ -46,7 +52,7 @@
 
         <woot-button
           v-else
-          v-tooltip.top-end="$t('FILTER.TOOLTIP_LABEL')"
+          v-tooltip.right="$t('FILTER.TOOLTIP_LABEL')"
           variant="clear"
           color-scheme="secondary"
           icon="filter"
@@ -96,8 +102,13 @@
       @assign-agent="onAssignAgent"
       @update-conversations="onUpdateConversations"
       @assign-labels="onAssignLabels"
+      @assign-team="onAssignTeamsForBulk"
     />
-    <div ref="activeConversation" class="conversations-list">
+    <div
+      ref="activeConversation"
+      class="conversations-list"
+      :class="{ 'is-context-menu-open': isContextMenuOpen }"
+    >
       <conversation-card
         v-for="chat in conversationList"
         :key="chat.id"
@@ -110,6 +121,12 @@
         :selected="isConversationSelected(chat.id)"
         @select-conversation="selectConversation"
         @de-select-conversation="deSelectConversation"
+        @assign-agent="onAssignAgent"
+        @assign-team="onAssignTeam"
+        @assign-label="onAssignLabels"
+        @update-conversation-status="toggleConversationStatus"
+        @context-menu-toggle="onContextMenuToggle"
+        @mark-as-unread="markAsUnread"
       />
 
       <div v-if="chatListLoading" class="text-center">
@@ -134,13 +151,14 @@
     </div>
     <woot-modal
       :show.sync="showAdvancedFilters"
-      :on-close="onToggleAdvanceFiltersModal"
+      :on-close="closeAdvanceFiltersModal"
       size="medium"
     >
       <conversation-advanced-filter
         v-if="showAdvancedFilters"
         :initial-filter-types="advancedFilterTypes"
-        :on-close="onToggleAdvanceFiltersModal"
+        :initial-applied-filters="appliedFilter"
+        :on-close="closeAdvanceFiltersModal"
         @applyFilter="onApplyFilter"
       />
     </woot-modal>
@@ -164,11 +182,17 @@ import AddCustomViews from 'dashboard/routes/dashboard/customviews/AddCustomView
 import DeleteCustomViews from 'dashboard/routes/dashboard/customviews/DeleteCustomViews.vue';
 import ConversationBulkActions from './widgets/conversation/conversationBulkActions/Index.vue';
 import alertMixin from 'shared/mixins/alertMixin';
+import filterMixin from 'shared/mixins/filterMixin';
 
 import {
   hasPressedAltAndJKey,
   hasPressedAltAndKKey,
 } from 'shared/helpers/KeyboardHelpers';
+import { conversationListPageURL } from '../helper/URLHelper';
+import {
+  isOnMentionsView,
+  isOnUnattendedView,
+} from '../store/modules/conversations/helpers/actionHelpers';
 
 export default {
   components: {
@@ -180,7 +204,13 @@ export default {
     DeleteCustomViews,
     ConversationBulkActions,
   },
-  mixins: [timeMixin, conversationMixin, eventListenerMixins, alertMixin],
+  mixins: [
+    timeMixin,
+    conversationMixin,
+    eventListenerMixins,
+    alertMixin,
+    filterMixin,
+  ],
   props: {
     conversationInbox: {
       type: [String, Number],
@@ -202,6 +232,14 @@ export default {
       type: [String, Number],
       default: 0,
     },
+    showConversationList: {
+      default: true,
+      type: Boolean,
+    },
+    isOnExpandedLayout: {
+      default: false,
+      type: Boolean,
+    },
   },
   data() {
     return {
@@ -217,11 +255,14 @@ export default {
       showDeleteFoldersModal: false,
       selectedConversations: [],
       selectedInboxes: [],
+      isContextMenuOpen: false,
+      appliedFilter: [],
     };
   },
   computed: {
     ...mapGetters({
       currentChat: 'getSelectedChat',
+      currentUser: 'getCurrentUser',
       chatLists: 'getAllConversations',
       mineChatsList: 'getMineChats',
       allChatList: 'getAllStatusChats',
@@ -259,6 +300,13 @@ export default {
         this.hasCurrentPageEndReached &&
         !this.chatListLoading
       );
+    },
+    currentUserDetails() {
+      const { id, name } = this.currentUser;
+      return {
+        id,
+        name,
+      };
     },
     assigneeTabItems() {
       const ASSIGNEE_TYPE_TAB_KEYS = {
@@ -311,14 +359,15 @@ export default {
         status: this.activeStatus,
         page: this.currentPage + 1,
         labels: this.label ? [this.label] : undefined,
-        teamId: this.teamId ? this.teamId : undefined,
-        conversationType: this.conversationType
-          ? this.conversationType
-          : undefined,
+        teamId: this.teamId || undefined,
+        conversationType: this.conversationType || undefined,
         folders: this.hasActiveFolders ? this.savedFoldersValue : undefined,
       };
     },
     pageTitle() {
+      if (this.hasAppliedFilters) {
+        return this.$t('CHAT_LIST.TAB_HEADING');
+      }
       if (this.inbox.name) {
         return this.inbox.name;
       }
@@ -330,6 +379,9 @@ export default {
       }
       if (this.conversationType === 'mention') {
         return this.$t('CHAT_LIST.MENTION_HEADING');
+      }
+      if (this.conversationType === 'unattended') {
+        return this.$t('CHAT_LIST.UNATTENDED_HEADING');
       }
       if (this.hasActiveFolders) {
         return this.activeFolder.name;
@@ -410,9 +462,6 @@ export default {
   },
   methods: {
     onApplyFilter(payload) {
-      if (this.$route.name !== 'home') {
-        this.$router.push({ name: 'home' });
-      }
       this.resetBulkActions();
       this.foldersQuery = filterQueryGenerator(payload);
       this.$store.dispatch('conversationPage/reset');
@@ -432,7 +481,14 @@ export default {
       this.showDeleteFoldersModal = false;
     },
     onToggleAdvanceFiltersModal() {
-      this.showAdvancedFilters = !this.showAdvancedFilters;
+      if (!this.hasAppliedFilters) {
+        this.initializeExistingFilterToModal();
+      }
+      this.showAdvancedFilters = true;
+    },
+    closeAdvanceFiltersModal() {
+      this.showAdvancedFilters = false;
+      this.appliedFilter = [];
     },
     getKeyboardListenerParams() {
       const allConversations = this.$refs.activeConversation.querySelectorAll(
@@ -491,6 +547,7 @@ export default {
         return;
       }
       this.fetchConversations();
+      this.appliedFilter = [];
     },
     fetchConversations() {
       this.$store
@@ -587,34 +644,125 @@ export default {
         this.resetBulkActions();
       }
     },
-    async onAssignAgent(agent) {
+    // Same method used in context menu, conversationId being passed from there.
+    async onAssignAgent(agent, conversationId = null) {
       try {
         await this.$store.dispatch('bulkActions/process', {
           type: 'Conversation',
-          ids: this.selectedConversations,
+          ids: conversationId || this.selectedConversations,
           fields: {
             assignee_id: agent.id,
           },
         });
         this.selectedConversations = [];
-        this.showAlert(this.$t('BULK_ACTION.ASSIGN_SUCCESFUL'));
+        if (conversationId) {
+          this.showAlert(
+            this.$t(
+              'CONVERSATION.CARD_CONTEXT_MENU.API.AGENT_ASSIGNMENT.SUCCESFUL',
+              {
+                agentName: agent.name,
+                conversationId,
+              }
+            )
+          );
+        } else {
+          this.showAlert(this.$t('BULK_ACTION.ASSIGN_SUCCESFUL'));
+        }
       } catch (err) {
         this.showAlert(this.$t('BULK_ACTION.ASSIGN_FAILED'));
       }
     },
-    async onAssignLabels(labels) {
+    async markAsUnread(conversationId) {
+      try {
+        await this.$store.dispatch('markMessagesUnread', {
+          id: conversationId,
+        });
+        const {
+          params: { accountId, inbox_id: inboxId, label, teamId },
+          name,
+        } = this.$route;
+        let conversationType = '';
+        if (isOnMentionsView({ route: { name } })) {
+          conversationType = 'mention';
+        } else if (isOnUnattendedView({ route: { name } })) {
+          conversationType = 'unattended';
+        }
+        this.$router.push(
+          conversationListPageURL({
+            accountId,
+            conversationType: conversationType,
+            customViewId: this.foldersId,
+            inboxId,
+            label,
+            teamId,
+          })
+        );
+      } catch (error) {
+        // Ignore error
+      }
+    },
+    async onAssignTeam(team, conversationId = null) {
+      try {
+        await this.$store.dispatch('assignTeam', {
+          conversationId,
+          teamId: team.id,
+        });
+        this.showAlert(
+          this.$t(
+            'CONVERSATION.CARD_CONTEXT_MENU.API.TEAM_ASSIGNMENT.SUCCESFUL',
+            {
+              team: team.name,
+              conversationId,
+            }
+          )
+        );
+      } catch (error) {
+        this.showAlert(
+          this.$t('CONVERSATION.CARD_CONTEXT_MENU.API.TEAM_ASSIGNMENT.FAILED')
+        );
+      }
+    },
+    // Same method used in context menu, conversationId being passed from there.
+    async onAssignLabels(labels, conversationId = null) {
       try {
         await this.$store.dispatch('bulkActions/process', {
           type: 'Conversation',
-          ids: this.selectedConversations,
+          ids: conversationId || this.selectedConversations,
           labels: {
             add: labels,
           },
         });
         this.selectedConversations = [];
-        this.showAlert(this.$t('BULK_ACTION.LABELS.ASSIGN_SUCCESFUL'));
+        if (conversationId) {
+          this.showAlert(
+            this.$t(
+              'CONVERSATION.CARD_CONTEXT_MENU.API.LABEL_ASSIGNMENT.SUCCESFUL',
+              {
+                labelName: labels[0],
+                conversationId,
+              }
+            )
+          );
+        } else {
+          this.showAlert(this.$t('BULK_ACTION.LABELS.ASSIGN_SUCCESFUL'));
+        }
       } catch (err) {
         this.showAlert(this.$t('BULK_ACTION.LABELS.ASSIGN_FAILED'));
+      }
+    },
+    async onAssignTeamsForBulk(team) {
+      try {
+        await this.$store.dispatch('bulkActions/process', {
+          type: 'Conversation',
+          ids: this.selectedConversations,
+          fields: {
+            team_id: team.id,
+          },
+        });
+        this.selectedConversations = [];
+        this.showAlert(this.$t('BULK_ACTION.TEAMS.ASSIGN_SUCCESFUL'));
+      } catch (err) {
+        this.showAlert(this.$t('BULK_ACTION.TEAMS.ASSIGN_FAILED'));
       }
     },
     async onUpdateConversations(status) {
@@ -632,11 +780,26 @@ export default {
         this.showAlert(this.$t('BULK_ACTION.UPDATE.UPDATE_FAILED'));
       }
     },
+    toggleConversationStatus(conversationId, status, snoozedUntil) {
+      this.$store
+        .dispatch('toggleStatus', {
+          conversationId,
+          status,
+          snoozedUntil,
+        })
+        .then(() => {
+          this.showAlert(this.$t('CONVERSATION.CHANGE_STATUS'));
+          this.isLoading = false;
+        });
+    },
     allSelectedConversationsStatus(status) {
       if (!this.selectedConversations.length) return false;
       return this.selectedConversations.every(item => {
         return this.$store.getters.getConversationById(item).status === status;
       });
+    },
+    onContextMenuToggle(state) {
+      this.isContextMenuOpen = state;
     },
   },
 };
@@ -650,21 +813,24 @@ export default {
   margin-bottom: var(--space-normal);
 }
 
+.conversations-list {
+  // Prevent the list from scrolling if the submenu is opened
+  &.is-context-menu-open {
+    overflow: hidden !important;
+  }
+}
+
 .conversations-list-wrap {
   flex-shrink: 0;
-  width: 34rem;
+  flex-basis: clamp(32rem, 4vw + 34rem, 44rem);
   overflow: hidden;
-  @include breakpoint(large up) {
-    width: 36rem;
+
+  &.hide {
+    display: none;
   }
-  @include breakpoint(xlarge up) {
-    width: 35rem;
-  }
-  @include breakpoint(xxlarge up) {
-    width: 38rem;
-  }
-  @include breakpoint(xxxlarge up) {
-    flex-basis: 46rem;
+
+  &.list--full-width {
+    flex-basis: 100%;
   }
 }
 .filter--actions {

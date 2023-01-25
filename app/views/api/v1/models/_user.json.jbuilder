@@ -16,10 +16,12 @@ json.custom_attributes resource.custom_attributes if resource.custom_attributes.
 json.role resource.active_account_user&.role
 json.ui_settings resource.ui_settings
 json.uid resource.uid
+json.type resource.type
 json.accounts do
   json.array! resource.account_users do |account_user|
     json.id account_user.account_id
     json.name account_user.account.name
+    json.status account_user.account.status
     json.active_at account_user.active_at
     json.role account_user.role
     # the actual availability user has configured

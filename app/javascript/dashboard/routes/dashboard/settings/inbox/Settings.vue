@@ -116,6 +116,11 @@
           <woot-color-picker v-model="inbox.widget_color" />
         </label>
 
+        <label v-if="isAWhatsAppChannel" class="medium-9 columns settings-item">
+          {{ $t('INBOX_MGMT.ADD.WHATSAPP.PROVIDERS.LABEL') }}
+          <input v-model="whatsAppAPIProviderName" type="text" disabled />
+        </label>
+
         <label class="medium-9 columns settings-item">
           {{
             $t('INBOX_MGMT.ADD.WEBSITE_CHANNEL.CHANNEL_GREETING_TOGGLE.LABEL')
@@ -253,6 +258,28 @@
           </p>
         </label>
 
+        <label
+          v-if="canLocktoSingleConversation"
+          class="medium-9 columns settings-item"
+        >
+          {{ $t('INBOX_MGMT.SETTINGS_POPUP.LOCK_TO_SINGLE_CONVERSATION') }}
+          <select v-model="locktoSingleConversation">
+            <option :value="true">
+              {{ $t('INBOX_MGMT.EDIT.LOCK_TO_SINGLE_CONVERSATION.ENABLED') }}
+            </option>
+            <option :value="false">
+              {{ $t('INBOX_MGMT.EDIT.LOCK_TO_SINGLE_CONVERSATION.DISABLED') }}
+            </option>
+          </select>
+          <p class="help-text">
+            {{
+              $t(
+                'INBOX_MGMT.SETTINGS_POPUP.LOCK_TO_SINGLE_CONVERSATION_SUB_TEXT'
+              )
+            }}
+          </p>
+        </label>
+
         <label v-if="isAWebWidgetInbox">
           {{ $t('INBOX_MGMT.FEATURES.LABEL') }}
         </label>
@@ -325,6 +352,12 @@
     <div v-if="selectedTabKey === 'businesshours'">
       <weekly-availability :inbox="inbox" />
     </div>
+    <div v-if="selectedTabKey === 'widgetBuilder'">
+      <widget-builder :inbox="inbox" />
+    </div>
+    <div v-if="selectedTabKey === 'botConfiguration'">
+      <bot-configuration :inbox="inbox" />
+    </div>
   </div>
 </template>
 
@@ -342,17 +375,22 @@ import WeeklyAvailability from './components/WeeklyAvailability';
 import GreetingsEditor from 'shared/components/GreetingsEditor';
 import ConfigurationPage from './settingsPage/ConfigurationPage';
 import CollaboratorsPage from './settingsPage/CollaboratorsPage';
+import WidgetBuilder from './WidgetBuilder';
+import BotConfiguration from './components/BotConfiguration';
+import { FEATURE_FLAGS } from '../../../../featureFlags';
 
 export default {
   components: {
+    BotConfiguration,
+    CollaboratorsPage,
+    ConfigurationPage,
+    FacebookReauthorize,
+    GreetingsEditor,
+    PreChatFormSettings,
     SettingIntroBanner,
     SettingsSection,
-    FacebookReauthorize,
-    PreChatFormSettings,
     WeeklyAvailability,
-    GreetingsEditor,
-    ConfigurationPage,
-    CollaboratorsPage,
+    WidgetBuilder,
   },
   mixins: [alertMixin, configMixin, inboxMixin],
   data() {
@@ -364,6 +402,7 @@ export default {
       greetingMessage: '',
       emailCollectEnabled: false,
       csatSurveyEnabled: false,
+      locktoSingleConversation: false,
       allowMessagesAfterResolved: true,
       continuityViaEmail: true,
       selectedInboxName: '',
@@ -378,13 +417,27 @@ export default {
   },
   computed: {
     ...mapGetters({
+      accountId: 'getCurrentAccountId',
+      isFeatureEnabledonAccount: 'accounts/isFeatureEnabledonAccount',
       uiFlags: 'inboxes/getUIFlags',
     }),
     selectedTabKey() {
       return this.tabs[this.selectedTabIndex]?.key;
     },
+    whatsAppAPIProviderName() {
+      if (this.isAWhatsAppCloudChannel) {
+        return this.$t('INBOX_MGMT.ADD.WHATSAPP.PROVIDERS.WHATSAPP_CLOUD');
+      }
+      if (this.is360DialogWhatsAppChannel) {
+        return this.$t('INBOX_MGMT.ADD.WHATSAPP.PROVIDERS.360_DIALOG');
+      }
+      if (this.isATwilioWhatsAppChannel) {
+        return this.$t('INBOX_MGMT.ADD.WHATSAPP.PROVIDERS.TWILIO');
+      }
+      return '';
+    },
     tabs() {
-      const visibleToAllChannelTabs = [
+      let visibleToAllChannelTabs = [
         {
           key: 'inbox_settings',
           name: this.$t('INBOX_MGMT.TABS.SETTINGS'),
@@ -400,15 +453,15 @@ export default {
       ];
 
       if (this.isAWebWidgetInbox) {
-        return [
+        visibleToAllChannelTabs = [
           ...visibleToAllChannelTabs,
           {
             key: 'preChatForm',
             name: this.$t('INBOX_MGMT.TABS.PRE_CHAT_FORM'),
           },
           {
-            key: 'configuration',
-            name: this.$t('INBOX_MGMT.TABS.CONFIGURATION'),
+            key: 'widgetBuilder',
+            name: this.$t('INBOX_MGMT.TABS.WIDGET_BUILDER'),
           },
         ];
       }
@@ -417,10 +470,12 @@ export default {
         this.isATwilioChannel ||
         this.isALineChannel ||
         this.isAPIInbox ||
-        this.isAnEmailChannel ||
-        this.isAWhatsappChannel
+        (this.isAnEmailChannel && !this.inbox.provider) ||
+        (this.isAnEmailChannel && this.inbox.provider === 'microsoft') ||
+        this.isAWhatsAppChannel ||
+        this.isAWebWidgetInbox
       ) {
-        return [
+        visibleToAllChannelTabs = [
           ...visibleToAllChannelTabs,
           {
             key: 'configuration',
@@ -429,6 +484,21 @@ export default {
         ];
       }
 
+      if (
+        this.isFeatureEnabledonAccount(
+          this.accountId,
+          FEATURE_FLAGS.AGENT_BOTS
+        ) &&
+        !(this.isAnEmailChannel || this.isATwitterInbox)
+      ) {
+        visibleToAllChannelTabs = [
+          ...visibleToAllChannelTabs,
+          {
+            key: 'botConfiguration',
+            name: this.$t('INBOX_MGMT.TABS.BOT_CONFIGURATION'),
+          },
+        ];
+      }
       return visibleToAllChannelTabs;
     },
     currentInboxId() {
@@ -438,17 +508,20 @@ export default {
       return this.$store.getters['inboxes/getInbox'](this.currentInboxId);
     },
     inboxName() {
-      if (this.isATwilioSMSChannel || this.isATwilioWhatsappChannel) {
+      if (this.isATwilioSMSChannel || this.isATwilioWhatsAppChannel) {
         return `${this.inbox.name} (${this.inbox.messaging_service_sid ||
           this.inbox.phone_number})`;
       }
-      if (this.isAWhatsappChannel) {
+      if (this.isAWhatsAppChannel) {
         return `${this.inbox.name} (${this.inbox.phone_number})`;
       }
       if (this.isAnEmailChannel) {
         return `${this.inbox.name} (${this.inbox.email})`;
       }
       return this.inbox.name;
+    },
+    canLocktoSingleConversation() {
+      return this.isASmsInbox || this.isAWhatsAppChannel;
     },
     inboxNameLabel() {
       if (this.isAWebWidgetInbox) {
@@ -521,6 +594,7 @@ export default {
         this.channelWelcomeTagline = this.inbox.welcome_tagline;
         this.selectedFeatureFlags = this.inbox.selected_feature_flags || [];
         this.replyTime = this.inbox.reply_time;
+        this.locktoSingleConversation = this.inbox.lock_to_single_conversation;
       });
     },
     async updateInbox() {
@@ -533,6 +607,7 @@ export default {
           allow_messages_after_resolved: this.allowMessagesAfterResolved,
           greeting_enabled: this.greetingEnabled,
           greeting_message: this.greetingMessage || '',
+          lock_to_single_conversation: this.locktoSingleConversation,
           channel: {
             widget_color: this.inbox.widget_color,
             website_url: this.channelWebsiteUrl,

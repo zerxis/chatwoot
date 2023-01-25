@@ -6,7 +6,8 @@
       :on-close="closeDeletePopup"
       :on-confirm="deleteSavedCustomViews"
       :title="$t('FILTER.CUSTOM_VIEWS.DELETE.MODAL.CONFIRM.TITLE')"
-      :message="deleteMessage"
+      :message="$t('FILTER.CUSTOM_VIEWS.DELETE.MODAL.CONFIRM.MESSAGE')"
+      :message-value="deleteMessage"
       :confirm-text="deleteConfirmText"
       :reject-text="deleteRejectText"
     />
@@ -15,6 +16,7 @@
 
 <script>
 import alertMixin from 'shared/mixins/alertMixin';
+import { CONTACTS_EVENTS } from '../../../helper/AnalyticsHelper/events';
 export default {
   mixins: [alertMixin],
   props: {
@@ -51,9 +53,7 @@ export default {
       return '';
     },
     deleteMessage() {
-      return `${this.$t(
-        'FILTER.CUSTOM_VIEWS.DELETE.MODAL.CONFIRM.MESSAGE'
-      )} ${this.activeCustomView && this.activeCustomView.name} ?`;
+      return ` ${this.activeCustomView && this.activeCustomView.name}?`;
     },
     deleteConfirmText() {
       return `${this.$t('FILTER.CUSTOM_VIEWS.DELETE.MODAL.CONFIRM.YES')}`;
@@ -83,6 +83,9 @@ export default {
             ? this.$t('FILTER.CUSTOM_VIEWS.DELETE.API_FOLDERS.SUCCESS_MESSAGE')
             : this.$t('FILTER.CUSTOM_VIEWS.DELETE.API_SEGMENTS.SUCCESS_MESSAGE')
         );
+        this.$track(CONTACTS_EVENTS.DELETE_FILTER, {
+          type: this.filterType === 0 ? 'folder' : 'segment',
+        });
       } catch (error) {
         const errorMessage =
           error?.response?.message || this.activeFilterType === 0
