@@ -21,28 +21,18 @@
         @change="onSelectConversation($event.target.checked)"
       />
     </label>
-    <thumbnail
-      v-if="bulkActionCheck"
-      :src="currentContact.thumbnail"
-      :badge="inboxBadge"
-      class="columns"
-      :username="currentContact.name"
-      :status="currentContact.availability_status"
-      size="40px"
-    />
+
     <div class="conversation--details columns">
-      <div class="conversation--metadata">
-        <inbox-name v-if="showInboxName" :inbox="inbox" />
-        <span
-          v-if="showAssignee && assignee.name"
-          class="label assignee-label text-truncate"
-        >
-          <fluent-icon icon="person" size="12" />
-          {{ assignee.name }}
-        </span>
-      </div>
       <h4 class="conversation--user">
-        {{ currentContact.name }}
+        <thumbnail
+          :src="currentContact.thumbnail"
+          :badge="inboxBadge"
+          class="columns"
+          :username="currentContact.name"
+          :status="currentContact.availability_status"
+          size="20px"
+        />
+        <span :style="{ marginLeft: '8px' }">{{ currentContact.name }}</span>
       </h4>
       <p v-if="lastMessageInChat" class="conversation--message">
         <fluent-icon
@@ -94,7 +84,26 @@
         </span>
         <span class="unread">{{ unreadCount > 9 ? '9+' : unreadCount }}</span>
       </div>
-      <card-labels :conversation-id="chat.id" />
+
+      <div class="conversation--metadata">
+        <div :style="{ display: 'flex', alignItems: 'center', width: '100%' }">
+          <fluent-icon
+            :style="{ margin: '0 var(--space-small)' }"
+            size="16"
+            class="message--attachment-icon"
+            :icon="statusIcon"
+          />
+          <span
+            v-if="showAssignee && assignee.name"
+            class="label assignee-label text-truncate"
+          >
+            <fluent-icon icon="person" size="12" />
+            {{ assignee.name }}
+          </span>
+          <inbox-name v-if="showInboxName" :inbox="inbox" />
+          <card-labels :conversation-id="chat.id" />
+        </div>
+      </div>
     </div>
     <woot-context-menu
       v-if="showContextMenu"
@@ -247,6 +256,16 @@ export default {
       return this.currentChat.id === this.chat.id;
     },
 
+    statusIcon() {
+      const statusIconMap = {
+        pending: 'circle-half-fill',
+        open: 'circle',
+        snoozed: 'shifts-activity',
+        resolved: 'checkmark-circle',
+      };
+      return statusIconMap[this.chat.status];
+    },
+
     unreadCount() {
       return this.chat.unread_count;
     },
@@ -323,7 +342,7 @@ export default {
       router.push({ path: frontendURL(path) });
     },
     onCardHover() {
-      this.hovered = !this.hideThumbnail;
+      // this.hovered = !this.hideThumbnail;
     },
     onCardLeave() {
       this.hovered = false;
@@ -381,9 +400,9 @@ export default {
     background: var(--color-background-light);
   }
 
-  &::v-deep .user-thumbnail-box {
-    margin-top: var(--space-normal);
-  }
+  // &::v-deep .user-thumbnail-box {
+  //   margin-top: var(--space-normal);
+  // }
 }
 
 .conversation-selected {
@@ -391,14 +410,14 @@ export default {
 }
 
 .has-inbox-name {
-  &::v-deep .user-thumbnail-box {
-    margin-top: var(--space-large);
-  }
+  // &::v-deep .user-thumbnail-box {
+  //   margin-top: var(--space-large);
+  // }
   .checkbox-wrapper {
     margin-top: var(--space-large);
   }
   .conversation--meta {
-    margin-top: var(--space-normal);
+    // margin-top: var(--space-normal);
   }
 }
 
@@ -409,6 +428,9 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     width: 60%;
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-micro);
   }
 }
 
@@ -419,6 +441,7 @@ export default {
 .conversation--metadata {
   display: flex;
   justify-content: space-between;
+  width: 100%;
 
   .label {
     background: none;

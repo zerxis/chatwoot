@@ -70,7 +70,6 @@ export default {
 
       Array.from(labels).forEach((label, index) => {
         labelOffset += label.offsetWidth + 8;
-
         if (labelOffset < labelContainer.clientWidth - 16) {
           this.labelPosition = index;
         } else {
@@ -88,7 +87,7 @@ export default {
   position: sticky;
   flex-shrink: 0;
   right: 0;
-  margin-right: var(--space-medium);
+  // margin-right: var(--space-medium);
 
   &.secondary:focus {
     color: var(--s-700);
@@ -97,7 +96,8 @@ export default {
 }
 
 .label-container {
-  margin: var(--space-micro) var(--space-small) 0;
+  // margin: var(--space-micro) var(--space-small) 0;
+  width: 100%;
 }
 
 .labels-wrap {
