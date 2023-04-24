@@ -80,6 +80,9 @@ gem 'administrate'
 # https://karolgalanciak.com/blog/2019/11/30/from-activerecord-callbacks-to-publish-slash-subscribe-pattern-and-event-driven-design/
 gem 'wisper', '2.0.0'
 
+## For help center search
+gem "algoliasearch-rails"
+
 ##--- gems for channels ---##
 # TODO: bump up gem to 2.0
 gem 'facebook-messenger'

@@ -85,6 +85,14 @@ GEM
       momentjs-rails (~> 2.8)
       sassc-rails (~> 2.1)
       selectize-rails (~> 0.6)
+    algolia (2.3.1)
+      faraday (>= 0.15, < 3)
+      faraday-net_http_persistent (>= 0.15, < 3)
+      multi_json (~> 1.0)
+      net-http-persistent
+    algoliasearch-rails (2.2.1)
+      algolia (< 3.0.0)
+      json (>= 1.5.1)
     annotate (3.2.0)
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
@@ -779,6 +787,7 @@ DEPENDENCIES
   activerecord-import
   acts-as-taggable-on
   administrate
+  algoliasearch-rails
   annotate
   attr_extras
   audited (~> 5.2)

@@ -28,6 +28,11 @@
 #
 class Article < ApplicationRecord
   include PgSearch::Model
+  include AlgoliaSearch
+
+  algoliasearch do
+    # Use all default configuration
+  end
 
   has_many :associated_articles,
            class_name: :Article,
