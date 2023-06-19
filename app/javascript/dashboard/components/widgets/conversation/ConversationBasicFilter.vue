@@ -1,21 +1,22 @@
 <template>
-  <div class="position-relative">
+  <div class="relative">
     <woot-button
       v-tooltip.right="$t('CHAT_LIST.SORT_TOOLTIP_LABEL')"
       variant="smooth"
       size="tiny"
       color-scheme="secondary"
-      class="selector-button"
       icon="sort-icon"
       @click="toggleDropdown"
     />
-    <div
+    <woot-dropdown-menu
       v-if="showActionsDropdown"
       v-on-clickaway="closeDropdown"
-      class="dropdown-pane dropdown-pane--open basic-filter"
+      class="absolute top-7 right-0 bg-white dark:bg-slate-800 dark:border-slate-700 shadow-lg text-base border border-slate-50 rounded-lg p-4 w-64 space-y-4"
     >
-      <div class="filter__item">
-        <span>{{ this.$t('CHAT_LIST.CHAT_SORT.STATUS') }}</span>
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-medium text-slate-800">
+          {{ this.$t('CHAT_LIST.CHAT_SORT.STATUS') }}
+        </span>
         <filter-item
           type="status"
           :selected-value="chatStatus"
@@ -24,8 +25,10 @@
           @onChangeFilter="onChangeFilter"
         />
       </div>
-      <div class="filter__item">
-        <span>{{ this.$t('CHAT_LIST.CHAT_SORT.ORDER_BY') }}</span>
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-medium text-slate-800">
+          {{ this.$t('CHAT_LIST.CHAT_SORT.ORDER_BY') }}
+        </span>
         <filter-item
           type="sort"
           :selected-value="chatSortFilter"
@@ -34,7 +37,7 @@
           @onChangeFilter="onChangeFilter"
         />
       </div>
-    </div>
+    </woot-dropdown-menu>
   </div>
 </template>
 
@@ -97,7 +100,7 @@ export default {
     font-weight: var(--font-weight-medium);
   }
 
-  .filter__item {
+  .flex items-center justify-between {
     align-items: center;
     display: flex;
     justify-content: space-between;
