@@ -1,33 +1,30 @@
 <template>
   <div>
-    <div v-if="showSeparator" class="separator">
-      OR
-    </div>
-    <a :href="getGoogleAuthUrl()">
-      <button
-        class="button expanded button__google_login"
-        :class="{
-          // Explicit checking to ensure no other value is used
-          large: buttonSize === 'large',
-          small: buttonSize === 'small',
-          tiny: buttonSize === 'tiny',
-        }"
-      >
-        <img
-          src="/assets/images/auth/google.svg"
-          alt="Google Logo"
-          class="icon"
-        />
-        <slot>{{ $t('LOGIN.OAUTH.GOOGLE_LOGIN') }}</slot>
-      </button>
+    <a
+      :href="getGoogleAuthUrl()"
+      class="inline-flex w-full justify-center rounded-md bg-white py-3 px-4 shadow-sm ring-1 ring-inset ring-slate-200 dark:ring-slate-500 hover:bg-slate-50 focus:outline-offset-0 dark:bg-slate-600 dark:hover:bg-slate-700"
+    >
+      <img src="/assets/images/auth/google.svg" alt="Google Logo" class="h-6" />
+      <span class="text-base font-medium ml-2 text-slate-600 dark:text-white">
+        {{ $t('LOGIN.OAUTH.GOOGLE_LOGIN') }}
+      </span>
     </a>
+    <simple-divider
+      v-if="showSeparator"
+      :label="$t('COMMON.OR')"
+      class="uppercase"
+    />
   </div>
 </template>
 
 <script>
+import SimpleDivider from '../../v3/SimpleDivider.vue';
 const validButtonSizes = ['small', 'tiny', 'large'];
 
 export default {
+  components: {
+    SimpleDivider,
+  },
   props: {
     showSeparator: {
       type: Boolean,
@@ -67,30 +64,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.separator {
-  display: flex;
-  align-items: center;
-  margin: var(--space-two) var(--space-zero);
-  gap: var(--space-one);
-  color: var(--s-300);
-  font-size: var(--font-size-small);
-  &::before,
-  &::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--s-100);
-  }
-}
-.button__google_login {
-  background: var(--white);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-one);
-  border: 1px solid var(--s-100);
-  color: var(--b-800);
-}
-</style>

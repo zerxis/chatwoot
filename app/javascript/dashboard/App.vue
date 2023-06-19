@@ -1,10 +1,5 @@
 <template>
-  <div
-    v-if="!authUIFlags.isFetching"
-    id="app"
-    class="app-wrapper app-root"
-    :class="{ 'app-rtl--wrapper': isRTLView }"
-  >
+  <div v-if="!authUIFlags.isFetching" class="h-full w-full antialiased">
     <update-banner :latest-chatwoot-version="latestChatwootVersion" />
     <template v-if="!accountUIFlags.isFetchingItem && currentAccountId">
       <payment-pending-banner />
@@ -123,7 +118,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import './assets/scss/app';
+@import './assets/scss/v3.scss';
 </style>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

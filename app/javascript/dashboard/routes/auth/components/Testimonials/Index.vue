@@ -50,8 +50,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~dashboard/assets/scss/woot';
-
 .top-left--img {
   left: 0;
   height: 16rem;

@@ -416,22 +416,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~dashboard/assets/scss/woot';
-
 .widget-builder-container {
   display: flex;
   flex-direction: row;
   padding: var(--space-one);
-  @include breakpoint(900px down) {
-    flex-direction: column;
-  }
+  // @include breakpoint(900px down) {
+  //   flex-direction: column;
+  // }
 }
 
 .settings-container {
   width: 40%;
-  @include breakpoint(900px down) {
-    width: 100%;
-  }
+  // @include breakpoint(900px down) {
+  //   width: 100%;
+  // }
 
   .settings-content {
     padding: var(--space-normal) var(--space-zero);
@@ -447,9 +445,9 @@ export default {
 .widget-container {
   width: 60%;
 
-  @include breakpoint(900px down) {
-    width: 100%;
-  }
+  // @include breakpoint(900px down) {
+  //   width: 100%;
+  // }
 
   .widget-preview {
     display: flex;
@@ -461,9 +459,9 @@ export default {
     padding: var(--space-one) var(--space-one) var(--space-one) var(--space-one);
     background: var(--s-50);
 
-    @include breakpoint(500px down) {
-      background: none;
-    }
+    // @include breakpoint(500px down) {
+    //   background: none;
+    // }
   }
   .widget-script {
     margin: 0 var(--space-two);

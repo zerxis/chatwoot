@@ -1,70 +1,80 @@
 <template>
-  <main class="medium-12 column login">
-    <section class="text-center medium-12 login__hero align-self-top">
+  <main
+    class="flex flex-col bg-woot-25 min-h-full w-full py-12 sm:px-6 lg:px-8 justify-center dark:bg-slate-900"
+  >
+    <section class="max-w-5xl mx-auto">
       <img
         :src="globalConfig.logo"
         :alt="globalConfig.installationName"
-        class="hero__logo"
+        class="mx-auto h-8 w-auto block dark:hidden"
       />
-      <h2 class="hero__title">
+      <img
+        :src="globalConfig.logoDark"
+        :alt="globalConfig.installationName"
+        class="mx-auto h-8 w-auto hidden dark:block"
+      />
+      <h2
+        class="mt-6 text-center text-3xl font-medium tracking-tight text-slate-900 dark:text-woot-50"
+      >
         {{
           useInstallationName($t('LOGIN.TITLE'), globalConfig.installationName)
         }}
       </h2>
+      <p
+        v-if="showSignupLink()"
+        class="mt-3 mb-12 text-center text-sm text-slate-600 dark:text-slate-400"
+      >
+        {{ $t('COMMON.OR') }}
+        <router-link to="auth/signup">
+          {{ $t('LOGIN.CREATE_NEW_ACCOUNT') }}
+        </router-link>
+      </p>
     </section>
-    <section class="row align-center">
-      <div v-if="!email" class="small-12 medium-4 column">
-        <div class="login-box column align-self-top">
-          <GoogleOAuthButton
-            v-if="showGoogleOAuth()"
-            button-size="large"
-            class="oauth-reverse"
+    <section
+      class="sm:mx-auto sm:w-full sm:max-w-lg bg-white dark:bg-slate-800 p-11 shadow sm:shadow-lg sm:rounded-lg"
+      :class="{ 'mb-8 mt-4': !showGoogleOAuth }"
+    >
+      <div v-if="!email">
+        <GoogleOAuthButton v-if="showGoogleOAuth" />
+        <form class="space-y-5" @submit.prevent="login">
+          <form-input
+            v-model.trim="credentials.email"
+            name="email_address"
+            type="text"
+            data-testid="email_input"
+            required
+            :label="$t('LOGIN.EMAIL.LABEL')"
+            :placeholder="$t('LOGIN.EMAIL.PLACEHOLDER')"
+            :has-error="$v.credentials.email.$error"
+            @input="$v.credentials.email.$touch"
           />
-          <form class="column log-in-form" @submit.prevent="login()">
-            <label :class="{ error: $v.credentials.email.$error }">
-              {{ $t('LOGIN.EMAIL.LABEL') }}
-              <input
-                v-model.trim="credentials.email"
-                type="text"
-                data-testid="email_input"
-                :placeholder="$t('LOGIN.EMAIL.PLACEHOLDER')"
-                @input="$v.credentials.email.$touch"
-              />
-            </label>
-            <label :class="{ error: $v.credentials.password.$error }">
-              {{ $t('LOGIN.PASSWORD.LABEL') }}
-              <input
-                v-model.trim="credentials.password"
-                type="password"
-                data-testid="password_input"
-                :placeholder="$t('LOGIN.PASSWORD.PLACEHOLDER')"
-                @input="$v.credentials.password.$touch"
-              />
-            </label>
-            <woot-submit-button
-              :disabled="
-                $v.credentials.email.$invalid ||
-                  $v.credentials.password.$invalid ||
-                  loginApi.showLoading
-              "
-              :button-text="$t('LOGIN.SUBMIT')"
-              :loading="loginApi.showLoading"
-              button-class="large expanded"
-            />
-          </form>
-        </div>
-        <div class="text-center column sigin__footer">
-          <p v-if="!globalConfig.disableUserProfileUpdate">
-            <router-link to="auth/reset/password">
-              {{ $t('LOGIN.FORGOT_PASSWORD') }}
-            </router-link>
-          </p>
-          <p v-if="showSignupLink()">
-            <router-link to="auth/signup">
-              {{ $t('LOGIN.CREATE_NEW_ACCOUNT') }}
-            </router-link>
-          </p>
-        </div>
+          <form-input
+            v-model.trim="credentials.password"
+            type="password"
+            name="password"
+            data-testid="password_input"
+            required
+            :label="$t('LOGIN.PASSWORD.LABEL')"
+            :placeholder="$t('LOGIN.PASSWORD.PLACEHOLDER')"
+            :has-error="$v.credentials.password.$error"
+            @input="$v.credentials.password.$touch"
+          >
+            <p v-if="!globalConfig.disableUserProfileUpdate">
+              <router-link to="auth/reset/password">
+                {{ $t('LOGIN.FORGOT_PASSWORD') }}
+              </router-link>
+            </p>
+          </form-input>
+          <woot-submit-button
+            :disabled="
+              $v.credentials.email.$invalid ||
+                $v.credentials.password.$invalid ||
+                loginApi.showLoading
+            "
+            :button-text="$t('LOGIN.SUBMIT')"
+            :loading="loginApi.showLoading"
+          />
+        </form>
       </div>
       <woot-spinner v-else size="" />
     </section>
@@ -78,6 +88,7 @@ import WootSubmitButton from 'components/buttons/FormSubmitButton';
 import { mapGetters } from 'vuex';
 import { parseBoolean } from '@chatwoot/utils';
 import GoogleOAuthButton from '../../components/ui/Auth/GoogleOAuthButton.vue';
+import FormInput from '../../components/v3/FormInput.vue';
 
 const ERROR_MESSAGES = {
   'no-account-found': 'LOGIN.OAUTH.NO_ACCOUNT_FOUND',
@@ -88,6 +99,7 @@ export default {
   components: {
     WootSubmitButton,
     GoogleOAuthButton,
+    FormInput,
   },
   mixins: [globalConfigMixin],
   props: {
@@ -125,9 +137,11 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({
-      globalConfig: 'globalConfig/get',
-    }),
+    ...mapGetters({ globalConfig: 'globalConfig/get' }),
+
+    showGoogleOAuth() {
+      return Boolean(window.chatwootConfig.googleOAuthClientId);
+    },
   },
   created() {
     if (this.ssoAuthToken) {
@@ -153,9 +167,6 @@ export default {
     },
     showSignupLink() {
       return parseBoolean(window.chatwootConfig.signupEnabled);
-    },
-    showGoogleOAuth() {
-      return Boolean(window.chatwootConfig.googleOAuthClientId);
     },
     login() {
       this.loginApi.showLoading = true;
@@ -199,10 +210,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.oauth-reverse {
-  display: flex;
-  flex-direction: column-reverse;
-}
-</style>

@@ -159,15 +159,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~dashboard/assets/scss/woot';
-
 .conv-header {
   flex: 0 0 var(--space-jumbo);
   flex-direction: row;
 
-  @include breakpoint(medium up) {
-    flex-direction: column;
-  }
+  // @include breakpoint(medium up) {
+  //   flex-direction: column;
+  // }
 }
 
 .conversation-header--details {
@@ -177,9 +175,9 @@ export default {
   align-items: center;
   width: 100%;
 
-  @include breakpoint(medium up) {
-    flex-direction: row;
-  }
+  // @include breakpoint(medium up) {
+  //   flex-direction: row;
+  // }
 }
 
 .option__desc {

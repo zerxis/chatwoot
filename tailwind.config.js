@@ -1,23 +1,15 @@
-const { colors } = require('tailwindcss/defaultTheme');
-
 module.exports = {
-  dark: 'class',
-  purge: [
+  content: [
+    './app/javascript/dashboard/**/*.vue',
     './app/javascript/widget/**/*.vue',
     './app/javascript/portal/**/*.vue',
     './app/javascript/shared/**/*.vue',
     './app/javascript/survey/**/*.vue',
     './app/views/**/*.html.erb',
   ],
-  future: {
-    removeDeprecatedGapUtilities: true,
-  },
-  experimental: {
-    darkModeVariant: true,
-  },
   theme: {
     colors: {
-      white: colors.white,
+      white: '#fff',
       woot: {
         25: '#F5FAFF',
         50: '#EBF5FF',
@@ -93,11 +85,6 @@ module.exports = {
         700: '#DE1E27',
         800: '#D11320',
         900: '#C30011',
-      },
-    },
-    extend: {
-      screens: {
-        dark: { raw: '(prefers-color-scheme: dark)' },
       },
     },
   },

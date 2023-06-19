@@ -1,50 +1,69 @@
 <template>
   <form
-    class="login-box medium-4 column align-self-middle"
-    @submit.prevent="submit()"
+    class="sm:mx-auto sm:w-full sm:max-w-lg bg-white dark:bg-slate-800 p-11 shadow sm:shadow-lg sm:rounded-lg"
+    @submit.prevent="submit"
   >
-    <h4>{{ $t('RESET_PASSWORD.TITLE') }}</h4>
-    <div class="column log-in-form">
-      <label :class="{ error: $v.credentials.email.$error }">
-        {{ $t('RESET_PASSWORD.EMAIL.LABEL') }}
-        <input
-          v-model.trim="credentials.email"
-          type="text"
-          :placeholder="$t('RESET_PASSWORD.EMAIL.PLACEHOLDER')"
-          @input="$v.credentials.email.$touch"
-        />
-        <span v-if="$v.credentials.email.$error" class="message">
-          {{ $t('RESET_PASSWORD.EMAIL.ERROR') }}
-        </span>
-      </label>
+    <h1
+      class="mb-1 text-left text-2xl font-medium tracking-tight text-slate-900 dark:text-white"
+    >
+      {{ $t('RESET_PASSWORD.TITLE') }}
+    </h1>
+    <p
+      class="text-sm text-slate-600 dark:text-woot-50 tracking-normal font-normal leading-6 mb-4"
+    >
+      {{
+        useInstallationName(
+          $t('RESET_PASSWORD.DESCRIPTION'),
+          globalConfig.installationName
+        )
+      }}
+    </p>
+    <div class="column log-in-form space-y-5">
+      <form-input
+        v-model.trim="credentials.email"
+        name="email_address"
+        :has-error="$v.credentials.email.$error"
+        :error-message="$t('RESET_PASSWORD.EMAIL.ERROR')"
+        :placeholder="$t('RESET_PASSWORD.EMAIL.PLACEHOLDER')"
+        @input="$v.credentials.email.$touch"
+      />
       <woot-submit-button
         :disabled="$v.credentials.email.$invalid || resetPassword.showLoading"
         :button-text="$t('RESET_PASSWORD.SUBMIT')"
         :loading="resetPassword.showLoading"
-        button-class="expanded"
       />
     </div>
+    <p class="text-sm text-slate-600 dark:text-woot-50 mt-4 -mb-1">
+      {{ $t('RESET_PASSWORD.GO_BACK_TO_LOGIN') }}
+      <router-link to="/auth/login">
+        {{ $t('COMMON.CLICK_HERE') }}.
+      </router-link>
+    </p>
   </form>
 </template>
 
 <script>
 import { required, minLength, email } from 'vuelidate/lib/validators';
 import Auth from '../../api/auth';
+import globalConfigMixin from 'shared/mixins/globalConfigMixin';
+import { mapGetters } from 'vuex';
+import FormInput from '../../components/v3/FormInput.vue';
 
 export default {
+  components: { FormInput },
+  mixins: [globalConfigMixin],
   data() {
     return {
-      // We need to initialize the component with any
-      // properties that will be used in it
-      credentials: {
-        email: '',
-      },
+      credentials: { email: '' },
       resetPassword: {
         message: '',
         showLoading: false,
       },
       error: '',
     };
+  },
+  computed: {
+    ...mapGetters({ globalConfig: 'globalConfig/get' }),
   },
   validations: {
     credentials: {

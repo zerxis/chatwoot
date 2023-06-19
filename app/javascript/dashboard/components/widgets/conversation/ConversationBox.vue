@@ -138,8 +138,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '~dashboard/assets/scss/woot';
-
 .conversation-details-wrap {
   display: flex;
   flex-direction: column;
@@ -175,25 +173,25 @@ export default {
   background: white;
   flex-basis: 100%;
 
-  @include breakpoint(medium up) {
-    flex-basis: 28rem;
-  }
+  // @include breakpoint(medium up) {
+  //   flex-basis: 28rem;
+  // }
 
-  @include breakpoint(large up) {
-    flex-basis: 30em;
-  }
+  // @include breakpoint(large up) {
+  //   flex-basis: 30em;
+  // }
 
-  @include breakpoint(xlarge up) {
-    flex-basis: 31em;
-  }
+  // @include breakpoint(xlarge up) {
+  //   flex-basis: 31em;
+  // }
 
-  @include breakpoint(xxlarge up) {
-    flex-basis: 33rem;
-  }
+  // @include breakpoint(xxlarge up) {
+  //   flex-basis: 33rem;
+  // }
 
-  @include breakpoint(xxxlarge up) {
-    flex-basis: 40rem;
-  }
+  // @include breakpoint(xxxlarge up) {
+  //   flex-basis: 40rem;
+  // }
 
   &::v-deep .contact--panel {
     width: 100%;
