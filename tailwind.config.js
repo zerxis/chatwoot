@@ -8,6 +8,12 @@ module.exports = {
     './app/views/**/*.html.erb',
   ],
   theme: {
+    extends: {
+      boxShadow: {
+        woot:
+          '0 0.8rem 1.6rem rgba(50,50,93,.08), 0 0.4rem 1.2rem rgba(0,0,0,.07)',
+      },
+    },
     colors: {
       white: '#fff',
       woot: {

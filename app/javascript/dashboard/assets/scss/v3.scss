@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @import 'shared/assets/fonts/inter';
+@import 'shared/assets/stylesheets/colors';
+@import 'shared/assets/stylesheets/spacing';
+@import 'shared/assets/stylesheets/font-size';
+@import 'shared/assets/stylesheets/border-radius';
 
 html,
 body {
@@ -16,4 +20,12 @@ body {
   input {
     outline: none;
   }
+}
+
+.mask {
+  @apply z-50 w-full top-0 left-0 fixed h-full items-center justify-center flex bg-woot-25;
+}
+
+.tooltip {
+  @apply bg-slate-900 text-white py-1 px-2 z-40 text-xs rounded-md ;
 }

@@ -48,7 +48,7 @@ export default {
 
   &.small {
     width: 22px;
-    height: 14px;
+    height: 15px;
 
     span {
       height: var(--space-one);
@@ -61,20 +61,19 @@ export default {
   }
 
   span {
-    --space-one-point-five: 1.5rem;
     background-color: var(--white);
     border-radius: 100%;
     box-shadow: var(--toggle-button-box-shadow);
     display: inline-block;
-    height: var(--space-one-point-five);
+    height: var(--space-one);
     transform: translate(0, 0);
     transition-duration: 200ms;
     transition-property: transform;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    width: var(--space-one-point-five);
+    width: var(--space-one);
 
     &.active {
-      transform: translate(var(--space-one-point-five), var(--space-zero));
+      transform: translate(var(--space-one), var(--space-zero));
     }
   }
 }

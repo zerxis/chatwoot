@@ -1,6 +1,8 @@
 <template>
-  <div class="settings-header">
-    <h1 class="page-title">
+  <div
+    class="bg-white border-b border-slate-50 h-14 justify-between items-center flex px-2 py-4 w-full"
+  >
+    <h1 class="text-2xl font-medium flex items-center space-x-3">
       <woot-sidemenu-icon v-if="showSidemenuIcon" />
       <back-button
         v-if="showBackButton"
@@ -14,10 +16,10 @@
     <router-link
       v-if="showNewButton && isAdmin"
       :to="buttonRoute"
-      class="button success button--fixed-top"
+      class="flex items-center  justify-center rounded-md bg-woot-500 py-3 px-3 text-base font-medium text-white shadow-sm hover:bg-woot-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-woot-500 cursor-pointer"
     >
       <fluent-icon icon="add-circle" />
-      <span class="button__content">
+      <span>
         {{ buttonText }}
       </span>
     </router-link>

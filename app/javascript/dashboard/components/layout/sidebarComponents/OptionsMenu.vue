@@ -3,11 +3,9 @@
     <div
       v-if="show"
       v-on-clickaway="onClickAway"
-      class="options-menu dropdown-pane"
-      :class="{ 'dropdown-pane--open': show }"
+      class="absolute left-3 bottom-12 bg-white shadow-lg text-base border border-slate-50 rounded-lg p-2 min-w-[240px]"
     >
       <availability-status />
-      <li class="divider" />
       <woot-dropdown-menu>
         <woot-dropdown-item v-if="showChangeAccountOption">
           <woot-button
@@ -149,12 +147,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-.options-menu.dropdown-pane {
-  left: var(--space-slab);
-  bottom: var(--space-larger);
-  min-width: var(--space-giga);
-  top: unset;
-  z-index: var(--z-index-low);
-}
-</style>

@@ -18,8 +18,8 @@
       </woot-button>
     </woot-dropdown-item>
     <woot-dropdown-divider />
-    <woot-dropdown-item class="auto-offline--toggle">
-      <div class="info-wrap">
+    <woot-dropdown-item class="text-xs flex items-center justify-between p-2">
+      <div class="flex items-center text-slate-700">
         <fluent-icon
           v-tooltip.right-start="$t('SIDEBAR.SET_AUTO_OFFLINE.INFO_TEXT')"
           icon="info"
@@ -27,14 +27,13 @@
           class="info-icon"
         />
 
-        <span class="auto-offline--text">
+        <div class="mx-1 font-medium">
           {{ $t('SIDEBAR.SET_AUTO_OFFLINE.TEXT') }}
-        </span>
+        </div>
       </div>
 
       <woot-switch
         size="small"
-        class="auto-offline--switch"
         :value="currentUserAutoOffline"
         @input="updateAutoOffline"
       />
@@ -185,7 +184,7 @@ export default {
   padding: var(--space-smaller);
   margin: 0;
 
-  .info-wrap {
+  .flex items-center {
     display: flex;
     align-items: center;
   }
@@ -196,13 +195,6 @@ export default {
 
   .auto-offline--switch {
     margin: -1px var(--space-micro) 0;
-  }
-
-  .auto-offline--text {
-    margin: 0 var(--space-smaller);
-    font-size: var(--font-size-mini);
-    font-weight: var(--font-weight-medium);
-    color: var(--s-700);
   }
 }
 </style>

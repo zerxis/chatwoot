@@ -1,6 +1,6 @@
 <template>
   <li
-    class="dropdown-menu__item"
+    class="mb-0.5"
     :class="{
       'is-disabled': disabled,
     }"

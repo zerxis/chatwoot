@@ -1,5 +1,5 @@
 <template>
-  <div class="row app-wrapper">
+  <div class="h-full w-full flex bg-woot-25">
     <sidebar
       :route="currentRoute"
       @toggle-account-modal="toggleAccountModal"

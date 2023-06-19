@@ -1,5 +1,5 @@
 <template>
-  <aside class="woot-sidebar">
+  <aside class="h-full flex">
     <primary-sidebar
       :logo-source="globalConfig.logoThumbnail"
       :installation-name="globalConfig.installationName"

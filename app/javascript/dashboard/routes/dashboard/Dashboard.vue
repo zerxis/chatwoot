@@ -1,5 +1,5 @@
 <template>
-  <div class="row app-wrapper">
+  <div class="h-full w-full flex bg-woot-25">
     <sidebar
       :route="currentRoute"
       :show-secondary-sidebar="isSidebarOpen"
@@ -9,7 +9,7 @@
       @close-key-shortcut-modal="closeKeyShortcutModal"
       @show-add-label-popup="showAddLabelPopup"
     />
-    <section class="app-content columns">
+    <section class="flex w-full flex-col">
       <router-view />
       <command-bar />
       <account-selector

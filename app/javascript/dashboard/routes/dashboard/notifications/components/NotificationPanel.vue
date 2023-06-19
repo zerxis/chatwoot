@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-mask">
+  <div class="mask">
     <div
       v-on-clickaway="closeNotificationPanel"
       class="notification-wrap flex-space-between"
