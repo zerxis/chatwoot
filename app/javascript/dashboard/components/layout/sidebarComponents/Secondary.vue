@@ -1,7 +1,10 @@
 <template>
-  <div v-if="hasSecondaryMenu" class="main-nav secondary-menu">
+  <div
+    v-if="hasSecondaryMenu"
+    class="h-full overflow-auto w-48 flex flex-col bg-white dark:bg-slate-900 border-r border-slate-50 text-sm px-2 pb-8"
+  >
     <account-context @toggle-accounts="toggleAccountModal" />
-    <transition-group name="menu-list" tag="ul" class="menu vertical">
+    <transition-group name="menu-list" tag="ul" class="pt-2">
       <secondary-nav-item
         v-for="menuItem in accessibleMenuItems"
         :key="menuItem.toState"
@@ -249,25 +252,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-.secondary-menu {
-  display: flex;
-  flex-direction: column;
-  background: var(--white);
-  border-right: 1px solid var(--s-50);
-  height: 100%;
-  width: 20rem;
-  flex-shrink: 0;
-  overflow-y: hidden;
-  position: unset;
-
-  &:hover {
-    overflow-y: hidden;
-  }
-
-  .menu {
-    padding: var(--space-small);
-    overflow-y: auto;
-  }
-}
-</style>

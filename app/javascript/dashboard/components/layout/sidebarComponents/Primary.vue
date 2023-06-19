@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-full w-16 bg-white dark:bg-slate-900 border-r border-slate-50 dark:border-slate-600 flex justify-between flex-col"
+    class="h-full w-16 bg-white dark:bg-slate-900 border-r border-slate-50  dark:border-slate-800 flex justify-between flex-col"
   >
     <div class="flex flex-col items-center">
       <logo
@@ -9,7 +9,6 @@
         :account-id="accountId"
         class="m-4 mb-10"
       />
-
       <primary-nav-item
         v-for="menuItem in menuItems"
         :key="menuItem.toState"

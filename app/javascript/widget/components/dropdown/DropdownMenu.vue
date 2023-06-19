@@ -23,7 +23,7 @@
     >
       <div
         v-if="isOpen"
-        class="menu-content absolute shadow-xl rounded-md border-solid border border-slate-100 mt-1 py-1 px-2 bg-white z-10"
+        class="absolute shadow-xl rounded-md border-solid border border-slate-100 mt-1 py-1 px-2 bg-white z-10"
         :class="menuPlacement === 'right' ? 'right-0' : 'left-0'"
       >
         <slot name="content" />
@@ -74,10 +74,3 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss">
-@import '~widget/assets/scss/variables.scss';
-
-.menu-content {
-  width: max-content;
-}
-</style>

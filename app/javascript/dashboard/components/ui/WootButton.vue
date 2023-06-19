@@ -76,9 +76,11 @@ export default {
     componentClassName() {
       const classes = {
         'secondary:clear:small':
-          'text-xs font-medium text-slate-700 dark:text-slate-100 w-full  py-2 px-2 flex items-center hover:bg-slate-50 rounded hover:text-body',
+          'text-xs font-medium text-slate-700 dark:text-slate-100  p-2 flex items-center hover:bg-slate-50 rounded hover:text-body',
+        'secondary:clear:tiny':
+          'text-xs font-medium text-slate-500 dark:text-slate-100 p-1 flex items-center hover:bg-slate-25 rounded hover:text-body',
         'primary:smooth:small':
-          'text-xs font-medium text-slate-700 bg-woot-50 w-full py-2 px-2 flex items-center hover:bg-slate-50 rounded hover:text-body',
+          'text-xs font-medium text-slate-700 bg-woot-50 p-2 flex items-center hover:bg-slate-50 rounded hover:text-body',
       };
       return classes[`${this.colorScheme}:${this.variant}:${this.size}`];
     },
