@@ -1,3 +1,4 @@
+const defaultTheme = require('tailwindcss/defaultTheme');
 module.exports = {
   content: [
     './app/javascript/dashboard/**/*.vue',
@@ -14,7 +15,12 @@ module.exports = {
           '0 0.8rem 1.6rem rgba(50,50,93,.08), 0 0.4rem 1.2rem rgba(0,0,0,.07)',
       },
     },
+    fontSize: {
+      xxs: '0.625rem',
+      ...defaultTheme.fontSize,
+    },
     colors: {
+      transparent: 'transparent',
       white: '#fff',
       woot: {
         25: '#F5FAFF',

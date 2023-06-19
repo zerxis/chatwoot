@@ -1,13 +1,16 @@
 <template>
   <li
     :class="{
-      'tabs-title': true,
-      'is-active': active,
+      'mx-2 text-slate-500 hover:text-slate-600 cursor-pointer first:ml-0 float-left flex items-center justify-center border-b-2 border-transparent': true,
+      'border-woot-500 text-woot-500': active,
     }"
   >
-    <a @click="onTabClick">
+    <a class="py-2" @click="onTabClick">
       {{ name }}
-      <span v-if="showBadge" class="badge">
+      <span
+        v-if="showBadge"
+        class="inline-block bg-slate-50 rounded-full text-xxs min-w-[1.25rem] text-center font-semibold px-1 py-0"
+      >
         {{ getItemCount }}
       </span>
     </a>

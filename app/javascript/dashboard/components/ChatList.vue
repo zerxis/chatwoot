@@ -100,7 +100,7 @@
       v-if="!hasAppliedFiltersOrActiveFolders"
       :items="assigneeTabItems"
       :active-tab="activeAssigneeTab"
-      class="tab--chat-type"
+      class="font-medium text-lg"
       @chatTabChange="updateAssigneeTab"
     />
 

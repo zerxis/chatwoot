@@ -35,7 +35,7 @@
     </div>
     <p class="text-sm text-slate-600 dark:text-woot-50 mt-4 -mb-1">
       {{ $t('RESET_PASSWORD.GO_BACK_TO_LOGIN') }}
-      <router-link to="/auth/login">
+      <router-link to="/auth/login" class="text-link">
         {{ $t('COMMON.CLICK_HERE') }}.
       </router-link>
     </p>

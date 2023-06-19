@@ -322,5 +322,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~dashboard/assets/scss/widgets/_reports';
+// @import '~dashboard/assets/scss/widgets/_reports';
 </style>

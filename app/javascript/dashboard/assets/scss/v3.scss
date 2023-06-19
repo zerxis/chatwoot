@@ -13,13 +13,13 @@ body {
   @apply h-full w-full;
   font-family: Inter;
 
-  a {
-    @apply text-woot-500 font-medium hover:text-woot-600;
-  }
-
   input {
     outline: none;
   }
+}
+
+.text-link {
+  @apply text-woot-500 font-medium hover:text-woot-600;
 }
 
 .mask {

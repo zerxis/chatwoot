@@ -25,7 +25,7 @@
         class="mt-3 mb-12 text-center text-sm text-slate-600 dark:text-slate-400"
       >
         {{ $t('COMMON.OR') }}
-        <router-link to="auth/signup">
+        <router-link to="auth/signup" class="text-link">
           {{ $t('LOGIN.CREATE_NEW_ACCOUNT') }}
         </router-link>
       </p>
@@ -60,7 +60,7 @@
             @input="$v.credentials.password.$touch"
           >
             <p v-if="!globalConfig.disableUserProfileUpdate">
-              <router-link to="auth/reset/password">
+              <router-link to="auth/reset/password" class="text-link">
                 {{ $t('LOGIN.FORGOT_PASSWORD') }}
               </router-link>
             </p>

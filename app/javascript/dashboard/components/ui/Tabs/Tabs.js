@@ -76,12 +76,18 @@ export default {
     return (
       <div
         class={{
-          'tabs--container--with-border': this.border,
-          'tabs--container': true,
+          'border-b border-slate-100': this.border,
+          'flex text-sm': true,
         }}
       >
         {leftButton}
-        <ul class={{ tabs: true, 'tabs--with-scroll': this.hasScroll }}>
+        <ul
+          class={{
+            flex: true,
+            // TODO: max-width: calc(100% - 64px)
+            'overflow-hidden px-0 py-2 max-w-full': this.hasScroll,
+          }}
+        >
           {Tabs}
         </ul>
         {rightButton}
