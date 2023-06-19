@@ -3,7 +3,7 @@
     <div
       v-if="show"
       v-on-clickaway="onClickAway"
-      class="absolute left-3 bottom-12 bg-white shadow-lg text-base border border-slate-50 rounded-lg p-2 min-w-[240px]"
+      class="absolute left-3 bottom-16 bg-white dark:bg-slate-800 dark:border-slate-700 shadow-lg text-base border border-slate-50 rounded-lg p-2 min-w-[260px]"
     >
       <availability-status />
       <woot-dropdown-menu>
@@ -48,12 +48,12 @@
           >
             <a
               :href="href"
-              class="button small clear secondary"
+              class="text-xs font-medium text-slate-700 dark:text-slate-100 w-full p-2 hover:bg-slate-50 rounded hover:text-body flex items-center"
               :class="{ 'is-active': isActive }"
               @click="e => handleProfileSettingClick(e, navigate)"
             >
-              <fluent-icon icon="person" size="14" class="icon icon--font" />
-              <span class="button__content">
+              <fluent-icon icon="person" size="14" class="min-w-[1rem]" />
+              <span class="pl-2">
                 {{ $t('SIDEBAR_ITEMS.PROFILE_SETTINGS') }}
               </span>
             </a>
@@ -62,7 +62,7 @@
         <woot-dropdown-item v-if="currentUser.type === 'SuperAdmin'">
           <a
             href="/super_admin"
-            class="button small clear secondary"
+            class="text-xs font-medium text-slate-700 dark:text-slate-100 w-full p-2 hover:bg-slate-50 rounded hover:text-body flex items-center"
             target="_blank"
             rel="noopener nofollow noreferrer"
             @click="$emit('close')"
@@ -70,9 +70,9 @@
             <fluent-icon
               icon="content-settings"
               size="14"
-              class="icon icon--font"
+              class="min-w-[1rem]"
             />
-            <span class="button__content">
+            <span class="pl-2">
               {{ $t('SIDEBAR_ITEMS.SUPER_ADMIN_CONSOLE') }}
             </span>
           </a>

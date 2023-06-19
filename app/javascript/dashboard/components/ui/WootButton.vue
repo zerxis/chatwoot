@@ -1,6 +1,6 @@
 <template>
   <button
-    class="button"
+    class="cursor-pointer"
     :type="type"
     :class="buttonClasses"
     :disabled="isDisabled || isLoading"
@@ -13,12 +13,12 @@
     />
     <emoji-or-icon
       v-else-if="icon || emoji"
-      class="icon"
+      class="min-w-[1rem]"
       :emoji="emoji"
       :icon="icon"
       :icon-size="iconSize"
     />
-    <span v-if="$slots.default" class="button__content">
+    <span v-if="$slots.default" :class="{ 'pl-2': icon || emoji }">
       <slot />
     </span>
   </button>
@@ -73,6 +73,16 @@ export default {
     },
   },
   computed: {
+    componentClassName() {
+      const classes = {
+        'secondary:clear:small':
+          'text-xs font-medium text-slate-700 dark:text-slate-100 w-full  py-2 px-2 flex items-center hover:bg-slate-50 rounded hover:text-body',
+        'primary:smooth:small':
+          'text-xs font-medium text-slate-700 bg-woot-50 w-full py-2 px-2 flex items-center hover:bg-slate-50 rounded hover:text-body',
+      };
+      return classes[`${this.colorScheme}:${this.variant}:${this.size}`];
+    },
+
     variantClasses() {
       if (this.variant.includes('link')) {
         return `clear ${this.variant}`;
@@ -95,6 +105,7 @@ export default {
         this.classNames,
         this.isDisabled ? 'disabled' : '',
         this.isExpanded ? 'expanded' : '',
+        this.componentClassName,
       ];
     },
     iconSize() {

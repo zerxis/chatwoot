@@ -1,5 +1,12 @@
 <template>
-  <div :class="`status-badge status-badge__${status}`" />
+  <div
+    class="inline-block w-2 h-2 ml-1 mr-0.5 rounded-3xl"
+    :class="{
+      'bg-green-400': status === 'online',
+      'bg-slate-500': status === 'offline',
+      'bg-yellow-500': status === 'busy',
+    }"
+  />
 </template>
 <script>
 export default {
@@ -8,22 +15,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-@import '~dashboard/assets/scss/variables';
-.status-badge {
-  width: var(--space-one);
-  height: var(--space-one);
-  margin-right: var(--space-micro);
-  display: inline-block;
-  border-radius: 50%;
-  &__online {
-    background: var(--g-400);
-  }
-  &__offline {
-    background: var(--s-500);
-  }
-  &__busy {
-    background: var(--y-500);
-  }
-}
-</style>

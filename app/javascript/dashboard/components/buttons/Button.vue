@@ -1,8 +1,7 @@
 <template>
-  <button :type="type" class="button nice" :class="variant" @click="onClick">
+  <button :type="type" :class="variant" @click="onClick">
     <fluent-icon
       v-if="!isLoading && icon"
-      class="icon"
       :class="buttonIconClass"
       :icon="icon"
     />
@@ -33,6 +32,15 @@ export default {
     variant: {
       type: String,
       default: 'primary',
+    },
+  },
+  computed: {
+    buttonClasses() {
+      const listOfClasses = {
+        clear:
+          'text-xs font-medium text-slate-700 w-full py-1 px-4 flex items-center',
+      };
+      return listOfClasses[this.variant] || '';
     },
   },
   methods: {

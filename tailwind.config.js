@@ -98,6 +98,7 @@ module.exports = {
         800: '#D11320',
         900: '#C30011',
       },
+      body: '#2f3b49',
     },
   },
   plugins: [

@@ -1,13 +1,10 @@
 <template>
-  <li class="dropdown-menu--divider" :tabindex="null" :aria-disabled="true" />
+  <li
+    class="my-1 border-b border-slate-50 dark:border-slate-700 list-none"
+    :tabindex="null"
+    :aria-disabled="true"
+  />
 </template>
 <script>
 export default {};
 </script>
-<style lang="scss" scoped>
-.dropdown-menu--divider {
-  list-style: none;
-  margin: var(--space-small) 0;
-  border-bottom: 1px solid var(--s-50);
-}
-</style>

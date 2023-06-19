@@ -4,30 +4,28 @@
     <woot-dropdown-item
       v-for="status in availabilityStatuses"
       :key="status.value"
-      class="status-items"
     >
       <woot-button
         size="small"
-        :color-scheme="status.disabled ? '' : 'secondary'"
+        :color-scheme="status.disabled ? 'primary' : 'secondary'"
         :variant="status.disabled ? 'smooth' : 'clear'"
-        class-names="status-change--dropdown-button"
         @click="changeAvailabilityStatus(status.value)"
       >
         <availability-status-badge :status="status.value" />
-        {{ status.label }}
+        <span class="pl-2">{{ status.label }}</span>
       </woot-button>
     </woot-dropdown-item>
     <woot-dropdown-divider />
     <woot-dropdown-item class="text-xs flex items-center justify-between p-2">
-      <div class="flex items-center text-slate-700">
+      <div class="flex items-center text-slate-700 dark:text-slate-100">
         <fluent-icon
           v-tooltip.right-start="$t('SIDEBAR.SET_AUTO_OFFLINE.INFO_TEXT')"
           icon="info"
           size="14"
-          class="info-icon"
+          class="min-w-[1rem]"
         />
 
-        <div class="mx-1 font-medium">
+        <div class="mr-1 ml-2 font-medium">
           {{ $t('SIDEBAR.SET_AUTO_OFFLINE.TEXT') }}
         </div>
       </div>
@@ -137,64 +135,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-@import '~dashboard/assets/scss/variables';
-
-.status {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-micro) var(--space-smaller);
-}
-
-.status-view {
-  display: flex;
-  align-items: baseline;
-
-  & &--title {
-    color: var(--b-600);
-    font-size: var(--font-size-small);
-    font-weight: var(--font-weight-medium);
-    margin-left: var(--space-small);
-
-    &:first-letter {
-      text-transform: capitalize;
-    }
-  }
-}
-
-.status-change {
-  .dropdown-pane {
-    top: -132px;
-    right: var(--space-normal);
-  }
-
-  .status-items {
-    display: flex;
-    align-items: baseline;
-  }
-}
-
-.auto-offline--toggle {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  padding: var(--space-smaller);
-  margin: 0;
-
-  .flex items-center {
-    display: flex;
-    align-items: center;
-  }
-
-  .info-icon {
-    margin-top: -1px;
-  }
-
-  .auto-offline--switch {
-    margin: -1px var(--space-micro) 0;
-  }
-}
-</style>

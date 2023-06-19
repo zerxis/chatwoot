@@ -1,7 +1,7 @@
 <template>
   <div class="mb-4">
-    <woot-button
-      class="text-slate-600 dark:text-woot-50 w-10 h-10 my-1 flex items-center justify-center rounded-lg hover:bg-woot-25 dark:hover:bg-slate-800 hover:text-woot-500"
+    <button
+      class="text-slate-600 dark:text-woot-50 w-10 h-10 my-1 flex items-center justify-center rounded-lg hover:bg-woot-25 dark:hover:bg-slate-800 hover:text-woot-500 relative"
       :class="{
         'bg-woot-50 dark:bg-slate-800 text-woot-500': isNotificationPanelActive,
       }"
@@ -10,11 +10,11 @@
       <fluent-icon icon="alert" />
       <span
         v-if="unreadCount"
-        class="text-black-900 bg-yellow-500 absolute -top-1 -right-1"
+        class="text-black-900 bg-yellow-300 absolute top-0.5 right-0.5 text-xxs min-w-[1rem] rounded-full"
       >
         {{ unreadCount }}
       </span>
-    </woot-button>
+    </button>
   </div>
 </template>
 <script>
