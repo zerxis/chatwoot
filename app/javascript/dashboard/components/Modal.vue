@@ -6,13 +6,17 @@
       transition="modal"
       @click="onBackDropClick"
     >
-      <div :class="modalContainerClassName" @click.stop>
+      <div
+        class="bg-white rounded-sm max-w-full overflow-auto relative w-[40rem] p-8 shadow-lg"
+        :class="modalContainerClassName"
+        @click.stop
+      >
         <woot-button
           v-if="showCloseButton"
           color-scheme="secondary"
           icon="dismiss"
           variant="clear"
-          class="modal--close"
+          class="absolute top-4 right-4 hover:bg-woot-25"
           @click="close"
         />
         <slot />
@@ -65,7 +69,7 @@ export default {
         'right-aligned': 'right-aligned',
       };
 
-      return `modal-mask skip-context-menu ${modalClassNameMap[
+      return `mask rounded-lg skip-context-menu ${modalClassNameMap[
         this.modalType
       ] || ''}`;
     },
@@ -89,27 +93,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-.modal-container--full-width {
-  align-items: center;
-  border-radius: 0;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  width: 100%;
-}
-
-.modal-mask.right-aligned {
-  justify-content: flex-end;
-
-  .modal-container {
-    border-radius: 0;
-    height: 100%;
-    width: 48rem;
-  }
-}
-.modal-big {
-  width: 60%;
-}
-</style>

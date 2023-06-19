@@ -9,7 +9,7 @@
       @close-key-shortcut-modal="closeKeyShortcutModal"
       @show-add-label-popup="showAddLabelPopup"
     />
-    <section class="flex w-full flex-col">
+    <section class="flex w-full flex-col overflow-auto">
       <router-view />
       <command-bar />
       <account-selector

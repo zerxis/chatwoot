@@ -1,10 +1,10 @@
 <template>
-  <div class="column page-top-bar">
+  <div class="flex flex-col mb-4">
     <img v-if="headerImage" :src="headerImage" alt="No image" />
-    <h2 class="page-sub-title">
+    <h2 class="font-medium text-lg">
       {{ headerTitle }}
     </h2>
-    <p v-if="headerContent" class="small-12 column wrap-content">
+    <p v-if="headerContent" class="text-slate-700">
       {{ headerContent }}
       <span v-if="headerContentValue" class="content-value">
         {{ headerContentValue }}

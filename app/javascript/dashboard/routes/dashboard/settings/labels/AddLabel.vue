@@ -4,24 +4,23 @@
       :header-title="$t('LABEL_MGMT.ADD.TITLE')"
       :header-content="$t('LABEL_MGMT.ADD.DESC')"
     />
-    <form class="row" @submit.prevent="addLabel">
-      <woot-input
+    <form class="space-y-4" @submit.prevent="addLabel">
+      <form-input
         v-model.trim="title"
-        :class="{ error: $v.title.$error }"
-        class="medium-12 columns label-name--input"
         :label="$t('LABEL_MGMT.FORM.NAME.LABEL')"
         :placeholder="$t('LABEL_MGMT.FORM.NAME.PLACEHOLDER')"
-        :error="getLabelTitleErrorMessage"
+        :error-message="getLabelTitleErrorMessage"
+        :has-error="$v.title.$error"
         data-testid="label-title"
         @input="$v.title.$touch"
       />
 
-      <woot-input
-        v-model.trim="description"
-        :class="{ error: $v.description.$error }"
-        class="medium-12 columns"
+      <form-input
+        v-model="description"
         :label="$t('LABEL_MGMT.FORM.DESCRIPTION.LABEL')"
         :placeholder="$t('LABEL_MGMT.FORM.DESCRIPTION.PLACEHOLDER')"
+        :error-message="getLabelTitleErrorMessage"
+        :has-error="$v.description.$error"
         data-testid="label-description"
         @input="$v.description.$touch"
       />
@@ -62,8 +61,10 @@ import validationMixin from './validationMixin';
 import { mapGetters } from 'vuex';
 import validations from './validations';
 import { getRandomColor } from 'dashboard/helper/labelColor';
+import FormInput from '../../../../components/v3/FormInput.vue';
 
 export default {
+  components: { FormInput },
   mixins: [alertMixin, validationMixin],
   data() {
     return {
