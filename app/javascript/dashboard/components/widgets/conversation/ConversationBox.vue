@@ -1,6 +1,6 @@
 <template>
   <div
-    class="conversation-details-wrap"
+    class="flex flex-col"
     :class="{ 'with-border-right': !isOnExpandedLayout }"
   >
     <conversation-header
@@ -138,18 +138,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.conversation-details-wrap {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  width: 100%;
-  background: var(--color-background-light);
-
-  &.with-border-right {
-    border-right: 1px solid var(--color-border);
-  }
-}
-
 .dashboard-app--tabs {
   background: var(--white);
   margin-top: -1px;

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="conversations-list-wrap"
+    class="w-96 border-r border-slate-50"
     :class="{
       hide: !showConversationList,
       'list--full-width': isOnExpandedLayout,
@@ -8,62 +8,64 @@
   >
     <slot />
     <div
-      class="chat-list__top"
+      class="flex justify-between px-4 items-center mb-2"
       :class="{ filter__applied: hasAppliedFiltersOrActiveFolders }"
     >
-      <div class="flex-center chat-list__title">
+      <div class="flex items-center max-w-[85%]">
         <h1
-          class="page-sub-title text-truncate margin-bottom-0"
+          class="text-xl font-medium m-0 max-w-full text-ellipsis "
           :title="pageTitle"
         >
           {{ pageTitle }}
         </h1>
         <span
           v-if="!hasAppliedFiltersOrActiveFolders"
-          class="conversation--status-pill"
+          class="bg-slate-50 rounded-sm text-slate-700 text-xxs my-0.5 mx-2 p-1 capitalize"
         >
           {{
             this.$t(`CHAT_LIST.CHAT_STATUS_FILTER_ITEMS.${activeStatus}.TEXT`)
           }}
         </span>
       </div>
-      <div class="filter--actions">
-        <div v-if="hasAppliedFilters && !hasActiveFolders">
-          <woot-button
-            v-tooltip.top-end="$t('FILTER.CUSTOM_VIEWS.ADD.SAVE_BUTTON')"
-            size="tiny"
-            variant="smooth"
-            color-scheme="secondary"
-            icon="save"
-            @click="onClickOpenAddFoldersModal"
-          />
-          <woot-button
-            v-tooltip.top-end="$t('FILTER.CLEAR_BUTTON_LABEL')"
-            size="tiny"
-            variant="smooth"
-            color-scheme="alert"
-            icon="dismiss-circle"
-            @click="resetAndFetchData"
-          />
-        </div>
-        <div v-if="hasActiveFolders">
-          <woot-button
-            v-tooltip.top-end="$t('FILTER.CUSTOM_VIEWS.EDIT.EDIT_BUTTON')"
-            size="tiny"
-            variant="smooth"
-            color-scheme="secondary"
-            icon="edit"
-            @click="onToggleAdvanceFiltersModal"
-          />
-          <woot-button
-            v-tooltip.top-end="$t('FILTER.CUSTOM_VIEWS.DELETE.DELETE_BUTTON')"
-            size="tiny"
-            variant="smooth"
-            color-scheme="alert"
-            icon="delete"
-            @click="onClickOpenDeleteFoldersModal"
-          />
-        </div>
+      <div class="flex items-center space-x-2">
+        <woot-button
+          v-if="hasAppliedFilters && !hasActiveFolders"
+          v-tooltip.top-end="$t('FILTER.CUSTOM_VIEWS.ADD.SAVE_BUTTON')"
+          size="tiny"
+          variant="smooth"
+          color-scheme="secondary"
+          icon="save"
+          @click="onClickOpenAddFoldersModal"
+        />
+        <woot-button
+          v-if="hasAppliedFilters && !hasActiveFolders"
+          v-tooltip.top-end="$t('FILTER.CLEAR_BUTTON_LABEL')"
+          size="tiny"
+          variant="smooth"
+          color-scheme="alert"
+          icon="dismiss-circle"
+          @click="resetAndFetchData"
+        />
+
+        <woot-button
+          v-if="hasActiveFolders"
+          v-tooltip.top-end="$t('FILTER.CUSTOM_VIEWS.EDIT.EDIT_BUTTON')"
+          size="tiny"
+          variant="smooth"
+          color-scheme="secondary"
+          icon="edit"
+          @click="onToggleAdvanceFiltersModal"
+        />
+        <woot-button
+          v-if="hasActiveFolders"
+          v-tooltip.top-end="$t('FILTER.CUSTOM_VIEWS.DELETE.DELETE_BUTTON')"
+          size="tiny"
+          variant="smooth"
+          color-scheme="alert"
+          icon="delete"
+          @click="onClickOpenDeleteFoldersModal"
+        />
+
         <woot-button
           v-else
           v-tooltip.right="$t('FILTER.TOOLTIP_LABEL')"
@@ -100,7 +102,7 @@
       v-if="!hasAppliedFiltersOrActiveFolders"
       :items="assigneeTabItems"
       :active-tab="activeAssigneeTab"
-      class="font-medium text-lg"
+      class="font-medium text-lg px-4"
       @chatTabChange="updateAssigneeTab"
     />
 
@@ -985,11 +987,6 @@ export default {
     font-size: var(--font-size-two);
   }
 }
-.filter--actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-smaller);
-}
 
 .filter__applied {
   padding-bottom: var(--space-slab) !important;
@@ -1004,17 +1001,6 @@ export default {
       padding: 0;
     }
   }
-}
-
-.conversation--status-pill {
-  background: var(--color-background);
-  border-radius: var(--border-radius-small);
-  color: var(--color-medium-gray);
-  font-size: var(--font-size-micro);
-  font-weight: var(--font-weight-medium);
-  margin: var(--space-micro) var(--space-small) 0;
-  padding: var(--space-smaller);
-  text-transform: capitalize;
 }
 
 .chat-list__title {

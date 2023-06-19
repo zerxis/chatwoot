@@ -14,6 +14,7 @@
     <emoji-or-icon
       v-else-if="icon || emoji"
       class="min-w-[1rem]"
+      :class="iconClass"
       :emoji="emoji"
       :icon="icon"
       :icon-size="iconSize"
@@ -44,6 +45,10 @@ export default {
       default: '',
     },
     icon: {
+      type: String,
+      default: '',
+    },
+    iconClass: {
       type: String,
       default: '',
     },
@@ -81,6 +86,8 @@ export default {
       const classes = {
         'secondary:clear:small':
           'text-xs font-medium text-slate-700 dark:text-slate-100  p-2 flex items-center hover:bg-slate-50 rounded hover:text-body',
+        'secondary:smooth:tiny':
+          'text-xs font-medium h-6 text-slate-700 dark:text-slate-100  p-1 flex items-center bg-slate-50 hover:bg-slate-50 rounded hover:text-body',
         'secondary:clear:tiny':
           'text-xs font-medium text-slate-500 dark:text-slate-100 p-1 flex items-center hover:bg-slate-25 rounded hover:text-body',
         'primary:smooth:small':

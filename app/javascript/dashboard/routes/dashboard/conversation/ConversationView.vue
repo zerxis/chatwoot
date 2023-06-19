@@ -1,5 +1,5 @@
 <template>
-  <section class="conversation-page bg-white">
+  <section class="flex bg-white h-full w-full">
     <chat-list
       :show-conversation-list="showConversationList"
       :conversation-inbox="inboxId"
@@ -190,10 +190,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-.conversation-page {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-</style>

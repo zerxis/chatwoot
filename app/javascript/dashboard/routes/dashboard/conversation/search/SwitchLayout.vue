@@ -4,9 +4,8 @@
     icon="arrow-right-import"
     size="tiny"
     variant="smooth"
+    :icon-class="isOnExpandedLayout ? 'rotate-180' : ''"
     color-scheme="secondary"
-    class="layout-switch__container"
-    :class="{ expanded: isOnExpandedLayout }"
     @click="toggle"
   />
 </template>
@@ -26,11 +25,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" soped>
-.layout-switch__container {
-  &.expanded .icon {
-    transform: rotate(180deg);
-  }
-}
-</style>
