@@ -7,6 +7,7 @@
     >
       <woot-button
         size="small"
+        block
         :color-scheme="status.disabled ? 'primary' : 'secondary'"
         :variant="status.disabled ? 'smooth' : 'clear'"
         @click="changeAvailabilityStatus(status.value)"

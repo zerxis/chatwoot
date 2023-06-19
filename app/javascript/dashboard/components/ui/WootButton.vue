@@ -71,6 +71,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    block: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     componentClassName() {
@@ -108,6 +112,7 @@ export default {
         this.isDisabled ? 'disabled' : '',
         this.isExpanded ? 'expanded' : '',
         this.componentClassName,
+        this.block ? 'w-full' : '',
       ];
     },
     iconSize() {

@@ -12,6 +12,7 @@
             variant="clear"
             color-scheme="secondary"
             size="small"
+            block
             icon="arrow-swap"
             @click="$emit('toggle-accounts')"
           >
@@ -23,6 +24,7 @@
             variant="clear"
             color-scheme="secondary"
             size="small"
+            block
             icon="chat-help"
             @click="$emit('show-support-chat-window')"
           >
@@ -35,6 +37,7 @@
             color-scheme="secondary"
             size="small"
             icon="keyboard"
+            block
             @click="handleKeyboardHelpClick"
           >
             {{ $t('SIDEBAR_ITEMS.KEYBOARD_SHORTCUTS') }}
@@ -82,6 +85,7 @@
             variant="clear"
             color-scheme="secondary"
             size="small"
+            block
             icon="power"
             @click="logout"
           >
