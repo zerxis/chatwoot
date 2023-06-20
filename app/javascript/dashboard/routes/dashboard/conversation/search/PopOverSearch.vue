@@ -6,9 +6,7 @@
       class="overflow-hidden flex items-center bg-slate-25 rounded-md px-2 py-1 h-6"
     >
       <fluent-icon icon="search" class="text-slate-600 mr-2" size="16" />
-      <p
-        class="text-ellipsis whitespace-nowrap overflow-hidden text-sm text-slate-600"
-      >
+      <p class="truncate text-sm text-slate-600">
         {{ $t('CONVERSATION.SEARCH_MESSAGES') }}
       </p>
     </router-link>

@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-container">
+  <div class="p-1 bg-white shadow-xl rounded-sm">
     <menu-item
       v-if="!hasUnreadMessages"
       :option="unreadOption"
@@ -243,12 +243,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.menu-container {
-  padding: var(--space-smaller);
-  background-color: var(--white);
-  box-shadow: var(--shadow-context-menu);
-  border-radius: var(--border-radius-normal);
-}
-</style>

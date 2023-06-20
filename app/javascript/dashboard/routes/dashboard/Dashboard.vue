@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full flex bg-woot-25">
+  <div class="h-full w-full flex bg-woot-25 text-body">
     <sidebar
       :route="currentRoute"
       :show-secondary-sidebar="isSidebarOpen"

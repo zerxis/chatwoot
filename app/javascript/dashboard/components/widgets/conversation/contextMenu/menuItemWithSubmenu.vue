@@ -1,11 +1,11 @@
 <template>
   <div
-    class="menu-with-submenu flex-between"
-    :class="{ disabled: !subMenuAvailable }"
+    class="w-100 p-1 rounded-sm relative bg-white justify-between flex items-center menu hover:bg-woot-75"
+    :class="{ 'opacity-50 cursor-not-allowed': !subMenuAvailable }"
   >
-    <div class="menu-left">
+    <div class="flex items-center">
       <fluent-icon :icon="option.icon" size="14" class="menu-icon" />
-      <p class="menu-label">{{ option.label }}</p>
+      <p class="mx-2 text-xs">{{ option.label }}</p>
     </div>
     <fluent-icon icon="chevron-right" size="12" />
     <div v-if="subMenuAvailable" class="submenu">
@@ -30,44 +30,25 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.menu-with-submenu {
-  width: 100%;
+.submenu {
   padding: var(--space-smaller);
-  border-radius: var(--border-radius-small);
-  position: relative;
-  min-width: calc(var(--space-mega) * 2);
   background-color: var(--white);
+  box-shadow: var(--shadow-context-menu);
+  border-radius: var(--border-radius-normal);
+  position: absolute;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  display: none;
+  min-height: min-content;
+  max-height: var(--space-giga);
+  overflow-y: auto;
+  // Need this because Firefox adds a horizontal scrollbar, if a text is truncated inside.
+  overflow-x: hidden;
+}
 
-  .menu-left {
-    display: flex;
-    align-items: center;
-
-    .menu-label {
-      margin: 0 var(--space-small);
-      font-size: var(--font-size-mini);
-    }
-  }
-
-  .submenu {
-    padding: var(--space-smaller);
-    background-color: var(--white);
-    box-shadow: var(--shadow-context-menu);
-    border-radius: var(--border-radius-normal);
-    position: absolute;
-    position: absolute;
-    left: 100%;
-    top: 0;
-    display: none;
-    min-height: min-content;
-    max-height: var(--space-giga);
-    overflow-y: auto;
-    // Need this because Firefox adds a horizontal scrollbar, if a text is truncated inside.
-    overflow-x: hidden;
-  }
-
+.menu {
   &:hover {
-    background-color: var(--w-75);
-
     .submenu {
       display: block;
     }
@@ -81,11 +62,6 @@ export default {
       width: 50%;
       clip-path: polygon(100% 0, 0% 0%, 100% 100%);
     }
-  }
-
-  &.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
   }
 }
 </style>

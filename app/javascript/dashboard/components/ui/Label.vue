@@ -71,10 +71,10 @@ export default {
       if (this.variant === 'smooth') return '';
       return this.color || getContrastingTextColor(this.bgColor);
     },
+
     labelClass() {
-      return `label ${this.colorScheme} ${this.variant} ${
-        this.small ? 'small' : ''
-      }`;
+      return `label inline-flex items-center font-medium space-x-1 mr-1 mb-1 p-1 bg-slate-50 h-5 text-xs rounded-sm
+      ${this.colorScheme} ${this.variant} ${this.small ? 'small' : ''}`;
     },
     labelStyle() {
       if (this.bgColor) {
@@ -105,20 +105,7 @@ export default {
 @import '~dashboard/assets/scss/variables';
 
 .label {
-  display: inline-flex;
-  align-items: center;
-  font-weight: var(--font-weight-medium);
-  gap: var(--space-smaller);
-  margin-right: var(--space-smaller);
-  margin-bottom: var(--space-smaller);
-  padding: var(--space-smaller);
-  background: var(--s-50);
-  color: var(--s-800);
-  border: 1px solid var(--s-75);
-  height: var(--space-medium);
-
   &.small {
-    font-size: var(--font-size-mini);
     padding: var(--space-micro) var(--space-smaller);
     line-height: 1.2;
     height: var(--space-two);

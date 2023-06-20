@@ -1,10 +1,9 @@
 <template>
-  <div
-    v-show="activeLabels.length"
-    ref="labelContainer"
-    class="label-container"
-  >
-    <div class="labels-wrap" :class="{ expand: showAllLabels }">
+  <div v-show="activeLabels.length" ref="labelContainer" class="my-1 w-full">
+    <div
+      class="flex items-center min-w-0 flex-flow-row-wrap"
+      :class="{ expand: showAllLabels }"
+    >
       <woot-label
         v-for="(label, index) in activeLabels"
         :key="label.id"
@@ -13,7 +12,9 @@
         :color="label.color"
         variant="smooth"
         small
-        :class="{ hidden: !showAllLabels && index > labelPosition }"
+        :class="{
+          'invisible absolute': !showAllLabels && index > labelPosition,
+        }"
       />
       <woot-button
         v-if="showExpandLabelButton"
@@ -22,7 +23,7 @@
             ? $t('CONVERSATION.CARD.HIDE_LABELS')
             : $t('CONVERSATION.CARD.SHOW_LABELS')
         "
-        class="show-more--button"
+        class="h-5 shrink-0 sticky right-0 mr-2"
         color-scheme="secondary"
         variant="hollow"
         :icon="showAllLabels ? 'chevron-left' : 'chevron-right'"
@@ -71,7 +72,7 @@ export default {
       Array.from(labels).forEach((label, index) => {
         labelOffset += label.offsetWidth + 8;
 
-        if (labelOffset < labelContainer.clientWidth - 16) {
+        if (labelOffset < labelContainer.clientWidth) {
           this.labelPosition = index;
         } else {
           this.showExpandLabelButton = true;
@@ -83,23 +84,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.show-more--button {
-  height: var(--space-two);
-  position: sticky;
-  flex-shrink: 0;
-  right: 0;
-  margin-right: var(--space-medium);
-
-  &.secondary:focus {
-    color: var(--s-700);
-    border-color: var(--s-300);
-  }
-}
-
-.label-container {
-  margin: var(--space-micro) var(--space-small) 0;
-}
-
 .labels-wrap {
   display: flex;
   align-items: center;
@@ -127,10 +111,5 @@ export default {
   .label {
     margin-bottom: 0;
   }
-}
-
-.hidden {
-  visibility: hidden;
-  position: absolute;
 }
 </style>

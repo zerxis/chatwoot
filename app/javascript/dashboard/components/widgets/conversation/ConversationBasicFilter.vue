@@ -11,7 +11,7 @@
     <woot-dropdown-menu
       v-if="showActionsDropdown"
       v-on-clickaway="closeDropdown"
-      class="absolute top-7 right-0 bg-white dark:bg-slate-800 dark:border-slate-700 shadow-lg text-base border border-slate-50 rounded-lg p-4 w-64 space-y-4"
+      class="absolute top-7 right-0 z-50 bg-white dark:bg-slate-800 dark:border-slate-700 shadow-lg text-base border border-slate-50 rounded-lg p-4 w-64 space-y-4"
     >
       <div class="flex items-center justify-between">
         <span class="text-xs font-medium text-slate-800">

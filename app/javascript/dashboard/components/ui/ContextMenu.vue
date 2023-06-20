@@ -1,6 +1,6 @@
 <template>
   <div
-    class="context-menu-container"
+    class="cursor-pointer outline-none fixed z-50"
     :style="style"
     tabindex="0"
     @blur="$emit('close')"
@@ -40,11 +40,3 @@ export default {
   },
 };
 </script>
-<style>
-.context-menu-container {
-  position: fixed;
-  z-index: var(--z-index-very-high);
-  outline: none;
-  cursor: pointer;
-}
-</style>

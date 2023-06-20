@@ -1,5 +1,5 @@
 <template>
-  <div class="conv-header">
+  <div class="flex">
     <div class="conversation-header--details">
       <div class="user">
         <back-button v-if="showBackButton" :back-url="backButtonUrl" />
@@ -159,7 +159,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.conv-header {
+.flex {
   flex: 0 0 var(--space-jumbo);
   flex-direction: row;
 

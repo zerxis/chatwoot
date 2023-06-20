@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-96 border-r border-slate-50"
+    class="w-96 border-r border-slate-50 flex flex-col"
     :class="{
       hide: !showConversationList,
       'list--full-width': isOnExpandedLayout,
@@ -13,7 +13,7 @@
     >
       <div class="flex items-center max-w-[85%]">
         <h1
-          class="text-xl font-medium m-0 max-w-full text-ellipsis "
+          class="text-xl font-medium m-0 max-w-full truncate"
           :title="pageTitle"
         >
           {{ pageTitle }}
@@ -125,7 +125,7 @@
     />
     <div
       ref="activeConversation"
-      class="conversations-list"
+      class="conversations-list overflow-auto flex-1"
       :class="{ 'is-context-menu-open': isContextMenuOpen }"
     >
       <conversation-card
@@ -622,10 +622,10 @@ export default {
     },
     getKeyboardListenerParams() {
       const allConversations = this.$refs.activeConversation.querySelectorAll(
-        'div.conversations-list div.conversation'
+        'div.conversations-list overflow-auto flex-1 div.conversation'
       );
       const activeConversation = this.$refs.activeConversation.querySelector(
-        'div.conversations-list div.conversation.active'
+        'div.conversations-list overflow-auto flex-1 div.conversation.active'
       );
       const activeConversationIndex = [...allConversations].indexOf(
         activeConversation
@@ -963,14 +963,14 @@ export default {
   margin-bottom: var(--space-normal);
 }
 
-.conversations-list {
+.conversations-list overflow-auto flex-1 {
   // Prevent the list from scrolling if the submenu is opened
   &.is-context-menu-open {
     overflow: hidden !important;
   }
 }
 
-.conversations-list-wrap {
+.conversations-list overflow-auto flex-1-wrap {
   flex-shrink: 0;
   flex-basis: clamp(32rem, 4vw + 34rem, 44rem);
   overflow: hidden;

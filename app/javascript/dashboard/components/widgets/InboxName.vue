@@ -1,6 +1,8 @@
 <template>
-  <div class="inbox--name">
-    <fluent-icon class="inbox--icon" :icon="computedInboxClass" size="12" />
+  <div
+    class="inline-flex items-center py-0.5 leading-3 font-medium text-xs text-slate-600"
+  >
+    <fluent-icon class="mr-1" :icon="computedInboxClass" size="10" />
     {{ inbox.name }}
   </div>
 </template>
@@ -23,20 +25,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.inbox--name {
-  align-items: center;
-  display: inline-flex;
-  padding: var(--space-micro) 0;
-  line-height: var(--space-slab);
-  font-weight: var(--font-weight-medium);
-  background: none;
-  color: var(--s-600);
-  font-size: var(--font-size-mini);
-  margin: 0 var(--space-one);
-}
-
-.inbox--icon {
-  margin-right: var(--space-micro);
-}
-</style>
