@@ -1,7 +1,7 @@
 <template>
   <select
     v-model="activeValue"
-    class="block w-32 rounded-md border-0 p-2  text-slate-700 ring-1 ring-inset ring-slate-100 focus:ring-2 focus:ring-woot-600 text-xs"
+    class="block w-32 rounded-md border-0 px-2 py-1 text-slate-700 ring-1 ring-inset ring-slate-100 focus:ring-2 focus:ring-woot-600 text-xs"
     @change="onFilterChange"
   >
     <option v-for="(value, status) in items" :key="status" :value="status">

@@ -18,9 +18,13 @@
         :required="required"
         :placeholder="placeholder"
         :value="value"
-        class="block w-full rounded-md border-0 px-3 py-2 shadow-sm ring-1 ring-inset dark:bg-slate-600 dark:ring-slate-500 ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-woot-500 sm:text-sm sm:leading-6 outline-none"
-        :class="{ 'focus:ring-red-600 ring-red-600': hasError }"
+        :class="{
+          'focus:ring-red-600 ring-red-600': hasError,
+          'dark:bg-slate-600 dark:ring-slate-500 ring-slate-200': !hasError,
+        }"
+        class="block w-full rounded-md border-0 px-3 py-2 shadow-sm ring-1 ring-inset  placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-woot-500 sm:text-sm sm:leading-6 outline-none"
         @input="onInput"
+        @blur="$emit('blur')"
       />
       <span v-if="errorMessage && hasError" class="text-sm text-red-400">
         {{ errorMessage }}

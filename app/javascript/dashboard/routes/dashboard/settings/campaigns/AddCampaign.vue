@@ -4,18 +4,18 @@
       :header-title="$t('CAMPAIGN.ADD.TITLE')"
       :header-content="$t('CAMPAIGN.ADD.DESC')"
     />
-    <form class="row" @submit.prevent="addCampaign">
-      <div class="medium-12 columns">
-        <woot-input
-          v-model="title"
-          :label="$t('CAMPAIGN.ADD.FORM.TITLE.LABEL')"
-          type="text"
-          :class="{ error: $v.title.$error }"
-          :error="$v.title.$error ? $t('CAMPAIGN.ADD.FORM.TITLE.ERROR') : ''"
-          :placeholder="$t('CAMPAIGN.ADD.FORM.TITLE.PLACEHOLDER')"
-          @blur="$v.title.$touch"
-        />
+    <form class="mt-2" @submit.prevent="addCampaign">
+      <form-input
+        v-model="title"
+        name="title"
+        :label="$t('CAMPAIGN.ADD.FORM.TITLE.LABEL')"
+        :has-error="$v.title.$error"
+        :error-message="$t('CAMPAIGN.ADD.FORM.TITLE.ERROR')"
+        :placeholder="$t('CAMPAIGN.ADD.FORM.TITLE.PLACEHOLDER')"
+        @blur="$v.title.$touch"
+      />
 
+      <div class="medium-12 columns">
         <label v-if="isOngoingType" class="editor-wrap">
           {{ $t('CAMPAIGN.ADD.FORM.MESSAGE.LABEL') }}
           <woot-message-editor
@@ -179,11 +179,13 @@ import campaignMixin from 'shared/mixins/campaignMixin';
 import WootDateTimePicker from 'dashboard/components/ui/DateTimePicker.vue';
 import { URLPattern } from 'urlpattern-polyfill';
 import { CAMPAIGNS_EVENTS } from '../../../../helper/AnalyticsHelper/events';
+import FormInput from '../../../../components/v3/FormInput.vue';
 
 export default {
   components: {
     WootDateTimePicker,
     WootMessageEditor,
+    FormInput,
   },
 
   mixins: [alertMixin, campaignMixin],

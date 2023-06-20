@@ -23,7 +23,7 @@
         :show-badge="false"
       />
     </woot-tabs>
-    <div v-show="!activeIndex" class="messages-and-sidebar">
+    <div v-show="!activeIndex" class="flex">
       <messages-view
         v-if="currentChat.id"
         :inbox-id="inboxId"

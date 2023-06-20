@@ -7,7 +7,7 @@
       @click="onBackDropClick"
     >
       <div
-        class="bg-white rounded-sm max-w-full overflow-auto relative w-[40rem] p-8 shadow-lg"
+        class="bg-white rounded-lg max-w-full overflow-auto relative w-[40rem] p-8 shadow-lg"
         :class="modalContainerClassName"
         @click.stop
       >

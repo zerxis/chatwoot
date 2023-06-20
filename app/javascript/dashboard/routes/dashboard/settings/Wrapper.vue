@@ -1,5 +1,5 @@
 <template>
-  <div class="view-box columns bg-light">
+  <div class="flex flex-col h-100 overflow-auto">
     <settings-header
       button-route="new"
       :icon="icon"

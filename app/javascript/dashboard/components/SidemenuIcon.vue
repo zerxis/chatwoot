@@ -4,7 +4,7 @@
     variant="clear"
     color-scheme="secondary"
     icon="list"
-    class="toggle-sidebar"
+    class="-ml-2"
     @click="onMenuItemClick"
   />
 </template>
@@ -20,8 +20,3 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss">
-.toggle-sidebar {
-  margin-left: var(--space-minus-small);
-}
-</style>
