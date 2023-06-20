@@ -38,11 +38,11 @@ export default {
     },
     variant: {
       type: String,
-      default: '',
+      default: 'normal',
     },
     size: {
       type: String,
-      default: '',
+      default: 'normal',
     },
     icon: {
       type: String,
@@ -92,6 +92,10 @@ export default {
           'text-xs font-medium text-slate-500 dark:text-slate-100 p-1 flex items-center hover:bg-slate-25 rounded hover:text-body',
         'primary:smooth:small':
           'text-xs font-medium text-slate-700 bg-woot-50 p-2 flex items-center hover:bg-slate-50 rounded hover:text-body',
+        'primary:clear:normal':
+          'text-sm font-medium text-woot-500 hover:bg-woot-50 p-2 flex justify-center items-center rounded',
+        'success:normal:normal':
+          'text-sm font-medium text-white bg-green-400 hover:bg-green-300 px-4 py-2 flex justify-center items-center rounded h-10',
       };
       return classes[`${this.colorScheme}:${this.variant}:${this.size}`];
     },
@@ -119,7 +123,7 @@ export default {
         this.isDisabled ? 'disabled' : '',
         this.isExpanded ? 'expanded' : '',
         this.componentClassName,
-        this.block ? 'w-full' : '',
+        this.block ? 'w-full text-center' : '',
       ];
     },
     iconSize() {

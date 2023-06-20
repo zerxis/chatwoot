@@ -1,9 +1,10 @@
 <template>
-  <div class="flex-container actions--container">
+  <div class="flex items-center grow justify-end space-x-3">
     <woot-button
       v-if="!currentChat.muted"
       v-tooltip="$t('CONTACT_PANEL.MUTE_CONTACT')"
       variant="clear"
+      size="small"
       color-scheme="secondary"
       icon="speaker-mute"
       @click="mute"
@@ -12,6 +13,7 @@
       v-else
       v-tooltip.left="$t('CONTACT_PANEL.UNMUTE_CONTACT')"
       variant="clear"
+      size="small"
       color-scheme="secondary"
       icon="speaker-1"
       @click="unmute"
@@ -19,6 +21,7 @@
     <woot-button
       v-tooltip="$t('CONTACT_PANEL.SEND_TRANSCRIPT')"
       variant="clear"
+      size="small"
       color-scheme="secondary"
       icon="share"
       @click="toggleEmailActionsModal"

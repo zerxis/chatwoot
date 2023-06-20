@@ -1,12 +1,11 @@
 <template>
-  <div class="resolve-actions">
-    <div class="button-group">
+  <div class="flex items-center relative">
+    <div class="flex items-center">
       <woot-button
         v-if="isOpen"
-        class-names="resolve"
         color-scheme="success"
+        :class="{ 'rounded-r-none px-1': showAdditionalActions }"
         icon="checkmark"
-        emoji="✅"
         :is-loading="isLoading"
         @click="onCmdResolveConversation"
       >
@@ -17,7 +16,6 @@
         class-names="resolve"
         color-scheme="warning"
         icon="arrow-redo"
-        emoji="👀"
         :is-loading="isLoading"
         @click="onCmdOpenConversation"
       >
@@ -37,40 +35,41 @@
         v-if="showAdditionalActions"
         ref="arrowDownButton"
         :color-scheme="buttonClass"
+        class="rounded-l-none px-1"
         :disabled="isLoading"
         icon="chevron-down"
-        emoji="🔽"
         @click="openDropdown"
       />
     </div>
-    <div
+    <woot-dropdown-menu
       v-if="showActionsDropdown"
       v-on-clickaway="closeDropdown"
-      class="dropdown-pane dropdown-pane--open"
+      class="absolute top-10 right-0 z-50 bg-white dark:bg-slate-800 dark:border-slate-700 shadow-lg text-base border border-slate-50 rounded-lg p-2 w-36 space-y-4"
     >
-      <woot-dropdown-menu>
-        <woot-dropdown-item v-if="!isPending">
-          <woot-button
-            variant="clear"
-            color-scheme="secondary"
-            size="small"
-            icon="book-clock"
-            @click="() => toggleStatus(STATUS_TYPE.PENDING)"
-          >
-            {{ this.$t('CONVERSATION.RESOLVE_DROPDOWN.MARK_PENDING') }}
-          </woot-button>
-          <woot-button
-            variant="clear"
-            color-scheme="secondary"
-            size="small"
-            icon="snooze"
-            @click="() => openSnoozeModal()"
-          >
-            {{ this.$t('CONVERSATION.RESOLVE_DROPDOWN.SNOOZE_UNTIL') }}
-          </woot-button>
-        </woot-dropdown-item>
-      </woot-dropdown-menu>
-    </div>
+      <woot-dropdown-item v-if="!isPending">
+        <woot-button
+          variant="clear"
+          color-scheme="secondary"
+          size="small"
+          block
+          icon="book-clock"
+          @click="() => toggleStatus(STATUS_TYPE.PENDING)"
+        >
+          {{ this.$t('CONVERSATION.RESOLVE_DROPDOWN.MARK_PENDING') }}
+        </woot-button>
+        <woot-button
+          variant="clear"
+          color-scheme="secondary"
+          size="small"
+          block
+          icon="snooze"
+          @click="() => openSnoozeModal()"
+        >
+          {{ this.$t('CONVERSATION.RESOLVE_DROPDOWN.SNOOZE_UNTIL') }}
+        </woot-button>
+      </woot-dropdown-item>
+    </woot-dropdown-menu>
+
     <woot-modal
       :show.sync="showCustomSnoozeModal"
       :on-close="hideCustomSnoozeModal"

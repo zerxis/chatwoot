@@ -1,55 +1,46 @@
 <template>
-  <div class="flex">
-    <div class="conversation-header--details">
-      <div class="user">
-        <back-button v-if="showBackButton" :back-url="backButtonUrl" />
-        <Thumbnail
-          :src="currentContact.thumbnail"
-          :badge="inboxBadge"
-          :username="currentContact.name"
-          :status="currentContact.availability_status"
-        />
-        <div class="user--profile__meta">
-          <woot-button
-            variant="link"
-            color-scheme="secondary"
-            class="text-truncate"
-            @click.prevent="$emit('contact-panel-toggle')"
-          >
-            <h3 class="sub-block-title user--name text-truncate">
-              <span>{{ currentContact.name }}</span>
-              <fluent-icon
-                v-if="!isHMACVerified"
-                v-tooltip="$t('CONVERSATION.UNVERIFIED_SESSION')"
-                size="14"
-                class="hmac-warning__icon"
-                icon="warning"
-              />
-            </h3>
-          </woot-button>
-          <div class="conversation--header--actions text-truncate">
-            <inbox-name v-if="hasMultipleInboxes" :inbox="inbox" />
-            <span v-if="isSnoozed" class="snoozed--display-text">
-              {{ snoozedDisplayText }}
-            </span>
-            <woot-button
-              class="user--profile__button"
-              size="small"
-              variant="link"
-              @click="$emit('contact-panel-toggle')"
-            >
-              {{ contactPanelToggleText }}
-            </woot-button>
-          </div>
-        </div>
-      </div>
-      <div
-        class="header-actions-wrap"
-        :class="{ 'has-open-sidebar': isContactPanelOpen }"
+  <div class="flex p-3 border-b border-slate-50">
+    <back-button v-if="showBackButton" :back-url="backButtonUrl" />
+    <thumbnail
+      :src="currentContact.thumbnail"
+      :badge="inboxBadge"
+      :username="currentContact.name"
+      :status="currentContact.availability_status"
+    />
+    <div class="flex flex-col min-w-[240px] ml-3 shrink-0">
+      <woot-button
+        variant="link"
+        color-scheme="secondary"
+        class="text-left"
+        @click.prevent="$emit('contact-panel-toggle')"
       >
-        <more-actions :conversation-id="currentChat.id" />
+        <h3 class="text-base font-medium truncate flex items-center">
+          <span>{{ currentContact.name }}</span>
+          <fluent-icon
+            v-if="!isHMACVerified"
+            v-tooltip="$t('CONVERSATION.UNVERIFIED_SESSION')"
+            size="14"
+            class="ml-2 text-yellow-600"
+            icon="warning"
+          />
+        </h3>
+      </woot-button>
+      <div class="flex">
+        <inbox-name v-if="hasMultipleInboxes" :inbox="inbox" />
+        <span v-if="isSnoozed" class="snoozed--display-text">
+          {{ snoozedDisplayText }}
+        </span>
+        <woot-button
+          class="text-xs text-link ml-2"
+          size="small"
+          variant="link"
+          @click="$emit('contact-panel-toggle')"
+        >
+          {{ contactPanelToggleText }}
+        </woot-button>
       </div>
     </div>
+    <more-actions :conversation-id="currentChat.id" />
   </div>
 </template>
 <script>
@@ -159,15 +150,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.flex {
-  flex: 0 0 var(--space-jumbo);
-  flex-direction: row;
-
-  // @include breakpoint(medium up) {
-  //   flex-direction: column;
-  // }
-}
-
 .conversation-header--details {
   display: flex;
   justify-content: center;
@@ -219,10 +201,5 @@ export default {
     font-weight: var(--font-weight-medium);
     color: var(--y-600);
   }
-}
-
-.hmac-warning__icon {
-  color: var(--y-600);
-  margin: 0 var(--space-micro);
 }
 </style>

@@ -1121,8 +1121,6 @@ export default {
 .reply-box__top {
   position: relative;
   padding: 0 var(--space-normal);
-  border-top: 1px solid var(--color-border);
-  margin-top: -1px;
 }
 
 .emoji-dialog {

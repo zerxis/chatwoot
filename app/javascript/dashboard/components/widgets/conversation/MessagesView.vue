@@ -1,5 +1,5 @@
 <template>
-  <div class="view-box fill-height">
+  <div class="flex flex-col justify-between overflow-hidden">
     <banner
       v-if="!currentChat.can_reply"
       color-scheme="alert"
@@ -26,7 +26,7 @@
         @click="onToggleContactPanel"
       />
     </div>
-    <ul class="conversation-panel">
+    <ul class="conversation-panel flex-1 overflow-auto">
       <transition name="slide-up">
         <li class="spinner--container">
           <span v-if="shouldShowSpinner" class="spinner message" />

@@ -23,15 +23,22 @@
         :show-badge="false"
       />
     </woot-tabs>
-    <div v-show="!activeIndex" class="flex">
+    <empty-state
+      v-if="!currentChat.id"
+      :is-on-expanded-layout="isOnExpandedLayout"
+    />
+    <div v-show="!activeIndex" class="flex overflow-hidden">
       <messages-view
         v-if="currentChat.id"
         :inbox-id="inboxId"
         :is-contact-panel-open="isContactPanelOpen"
         @contact-panel-toggle="onToggleContactPanel"
       />
-      <empty-state v-else :is-on-expanded-layout="isOnExpandedLayout" />
-      <div v-show="showContactPanel" class="conversation-sidebar-wrap">
+
+      <div
+        v-show="showContactPanel"
+        class="min-w-[300px] max-w-[300px] overflow-auto"
+      >
         <contact-panel
           v-if="showContactPanel"
           :conversation-id="currentChat.id"

@@ -1,9 +1,12 @@
 <template>
   <div class="cw-accordion">
-    <button class="cw-accordion--title drag-handle" @click="$emit('click')">
-      <div class="cw-accordion--title-wrap">
+    <button
+      class="flex cursor-grab items-center bg-slate-25 border-b border-t border-slate-100 justify-between py-2 px-3 w-full drag-handle"
+      @click="$emit('click')"
+    >
+      <div class="flex justify-between mb-0.5">
         <emoji-or-icon class="icon-or-emoji" :icon="icon" :emoji="emoji" />
-        <h5>
+        <h5 class="pr-2 text-sm font-medium">
           {{ title }}
         </h5>
       </div>
@@ -63,31 +66,6 @@ export default {
   // If you are using it else, find a fix to remove this hack
   margin-top: -1px;
   font-size: var(--font-size-small);
-}
-.cw-accordion--title {
-  align-items: center;
-  background: var(--s-50);
-  border-bottom: 1px solid var(--s-100);
-  border-top: 1px solid var(--s-100);
-  cursor: grab;
-  display: flex;
-  justify-content: space-between;
-  margin: 0;
-  padding: var(--space-small) var(--space-normal);
-  user-select: none;
-  width: 100%;
-
-  h5 {
-    font-size: var(--font-size-normal);
-    margin-bottom: 0;
-    padding: 0 var(--space-small) 0 0;
-  }
-}
-
-.cw-accordion--title-wrap {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: var(--space-micro);
 }
 
 .title-icon__wrap {

@@ -1,24 +1,21 @@
 <template>
-  <div class="top-box">
-    <div class="mode-wrap button-group">
-      <woot-button
-        variant="clear"
-        class="button--reply"
+  <div class="flex justify-between bg-slate-50 pr-3">
+    <div class="button-group flex items-center">
+      <button
         :class="replyButtonClass"
+        class="px-3 py-2 border-r border-slate-100 text-sm font-medium text-woot-500"
         @click="handleReplyClick"
       >
         {{ $t('CONVERSATION.REPLYBOX.REPLY') }}
-      </woot-button>
+      </button>
 
-      <woot-button
-        class="button--note"
-        variant="clear"
-        color-scheme="warning"
+      <button
         :class="noteButtonClass"
+        class="px-3 py-2 border-r border-slate-100 text-sm font-medium text-yellow-600"
         @click="handleNoteClick"
       >
         {{ $t('CONVERSATION.REPLYBOX.PRIVATE_NOTE') }}
-      </woot-button>
+      </button>
     </div>
     <div class="action-wrap">
       <div v-if="isMessageLengthReachingThreshold" class="tabs-title">
@@ -81,12 +78,12 @@ export default {
   computed: {
     replyButtonClass() {
       return {
-        'is-active': this.mode === REPLY_EDITOR_MODES.REPLY,
+        'bg-white': this.mode === REPLY_EDITOR_MODES.REPLY,
       };
     },
     noteButtonClass() {
       return {
-        'is-active': this.mode === REPLY_EDITOR_MODES.NOTE,
+        'bg-yellow-50': this.mode === REPLY_EDITOR_MODES.NOTE,
       };
     },
     charLengthClass() {
@@ -116,73 +113,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.top-box {
-  display: flex;
-  justify-content: space-between;
-
-  background: var(--b-50);
-}
-
-.button-group {
-  border: 0;
-  padding: 0;
-  margin: 0;
-
-  .button {
-    font-size: var(--font-size-small);
-    font-weight: var(--font-weight-medium);
-    padding: var(--space-one) var(--space-normal);
-    margin: 0;
-    position: relative;
-    z-index: 1;
-
-    &.is-active {
-      background: white;
-    }
-  }
-
-  .button--reply {
-    border-radius: 0;
-    border-right: 1px solid var(--color-border);
-
-    &:hover,
-    &:focus {
-      border-right: 1px solid var(--color-border);
-    }
-  }
-
-  .button--note {
-    border-radius: 0;
-
-    &.is-active {
-      border-right: 1px solid var(--color-border);
-      background: var(--y-50);
-    }
-
-    &:hover,
-    &:active {
-      color: var(--y-700);
-    }
-  }
-}
-
-.button--note {
-  color: var(--y-600);
-}
-
-.action-wrap {
-  display: flex;
-  align-items: center;
-  margin: 0 var(--space-normal);
-  font-size: var(--font-size-mini);
-
-  .message-error {
-    color: var(--r-600);
-  }
-  .message-length {
-    color: var(--s-600);
-  }
-}
-</style>

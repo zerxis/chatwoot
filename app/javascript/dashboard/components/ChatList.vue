@@ -106,7 +106,10 @@
       @chatTabChange="updateAssigneeTab"
     />
 
-    <p v-if="!chatListLoading && !conversationList.length" class="content-box">
+    <p
+      v-if="!chatListLoading && !conversationList.length"
+      class="w-full text-center text-slate-600 p-4 text-sm"
+    >
       {{ $t('CHAT_LIST.LIST.404') }}
     </p>
     <conversation-bulk-actions
@@ -156,7 +159,7 @@
       <woot-button
         v-if="!hasCurrentPageEndReached && !chatListLoading"
         variant="clear"
-        size="expanded"
+        block
         @click="loadMoreConversations"
       >
         {{ $t('CHAT_LIST.LOAD_MORE_CONVERSATIONS') }}
@@ -164,7 +167,7 @@
 
       <p
         v-if="showEndOfListMessage"
-        class="text-center text-muted end-of-list-text"
+        class="text-center text-slate-600 text-sm my-4"
       >
         {{ $t('CHAT_LIST.EOF') }}
       </p>
@@ -956,54 +959,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-.spinner {
-  margin-top: var(--space-normal);
-  margin-bottom: var(--space-normal);
-}
-
-.conversations-list overflow-auto flex-1 {
-  // Prevent the list from scrolling if the submenu is opened
-  &.is-context-menu-open {
-    overflow: hidden !important;
-  }
-}
-
-.conversations-list overflow-auto flex-1-wrap {
-  flex-shrink: 0;
-  flex-basis: clamp(32rem, 4vw + 34rem, 44rem);
-  overflow: hidden;
-
-  &.hide {
-    display: none;
-  }
-
-  &.list--full-width {
-    flex-basis: 100%;
-  }
-
-  .page-sub-title {
-    font-size: var(--font-size-two);
-  }
-}
-
-.filter__applied {
-  padding-bottom: var(--space-slab) !important;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.tab--chat-type {
-  padding: 0 var(--space-normal);
-
-  ::v-deep {
-    .tabs {
-      padding: 0;
-    }
-  }
-}
-
-.chat-list__title {
-  max-width: 85%;
-}
-</style>

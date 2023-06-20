@@ -117,7 +117,6 @@
       </div>
       <card-labels :conversation-id="chat.id" />
     </div>
-
     <woot-context-menu
       v-if="showContextMenu"
       ref="menu"
