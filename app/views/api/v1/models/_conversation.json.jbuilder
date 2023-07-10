@@ -20,3 +20,4 @@ json.messages do
   end
 end
 json.account_id conversation.account_id
+json.custom_inbox_id conversation.custom_inbox_id
