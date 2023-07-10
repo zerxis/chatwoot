@@ -25,6 +25,10 @@ class ActionService
     @conversation.update!(priority: (priority[0] == 'nil' ? nil : priority[0]))
   end
 
+  def update_custom_inbox(custom_inbox_id)
+    @conversation.update!(custom_inbox_id: custom_inbox_id)
+  end
+
   def add_label(labels)
     return if labels.empty?
 

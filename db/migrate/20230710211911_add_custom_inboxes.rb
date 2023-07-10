@@ -8,7 +8,7 @@ class AddCustomInboxes < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    add_column :conversations, :custom_inboxes_id, :integer
-    add_index :conversations, [:custom_inboxes_id, :account_id]
+    add_reference :conversations, :custom_inbox, index: true, foreign_key: true
+    add_index :conversations, [:custom_inbox_id, :account_id]
   end
 end

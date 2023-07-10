@@ -16,4 +16,5 @@
 #
 class CustomInbox < ApplicationRecord
   belongs_to :account
+  has_many :conversations, dependent: :nullify
 end

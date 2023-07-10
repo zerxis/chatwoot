@@ -27,5 +27,22 @@ describe ActionService do
     end
   end
 
+  describe '#update_custom_inbox' do
+    let(:conversation) { create(:conversation) }
+    let(:custom_inbox) { create(:custom_inbox, account: conversation.account) }
+    let(:action_service) { described_class.new(conversation) }
+
+    it 'changes the custom_inbox_id' do
+      action_service.update_custom_inbox(custom_inbox.id)
+      expect(conversation.reload.custom_inbox_id).to eq(custom_inbox.id)
+    end
+
+    it 'removes custom inbox' do
+      conversation.update!(custom_inbox_id: custom_inbox.id)
+      action_service.update_custom_inbox(nil)
+      expect(conversation.reload.custom_inbox_id).to be_nil
+    end
+  end
+
   # TODO: Expand this test suite
 end

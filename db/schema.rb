@@ -450,7 +450,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_211911) do
     t.integer "priority"
     t.datetime "waiting_since"
     t.bigint "sla_policy_id"
-    t.integer "custom_inboxes_id"
+    t.bigint "custom_inbox_id"
     t.index ["account_id", "display_id"], name: "index_conversations_on_account_id_and_display_id", unique: true
     t.index ["account_id", "id"], name: "index_conversations_on_id_and_account_id"
     t.index ["account_id", "inbox_id", "status", "assignee_id"], name: "conv_acid_inbid_stat_asgnid_idx"
@@ -459,7 +459,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_211911) do
     t.index ["campaign_id"], name: "index_conversations_on_campaign_id"
     t.index ["contact_id"], name: "index_conversations_on_contact_id"
     t.index ["contact_inbox_id"], name: "index_conversations_on_contact_inbox_id"
-    t.index ["custom_inboxes_id", "account_id"], name: "index_conversations_on_custom_inboxes_id_and_account_id"
+    t.index ["custom_inbox_id", "account_id"], name: "index_conversations_on_custom_inbox_id_and_account_id"
+    t.index ["custom_inbox_id"], name: "index_conversations_on_custom_inbox_id"
     t.index ["first_reply_created_at"], name: "index_conversations_on_first_reply_created_at"
     t.index ["inbox_id"], name: "index_conversations_on_inbox_id"
     t.index ["last_activity_at"], name: "index_conversations_on_last_activity_at"
@@ -953,6 +954,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_211911) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "conversations", "custom_inboxes"
   add_foreign_key "inboxes", "portals"
   create_trigger("accounts_after_insert_row_tr", :generated => true, :compatibility => 1).
       on("accounts").
