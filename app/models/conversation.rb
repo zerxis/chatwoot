@@ -250,7 +250,8 @@ class Conversation < ApplicationRecord
 
   def allowed_keys?
     (
-      previous_changes.keys.intersect?(%w[team_id assignee_id status snoozed_until custom_attributes label_list first_reply_created_at priority]) ||
+      previous_changes.keys.intersect?(%w[team_id assignee_id custom_inbox_id status snoozed_until custom_attributes label_list
+                                          first_reply_created_at priority]) ||
       (previous_changes['additional_attributes'].present? && previous_changes['additional_attributes'][1].keys.intersect?(%w[conversation_language]))
     )
   end

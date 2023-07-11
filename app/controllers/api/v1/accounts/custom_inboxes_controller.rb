@@ -22,6 +22,12 @@ class Api::V1::Accounts::CustomInboxesController < Api::V1::Accounts::BaseContro
     head :no_content
   end
 
+  def add_conversation_to_custom_inbox
+    @conversation = Current.account.conversations.find_by!(display_id: params[:conversation_id])
+    @custom_inbox = permitted_params[:id].present? ? fetch_custom_inbox : nil
+    @conversation.update!(custom_inbox_id: @custom_inbox&.id)
+  end
+
   private
 
   def fetch_custom_inboxes
@@ -41,6 +47,6 @@ class Api::V1::Accounts::CustomInboxesController < Api::V1::Accounts::BaseContro
   end
 
   def permitted_params
-    params.permit(:id)
+    params.permit(:id, :conversation_id)
   end
 end

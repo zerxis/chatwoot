@@ -18,4 +18,8 @@ class CustomInboxPolicy < ApplicationPolicy
   def destroy?
     @account_user.administrator?
   end
+
+  def add_conversation_to_custom_inbox?
+    @account_user.administrator? || @account_user.agent?
+  end
 end

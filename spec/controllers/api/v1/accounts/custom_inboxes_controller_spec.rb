@@ -5,6 +5,7 @@ RSpec.describe 'Custom Inboxes API', type: :request do
   let(:user) { create(:user, account: account, role: :agent) }
   let(:admin) { create(:user, account: account, role: :administrator) }
   let!(:custom_inbox) { create(:custom_inbox, account: account) }
+  let!(:conversation) { create(:conversation, account: account) }
 
   describe 'GET /api/v1/accounts/{account.id}/custom_inboxes' do
     context 'when it is an unauthenticated user' do
@@ -159,6 +160,26 @@ RSpec.describe 'Custom Inboxes API', type: :request do
                headers: user.create_new_auth_token
         expect(response).to have_http_status(:unauthorized)
         expect(account.custom_inboxes.count).to be 1
+      end
+    end
+  end
+
+  describe 'POST /api/v1/accounts/{account.id}/custom_inboxes/add_conversation_to_custom_inbox' do
+    context 'when it is an unauthenticated user' do
+      it 'returns unauthorized' do
+        post "/api/v1/accounts/#{account.id}/custom_inboxes/add_conversation_to_custom_inbox"
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'when it is an authenticated user' do
+      it 'moves conversation to custom inbox' do
+        post "/api/v1/accounts/#{account.id}/custom_inboxes/add_conversation_to_custom_inbox",
+             headers: admin.create_new_auth_token,
+             params: { conversation_id: conversation.display_id, id: custom_inbox.id },
+             as: :json
+        expect(response).to have_http_status(:success)
+        expect(conversation.reload.custom_inbox_id).to be custom_inbox.id
       end
     end
   end
