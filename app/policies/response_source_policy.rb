@@ -3,6 +3,10 @@ class ResponseSourcePolicy < ApplicationPolicy
     @account_user.administrator?
   end
 
+  def index?
+    @account_user.administrator?
+  end
+
   def create?
     @account_user.administrator?
   end

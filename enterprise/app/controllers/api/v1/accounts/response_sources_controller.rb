@@ -1,7 +1,7 @@
 class Api::V1::Accounts::ResponseSourcesController < Api::V1::Accounts::BaseController
   before_action :current_account
   before_action :check_authorization
-  before_action :find_response_source, only: [:add_document, :remove_document]
+  before_action :find_response_source, only: [:list_all_documents, :add_document, :remove_document]
 
   def parse
     links = PageCrawlerService.new(params[:link]).page_links
@@ -11,6 +11,14 @@ class Api::V1::Accounts::ResponseSourcesController < Api::V1::Accounts::BaseCont
   def create
     @response_source = Current.account.response_sources.new(response_source_params)
     @response_source.save!
+  end
+
+  def index
+    @response_sources = Current.account.response_sources
+  end
+
+  def list_all_documents
+    @response_documents = @response_source.response_documents
   end
 
   def add_document

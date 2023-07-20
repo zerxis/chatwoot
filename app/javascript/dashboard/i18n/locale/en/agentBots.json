@@ -69,5 +69,50 @@
       "WEBHOOK": "Webhook Bot",
       "CSML": "CSML Bot"
     }
+  },
+  "AI_BOTS": {
+    "LOADING_RESPONSE_SOURCES": "Fetching response sources...",
+    "NO_RESPONSE_SOURCES_FOUND": "It appears that no sources have been added for the bot to learn from.",
+    "LET_US_GET_STARTED": "Let us get started",
+    "INITIALIZE": {
+      "TITLE": "Let us get started",
+      "DESC": "To create a bot, simply provide us with a URL. We will use both the URL and any available links within it to generate responses and train the bot. In the next step, you will be asked to select the links you want us to learn from.",
+      "FORM": {
+        "LINK": {
+          "PLACEHOLDER": "Enter the URL"
+        },
+        "SUBMIT": "Submit"
+      }
+    },
+    "SELECT_LINKS": {
+      "TITLE": "Select the links below",
+      "DESC": "Select the relevant links from the list below. We will use these selected links to train the bot. The better the links you select, the better the bot's responses will be.",
+      "SELECT_ALL": "Select all",
+      "LINK": "Link",
+      "SELECTED_COUNT": "%{selected} of %{total} selected",
+      "SUBMIT": "Submit"
+    },
+    "CREATE_FLOW": [
+      {
+        "title": "Get started",
+        "route": "ai_bots_new_initialize",
+        "body": "Provide a URL to get started."
+      },
+      {
+        "title": "Select the links",
+        "route": "ai_bots_new_select_links",
+        "body": "Select the links that the bot can train from."
+      },
+      {
+        "title": "Select the inbox",
+        "route": "ai_bots_new_select_inbox",
+        "body": "Select the inbox where you want to deploy the bot."
+      },
+      {
+        "title": "Voila",
+        "route": "ai_bot_complete",
+        "body": "Setup is complete."
+      }
+    ]
   }
 }

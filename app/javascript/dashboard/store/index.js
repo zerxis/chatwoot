@@ -6,8 +6,8 @@ import agentBots from './modules/agentBots';
 import agents from './modules/agents';
 import articles from './modules/helpCenterArticles';
 import attributes from './modules/attributes';
-import auth from './modules/auth';
 import auditlogs from './modules/auditlogs';
+import auth from './modules/auth';
 import automations from './modules/automations';
 import bulkActions from './modules/bulkActions';
 import campaigns from './modules/campaigns';
@@ -28,6 +28,7 @@ import conversationWatchers from './modules/conversationWatchers';
 import csat from './modules/csat';
 import customViews from './modules/customViews';
 import dashboardApps from './modules/dashboardApps';
+import draftMessages from './modules/draftMessages';
 import globalConfig from 'shared/store/globalConfig';
 import inboxAssignableAgents from './modules/inboxAssignableAgents';
 import inboxes from './modules/inboxes';
@@ -38,11 +39,11 @@ import macros from './modules/macros';
 import notifications from './modules/notifications';
 import portals from './modules/helpCenterPortals';
 import reports from './modules/reports';
+import responseSources from './modules/responseSources';
 import teamMembers from './modules/teamMembers';
 import teams from './modules/teams';
 import userNotificationSettings from './modules/userNotificationSettings';
 import webhooks from './modules/webhooks';
-import draftMessages from './modules/draftMessages';
 
 import LogRocket from 'logrocket';
 import createPlugin from 'logrocket-vuex';
@@ -51,7 +52,7 @@ const plugins = [];
 
 if (window.logRocketProjectId) {
   LogRocket.init(window.logRocketProjectId);
-  const logRocketPlugin = createPlugin(LogRocket, function(mutation) {
+  const logRocketPlugin = createPlugin(LogRocket, function (mutation) {
     const eventsToIgnore = ['SET_CURRENT_USER', 'AUTHENTICATE', 'CLEAR_USER'];
     if (eventsToIgnore.includes(mutation.type)) {
       return null;
@@ -71,9 +72,9 @@ export default new Vuex.Store({
     agents,
     articles,
     attributes,
+    auditlogs,
     auth,
     automations,
-    auditlogs,
     bulkActions,
     campaigns,
     cannedResponse,
@@ -93,6 +94,7 @@ export default new Vuex.Store({
     csat,
     customViews,
     dashboardApps,
+    draftMessages,
     globalConfig,
     inboxAssignableAgents,
     inboxes,
@@ -103,11 +105,11 @@ export default new Vuex.Store({
     notifications,
     portals,
     reports,
+    responseSources,
     teamMembers,
     teams,
     userNotificationSettings,
     webhooks,
-    draftMessages,
   },
   plugins,
 });

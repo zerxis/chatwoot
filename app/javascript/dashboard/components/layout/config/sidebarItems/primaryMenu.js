@@ -11,6 +11,15 @@ const primaryMenuItems = accountId => [
     roles: ['administrator', 'agent'],
   },
   {
+    icon: 'bot',
+    key: 'bots',
+    label: 'AI_BOTS',
+    featureFlag: FEATURE_FLAGS.AI_BOT,
+    toState: frontendURL(`accounts/${accountId}/ai_bots`),
+    toStateName: 'ai_bots_home',
+    roles: ['administrator'],
+  },
+  {
     icon: 'book-contacts',
     key: 'contacts',
     label: 'CONTACTS',
