@@ -92,6 +92,15 @@
       "SELECTED_COUNT": "%{selected} of %{total} selected",
       "SUBMIT": "Submit"
     },
+
+    "SELECT_INBOX": {
+      "TITLE": "Select the inbox",
+      "DESC": "Choose the inbox where you want to deploy this bot. Your customers will be greeted by the bot initially and will be able to ask questions and converse with it. If the bot is unable to provide an answer, it will intelligently transfer the conversation to you.",
+      "SELECT_ALL": "Select all",
+      "LINK": "Link",
+      "SELECTED_COUNT": "%{selected} of %{total} selected",
+      "SUBMIT": "Submit"
+    },
     "CREATE_FLOW": [
       {
         "title": "Get started",

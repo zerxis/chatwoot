@@ -23,6 +23,7 @@ class ResponseDocument < ApplicationRecord
   belongs_to :response_source
 
   before_validation :set_account
+  validates :document_link, length: { maximum: Limits::URL_LENGTH_LIMIT }
   after_create :ensure_content
   after_update :handle_content_change
 

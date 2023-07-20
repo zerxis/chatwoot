@@ -52,16 +52,21 @@ export const actions = {
       commit(types.SET_RESPONSE_SOURCE_UI_FLAGS, { isFetchingItem: false });
     }
   },
-  create: async function createResponseSource({ commit }, macrosObj) {
+  create: async function createResponseSource(
+    { commit },
+    responseSourceObject
+  ) {
     commit(types.SET_RESPONSE_SOURCE_UI_FLAGS, { isCreating: true });
     try {
-      const response = await ResponseSourcesAPI.create(macrosObj);
-      commit(types.ADD_RESPONSE_SOURCE, response.data.payload);
+      const response = await ResponseSourcesAPI.create(responseSourceObject);
+      commit(types.ADD_RESPONSE_SOURCE, response.data);
+      return response.data;
     } catch (error) {
       throwErrorMessage(error);
     } finally {
       commit(types.SET_RESPONSE_SOURCE_UI_FLAGS, { isCreating: false });
     }
+    return null;
   },
   parse: async function parseResponseSource({ commit }, { link }) {
     commit(types.SET_RESPONSE_SOURCE_UI_FLAGS, { isParsing: true });

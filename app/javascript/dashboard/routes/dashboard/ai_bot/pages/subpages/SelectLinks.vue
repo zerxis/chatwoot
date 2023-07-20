@@ -7,11 +7,13 @@
       :header-content="$t('AI_BOTS.SELECT_LINKS.DESC')"
     />
     <div class="overflow-auto h-full">
-      <url-selector
-        :links="parsedLinks"
-        :selected-links="selectedLinks"
-        @update="onUpdate"
-      />
+      <form @submit.prevent="onSubmit">
+        <url-selector
+          :links="parsedLinks"
+          :selected-links="selectedLinks"
+          @update="onUpdate"
+        />
+      </form>
     </div>
   </div>
 </template>
@@ -41,6 +43,12 @@ export default {
   methods: {
     onUpdate(selectedLinks) {
       this.selectedLinks = selectedLinks;
+    },
+    onSubmit() {
+      this.$router.replace({
+        name: 'ai_bots_new_select_inbox',
+        params: { selectedLinks: this.selectedLinks },
+      });
     },
   },
 };
