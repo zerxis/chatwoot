@@ -23,11 +23,6 @@ class Response < ApplicationRecord
 
   before_save :update_response_embedding
 
-  def self.search(query)
-    embedding = Openai::EmbeddingsService.new.get_embedding(query)
-    nearest_neighbors(:embedding, embedding, distance: 'cosine').first(5)
-  end
-
   private
 
   def update_response_embedding
