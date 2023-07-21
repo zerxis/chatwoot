@@ -55,5 +55,5 @@
   enabled: false
 - name: audit_logs
   enabled: false
-- name: ai_bot
+- name: response_bot
   enabled: false
