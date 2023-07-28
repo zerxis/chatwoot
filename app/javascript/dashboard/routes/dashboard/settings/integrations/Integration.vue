@@ -19,7 +19,7 @@
         </p>
       </div>
     </div>
-    <div class="flex justify-center items-center mb-0 w-[15%]">
+    <div class="small-2 column button-wrap">
       <router-link
         :to="
           frontendURL(
