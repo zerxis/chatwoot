@@ -62,13 +62,17 @@ class Attachment < ApplicationRecord
 
   def thumb_url
     if file.attached? && file.representable?
-      url_for(file.representation(resize_to_fill: [250, nil]))
+      url_for(file.representation(resize_to_fill: [250, nil], format: file_format))
     else
       ''
     end
   end
 
   private
+
+  def file_format
+    avatar.blob&.content_type == 'image/jpeg' ? 'jpeg' : nil
+  end
 
   def file_metadata
     metadata = {

@@ -11,9 +11,13 @@ module Avatarable
   end
 
   def avatar_url
-    return url_for(avatar.representation(resize_to_fill: [250, nil])) if avatar.attached? && avatar.representable?
+    return url_for(avatar.representation(resize_to_fill: [250, nil], format: avatar_format)) if avatar.attached? && avatar.representable?
 
     ''
+  end
+
+  def avatar_format
+    avatar.blob&.content_type == 'image/jpeg' ? 'jpeg' : nil
   end
 
   def fetch_avatar_from_gravatar
