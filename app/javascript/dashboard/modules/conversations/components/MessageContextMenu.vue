@@ -48,7 +48,7 @@
           v-if="enabledOptions['copy']"
           :option="{
             icon: 'clipboard',
-            label: $t('CONVERSATION.CONTEXT_MENU.COPY'),
+            label: this.$t('CONVERSATION.CONTEXT_MENU.COPY'),
           }"
           variant="icon"
           @click="handleCopy"
@@ -57,7 +57,7 @@
           v-if="enabledOptions['copy']"
           :option="{
             icon: 'translate',
-            label: $t('CONVERSATION.CONTEXT_MENU.TRANSLATE'),
+            label: this.$t('CONVERSATION.CONTEXT_MENU.TRANSLATE'),
           }"
           variant="icon"
           @click="handleTranslate"
@@ -66,7 +66,7 @@
         <menu-item
           :option="{
             icon: 'link',
-            label: $t('CONVERSATION.CONTEXT_MENU.COPY_PERMALINK'),
+            label: this.$t('CONVERSATION.CONTEXT_MENU.COPY_PERMALINK'),
           }"
           variant="icon"
           @click="copyLinkToMessage"
@@ -75,7 +75,9 @@
           v-if="enabledOptions['cannedResponse']"
           :option="{
             icon: 'comment-add',
-            label: $t('CONVERSATION.CONTEXT_MENU.CREATE_A_CANNED_RESPONSE'),
+            label: this.$t(
+              'CONVERSATION.CONTEXT_MENU.CREATE_A_CANNED_RESPONSE'
+            ),
           }"
           variant="icon"
           @click="showCannedResponseModal"
@@ -85,7 +87,7 @@
           v-if="enabledOptions['delete']"
           :option="{
             icon: 'delete',
-            label: $t('CONVERSATION.CONTEXT_MENU.DELETE'),
+            label: this.$t('CONVERSATION.CONTEXT_MENU.DELETE'),
           }"
           variant="icon"
           @click="openDeleteModal"

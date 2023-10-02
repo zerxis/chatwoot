@@ -1,6 +1,5 @@
-<!-- eslint-disable vue/v-slot-style -->
 <template>
-  <div class="flex flex-col h-auto overflow-auto">
+  <div class="h-auto overflow-auto flex flex-col">
     <woot-modal-header
       :header-title="integration.name"
       :header-content="integration.description"
@@ -26,7 +25,7 @@
         validation="required"
         validation-name="Inbox"
       />
-      <div class="flex flex-row justify-end w-full gap-2 px-0 py-2">
+      <div class="flex flex-row justify-end gap-2 py-2 px-0 w-full">
         <woot-button :disabled="hasErrors" :loading="uiFlags.isCreatingHook">
           {{ $t('INTEGRATION_APPS.ADD.FORM.SUBMIT') }}
         </woot-button>

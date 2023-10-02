@@ -1,5 +1,6 @@
 import messageAPI, { buildCreatePayload } from '../../inbox/message';
 import ApiClient from '../../ApiClient';
+import describeWithAPIMock from '../apiSpecHelper';
 
 describe('#ConversationAPI', () => {
   it('creates correct instance', () => {
@@ -12,29 +13,13 @@ describe('#ConversationAPI', () => {
     expect(messageAPI).toHaveProperty('getPreviousMessages');
   });
 
-  describe('API calls', () => {
-    const originalAxios = window.axios;
-    const axiosMock = {
-      post: jest.fn(() => Promise.resolve()),
-      get: jest.fn(() => Promise.resolve()),
-      patch: jest.fn(() => Promise.resolve()),
-      delete: jest.fn(() => Promise.resolve()),
-    };
-
-    beforeEach(() => {
-      window.axios = axiosMock;
-    });
-
-    afterEach(() => {
-      window.axios = originalAxios;
-    });
-
+  describeWithAPIMock('API calls', context => {
     it('#getPreviousMessages', () => {
       messageAPI.getPreviousMessages({
         conversationId: 12,
         before: 4573,
       });
-      expect(axiosMock.get).toHaveBeenCalledWith(
+      expect(context.axiosMock.get).toHaveBeenCalledWith(
         `/api/v1/conversations/12/messages`,
         {
           params: {
@@ -50,6 +35,7 @@ describe('#ConversationAPI', () => {
         message: 'test content',
         echoId: 12,
         isPrivate: true,
+
         files: [new Blob(['test-content'], { type: 'application/pdf' })],
       });
       expect(formPayload).toBeInstanceOf(FormData);
@@ -72,10 +58,8 @@ describe('#ConversationAPI', () => {
         private: false,
         echo_id: 12,
         content_attributes: { in_reply_to: 12 },
-        cc_emails: '',
         bcc_emails: '',
-        to_emails: '',
-        template_params: undefined,
+        cc_emails: '',
       });
     });
   });

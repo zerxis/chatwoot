@@ -102,7 +102,6 @@ class ActionCableConnector extends BaseActionCableConnector {
     this.app.$store.dispatch('updateConversation', data);
   };
 
-  // eslint-disable-next-line class-methods-use-this
   onLogout = () => AuthAPI.logout();
 
   onMessageCreated = data => {
@@ -118,7 +117,6 @@ class ActionCableConnector extends BaseActionCableConnector {
     });
   };
 
-  // eslint-disable-next-line class-methods-use-this
   onReload = () => window.location.reload();
 
   onStatusChange = data => {
@@ -173,7 +171,6 @@ class ActionCableConnector extends BaseActionCableConnector {
     }, 30000);
   };
 
-  // eslint-disable-next-line class-methods-use-this
   fetchConversationStats = () => {
     bus.$emit('fetch_conversation_stats');
     bus.$emit('fetch_overview_reports');
@@ -195,7 +192,6 @@ class ActionCableConnector extends BaseActionCableConnector {
     this.app.$store.dispatch('notifications/addNotification', data);
   };
 
-  // eslint-disable-next-line class-methods-use-this
   onFirstReplyCreated = () => {
     bus.$emit('fetch_overview_reports');
   };

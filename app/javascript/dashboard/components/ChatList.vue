@@ -10,8 +10,7 @@
     <div
       class="flex items-center justify-between py-0 px-4"
       :class="{
-        'pb-3 border-b border-slate-75 dark:border-slate-700':
-          hasAppliedFiltersOrActiveFolders,
+        'pb-3 border-b border-slate-75 dark:border-slate-700': hasAppliedFiltersOrActiveFolders,
       }"
     >
       <div class="flex max-w-[85%] justify-center items-center">
@@ -25,7 +24,9 @@
           v-if="!hasAppliedFiltersOrActiveFolders"
           class="p-1 my-0.5 mx-1 rounded-md capitalize bg-slate-50 dark:bg-slate-800 text-xxs text-slate-600 dark:text-slate-300"
         >
-          {{ $t(`CHAT_LIST.CHAT_STATUS_FILTER_ITEMS.${activeStatus}.TEXT`) }}
+          {{
+            this.$t(`CHAT_LIST.CHAT_STATUS_FILTER_ITEMS.${activeStatus}.TEXT`)
+          }}
         </span>
       </div>
       <div class="flex items-center gap-1">
@@ -641,8 +642,10 @@ export default {
     },
     handleKeyEvents(e) {
       if (hasPressedAltAndJKey(e)) {
-        const { allConversations, activeConversationIndex } =
-          this.getKeyboardListenerParams();
+        const {
+          allConversations,
+          activeConversationIndex,
+        } = this.getKeyboardListenerParams();
         if (activeConversationIndex === -1) {
           allConversations[0].click();
         }

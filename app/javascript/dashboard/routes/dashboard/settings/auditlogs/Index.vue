@@ -77,12 +77,6 @@ export default {
     TableFooter,
   },
   mixins: [alertMixin, timeMixin],
-  beforeRouteEnter(to, from, next) {
-    // Fetch Audit Logs on page load without manual refresh
-    next(vm => {
-      vm.fetchAuditLogs();
-    });
-  },
   data() {
     return {
       loading: {},
@@ -90,6 +84,12 @@ export default {
         message: '',
       },
     };
+  },
+  beforeRouteEnter(to, from, next) {
+    // Fetch Audit Logs on page load without manual refresh
+    next(vm => {
+      vm.fetchAuditLogs();
+    });
   },
   computed: {
     ...mapGetters({

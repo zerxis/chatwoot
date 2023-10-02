@@ -72,8 +72,10 @@ export default {
       const { custom_attributes: subscription } = account;
       if (!subscription) return EMPTY_SUBSCRIPTION_INFO;
 
-      const { subscription_status: status, subscription_ends_on: endsOn } =
-        subscription;
+      const {
+        subscription_status: status,
+        subscription_ends_on: endsOn,
+      } = subscription;
 
       return { status, endsOn: new Date(endsOn) };
     },

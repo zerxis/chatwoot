@@ -1,5 +1,6 @@
 import articlesAPI from '../helpCenter/articles';
 import ApiClient from 'dashboard/api/helpCenter/portals';
+import describeWithAPIMock from './apiSpecHelper';
 
 describe('#PortalAPI', () => {
   it('creates correct instance', () => {
@@ -11,23 +12,7 @@ describe('#PortalAPI', () => {
     expect(articlesAPI).toHaveProperty('delete');
     expect(articlesAPI).toHaveProperty('getArticles');
   });
-  describe('API calls', () => {
-    const originalAxios = window.axios;
-    const axiosMock = {
-      post: jest.fn(() => Promise.resolve()),
-      get: jest.fn(() => Promise.resolve()),
-      patch: jest.fn(() => Promise.resolve()),
-      delete: jest.fn(() => Promise.resolve()),
-    };
-
-    beforeEach(() => {
-      window.axios = axiosMock;
-    });
-
-    afterEach(() => {
-      window.axios = originalAxios;
-    });
-
+  describeWithAPIMock('API calls', context => {
     it('#getArticles', () => {
       articlesAPI.getArticles({
         pageNumber: 1,
@@ -36,62 +21,30 @@ describe('#PortalAPI', () => {
         status: 'published',
         author_id: '1',
       });
-      expect(axiosMock.get).toHaveBeenCalledWith(
+      expect(context.axiosMock.get).toHaveBeenCalledWith(
         '/api/v1/portals/room-rental/articles?page=1&locale=en-US&status=published&author_id=1'
       );
     });
   });
-  describe('API calls', () => {
-    const originalAxios = window.axios;
-    const axiosMock = {
-      post: jest.fn(() => Promise.resolve()),
-      get: jest.fn(() => Promise.resolve()),
-      patch: jest.fn(() => Promise.resolve()),
-      delete: jest.fn(() => Promise.resolve()),
-    };
-
-    beforeEach(() => {
-      window.axios = axiosMock;
-    });
-
-    afterEach(() => {
-      window.axios = originalAxios;
-    });
-
+  describeWithAPIMock('API calls', context => {
     it('#getArticle', () => {
       articlesAPI.getArticle({
         id: 1,
         portalSlug: 'room-rental',
       });
-      expect(axiosMock.get).toHaveBeenCalledWith(
+      expect(context.axiosMock.get).toHaveBeenCalledWith(
         '/api/v1/portals/room-rental/articles/1'
       );
     });
   });
-  describe('API calls', () => {
-    const originalAxios = window.axios;
-    const axiosMock = {
-      post: jest.fn(() => Promise.resolve()),
-      get: jest.fn(() => Promise.resolve()),
-      patch: jest.fn(() => Promise.resolve()),
-      delete: jest.fn(() => Promise.resolve()),
-    };
-
-    beforeEach(() => {
-      window.axios = axiosMock;
-    });
-
-    afterEach(() => {
-      window.axios = originalAxios;
-    });
-
+  describeWithAPIMock('API calls', context => {
     it('#updateArticle', () => {
       articlesAPI.updateArticle({
         articleId: 1,
         portalSlug: 'room-rental',
         articleObj: { title: 'Update shipping address' },
       });
-      expect(axiosMock.patch).toHaveBeenCalledWith(
+      expect(context.axiosMock.patch).toHaveBeenCalledWith(
         '/api/v1/portals/room-rental/articles/1',
         {
           title: 'Update shipping address',
@@ -99,29 +52,13 @@ describe('#PortalAPI', () => {
       );
     });
   });
-  describe('API calls', () => {
-    const originalAxios = window.axios;
-    const axiosMock = {
-      post: jest.fn(() => Promise.resolve()),
-      get: jest.fn(() => Promise.resolve()),
-      patch: jest.fn(() => Promise.resolve()),
-      delete: jest.fn(() => Promise.resolve()),
-    };
-
-    beforeEach(() => {
-      window.axios = axiosMock;
-    });
-
-    afterEach(() => {
-      window.axios = originalAxios;
-    });
-
+  describeWithAPIMock('API calls', context => {
     it('#deleteArticle', () => {
       articlesAPI.deleteArticle({
         articleId: 1,
         portalSlug: 'room-rental',
       });
-      expect(axiosMock.delete).toHaveBeenCalledWith(
+      expect(context.axiosMock.delete).toHaveBeenCalledWith(
         '/api/v1/portals/room-rental/articles/1'
       );
     });

@@ -72,9 +72,7 @@ import { MESSAGE_EDITOR_MENU_OPTIONS } from 'dashboard/constants/editor';
 const createState = (
   content,
   placeholder,
-  // eslint-disable-next-line default-param-last
   plugins = [],
-  // eslint-disable-next-line default-param-last
   methods = {},
   enabledMenuOptions
 ) => {

@@ -10,7 +10,7 @@
         :is-loading="isLoading"
         @click="onCmdResolveConversation"
       >
-        {{ $t('CONVERSATION.HEADER.RESOLVE_ACTION') }}
+        {{ this.$t('CONVERSATION.HEADER.RESOLVE_ACTION') }}
       </woot-button>
       <woot-button
         v-else-if="isResolved"
@@ -21,7 +21,7 @@
         :is-loading="isLoading"
         @click="onCmdOpenConversation"
       >
-        {{ $t('CONVERSATION.HEADER.REOPEN_ACTION') }}
+        {{ this.$t('CONVERSATION.HEADER.REOPEN_ACTION') }}
       </woot-button>
       <woot-button
         v-else-if="showOpenButton"
@@ -31,7 +31,7 @@
         :is-loading="isLoading"
         @click="onCmdOpenConversation"
       >
-        {{ $t('CONVERSATION.HEADER.OPEN_ACTION') }}
+        {{ this.$t('CONVERSATION.HEADER.OPEN_ACTION') }}
       </woot-button>
       <woot-button
         v-if="showAdditionalActions"
@@ -57,7 +57,7 @@
             icon="snooze"
             @click="() => openSnoozeModal()"
           >
-            {{ $t('CONVERSATION.RESOLVE_DROPDOWN.SNOOZE_UNTIL') }}
+            {{ this.$t('CONVERSATION.RESOLVE_DROPDOWN.SNOOZE_UNTIL') }}
           </woot-button>
         </woot-dropdown-item>
         <woot-dropdown-item v-if="!isPending">
@@ -68,7 +68,7 @@
             icon="book-clock"
             @click="() => toggleStatus(STATUS_TYPE.PENDING)"
           >
-            {{ $t('CONVERSATION.RESOLVE_DROPDOWN.MARK_PENDING') }}
+            {{ this.$t('CONVERSATION.RESOLVE_DROPDOWN.MARK_PENDING') }}
           </woot-button>
         </woot-dropdown-item>
       </woot-dropdown-menu>

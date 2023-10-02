@@ -3,8 +3,7 @@
     <div
       ref="content"
       :class="{
-        'shrink-container after:shrink-gradient-light dark:after:shrink-gradient-dark':
-          shrink,
+        'shrink-container after:shrink-gradient-light dark:after:shrink-gradient-dark': shrink,
       }"
     >
       <slot />

@@ -431,8 +431,9 @@ export default {
       const {
         LAYOUT_TYPES: { CONDENSED },
       } = wootConstants;
-      const { conversation_display_type: conversationDisplayType = CONDENSED } =
-        this.uiSettings;
+      const {
+        conversation_display_type: conversationDisplayType = CONDENSED,
+      } = this.uiSettings;
       return conversationDisplayType !== CONDENSED;
     },
     emojiDialogClassOnExpandedLayoutAndRTLView() {

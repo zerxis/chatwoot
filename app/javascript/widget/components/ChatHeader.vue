@@ -28,8 +28,10 @@
         >
           <span v-dompurify-html="title" class="mr-1" />
           <div
-            :class="`h-2 w-2 rounded-full
-              ${isOnline ? 'bg-green-500' : 'hidden'}`"
+            :class="
+              `h-2 w-2 rounded-full
+              ${isOnline ? 'bg-green-500' : 'hidden'}`
+            "
           />
         </div>
         <div

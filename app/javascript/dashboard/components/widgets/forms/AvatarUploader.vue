@@ -17,7 +17,7 @@
         type="button"
         @click="onAvatarDelete"
       >
-        {{ $t('INBOX_MGMT.DELETE.AVATAR_DELETE_BUTTON_TEXT') }}
+        {{ this.$t('INBOX_MGMT.DELETE.AVATAR_DELETE_BUTTON_TEXT') }}
       </woot-button>
     </div>
     <label>

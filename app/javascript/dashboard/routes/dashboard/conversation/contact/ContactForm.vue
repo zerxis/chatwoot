@@ -117,7 +117,9 @@
     />
 
     <div class="w-full">
-      <label> Social Profiles </label>
+      <label>
+        Social Profiles
+      </label>
       <div
         v-for="socialProfile in socialProfileKeys"
         :key="socialProfile.key"
