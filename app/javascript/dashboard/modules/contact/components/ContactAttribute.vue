@@ -3,7 +3,7 @@
     <div class="title-wrap">
       <h4 class="text-block-title title">
         <div class="title--icon">
-          <emoji-or-icon :icon="icon" :emoji="emoji" />
+          <fluent-icon :icon="icon" />
         </div>
         {{ label }}
       </h4>
@@ -45,16 +45,10 @@
 </template>
 
 <script>
-import EmojiOrIcon from 'shared/components/EmojiOrIcon.vue';
-
 export default {
-  components: {
-    EmojiOrIcon,
-  },
   props: {
     label: { type: String, required: true },
     icon: { type: String, default: '' },
-    emoji: { type: String, default: '' },
     value: { type: [String, Number], default: '' },
     showEdit: { type: Boolean, default: false },
   },

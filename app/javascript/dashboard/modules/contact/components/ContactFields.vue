@@ -6,7 +6,6 @@
     <attribute
       :label="$t('CONTACT_PANEL.EMAIL_ADDRESS')"
       icon="mail"
-      emoji=""
       :value="contact.email"
       :show-edit="true"
       @update="onEmailUpdate"
@@ -14,7 +13,6 @@
     <attribute
       :label="$t('CONTACT_PANEL.PHONE_NUMBER')"
       icon="call"
-      emoji=""
       :value="contact.phone_number"
       :show-edit="true"
       @update="onPhoneUpdate"
@@ -23,7 +21,6 @@
       v-if="additionalAttributes.location"
       :label="$t('CONTACT_PANEL.LOCATION')"
       icon="map"
-      emoji="🌍"
       :value="additionalAttributes.location"
       :show-edit="true"
       @update="onLocationUpdate"

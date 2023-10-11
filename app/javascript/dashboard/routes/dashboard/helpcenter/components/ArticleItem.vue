@@ -1,7 +1,7 @@
 <template>
   <div class="article-container--row">
     <span class="article-column article-title">
-      <emoji-or-icon class="icon-grab" icon="grab-handle" />
+      <fluent-icon class="icon-grab" icon="grab-handle" />
       <div class="article-block">
         <router-link :to="articleUrl(id)">
           <h6
@@ -56,12 +56,8 @@
 import timeMixin from 'dashboard/mixins/time';
 import portalMixin from '../mixins/portalMixin';
 import { frontendURL } from 'dashboard/helper/URLHelper';
-import EmojiOrIcon from '../../../../../shared/components/EmojiOrIcon.vue';
 
 export default {
-  components: {
-    EmojiOrIcon,
-  },
   mixins: [timeMixin, portalMixin],
   props: {
     id: {

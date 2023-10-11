@@ -5,12 +5,7 @@
       :href="href"
       class="flex items-center mb-2 text-slate-800 dark:text-slate-100 hover:underline"
     >
-      <emoji-or-icon
-        :icon="icon"
-        :emoji="emoji"
-        icon-size="14"
-        class="mr-2 ml-1 rtl:mr-1 rtl:ml-2"
-      />
+      <fluent-icon :icon="icon" size="14" class="mr-2 ml-1 rtl:mr-1 rtl:ml-2" />
       <span
         v-if="value"
         class="overflow-hidden whitespace-nowrap text-ellipsis text-sm"
@@ -38,12 +33,7 @@
       v-else
       class="flex items-center mb-2 text-slate-800 dark:text-slate-100"
     >
-      <emoji-or-icon
-        :icon="icon"
-        :emoji="emoji"
-        icon-size="14"
-        class="mr-2 ml-1 rtl:mr-1 rtl:ml-2"
-      />
+      <fluent-icon :icon="icon" size="14" class="mr-2 ml-1 rtl:mr-1 rtl:ml-2" />
       <span
         v-if="value"
         class="overflow-hidden whitespace-nowrap text-ellipsis text-sm"
@@ -58,13 +48,9 @@
 </template>
 <script>
 import alertMixin from 'shared/mixins/alertMixin';
-import EmojiOrIcon from 'shared/components/EmojiOrIcon.vue';
 import { copyTextToClipboard } from 'shared/helpers/clipboard';
 
 export default {
-  components: {
-    EmojiOrIcon,
-  },
   mixins: [alertMixin],
   props: {
     href: {
@@ -72,10 +58,6 @@ export default {
       default: '',
     },
     icon: {
-      type: String,
-      required: true,
-    },
-    emoji: {
       type: String,
       required: true,
     },

@@ -5,7 +5,7 @@
       @click="$emit('click')"
     >
       <div class="flex justify-between mb-0.5">
-        <emoji-or-icon class="inline-block w-5" :icon="icon" :emoji="emoji" />
+        <fluent-icon size="14" class="inline-block w-5" :icon="icon" />
         <h5
           class="text-slate-800 text-sm dark:text-slate-100 mb-0 py-0 pr-2 pl-0"
         >
@@ -31,12 +31,7 @@
 </template>
 
 <script>
-import EmojiOrIcon from 'shared/components/EmojiOrIcon.vue';
-
 export default {
-  components: {
-    EmojiOrIcon,
-  },
   props: {
     title: {
       type: String,
@@ -47,10 +42,6 @@ export default {
       default: false,
     },
     icon: {
-      type: String,
-      default: '',
-    },
-    emoji: {
       type: String,
       default: '',
     },

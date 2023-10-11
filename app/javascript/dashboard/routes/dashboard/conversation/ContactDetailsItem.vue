@@ -19,7 +19,6 @@ export default {
   props: {
     title: { type: String, required: true },
     icon: { type: String, default: '' },
-    emoji: { type: String, default: '' },
     value: { type: [String, Number], default: '' },
     compact: { type: Boolean, default: false },
   },

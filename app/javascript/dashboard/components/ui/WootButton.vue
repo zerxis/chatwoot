@@ -11,13 +11,7 @@
       size="small"
       :color-scheme="showDarkSpinner ? 'dark' : ''"
     />
-    <emoji-or-icon
-      v-else-if="icon || emoji"
-      class="icon"
-      :emoji="emoji"
-      :icon="icon"
-      :icon-size="iconSize"
-    />
+    <fluent-icon v-else-if="icon" class="icon" :icon="icon" :size="iconSize" />
     <span
       v-if="$slots.default"
       class="button__content"
@@ -29,11 +23,10 @@
 </template>
 <script>
 import Spinner from 'shared/components/Spinner.vue';
-import EmojiOrIcon from 'shared/components/EmojiOrIcon.vue';
 
 export default {
   name: 'WootButton',
-  components: { EmojiOrIcon, Spinner },
+  components: { Spinner },
   props: {
     type: {
       type: String,

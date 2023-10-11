@@ -8,7 +8,6 @@
       :values="attribute.attribute_values"
       :label="attribute.attribute_display_name"
       :icon="attribute.icon"
-      emoji=""
       :value="attribute.value"
       :show-actions="true"
       :class="attributeClass"

@@ -6,7 +6,6 @@
         class-names="resolve"
         color-scheme="success"
         icon="checkmark"
-        emoji="✅"
         :is-loading="isLoading"
         @click="onCmdResolveConversation"
       >
@@ -17,7 +16,6 @@
         class-names="resolve"
         color-scheme="warning"
         icon="arrow-redo"
-        emoji="👀"
         :is-loading="isLoading"
         @click="onCmdOpenConversation"
       >
@@ -39,7 +37,6 @@
         :color-scheme="buttonClass"
         :disabled="isLoading"
         icon="chevron-down"
-        emoji="🔽"
         @click="openDropdown"
       />
     </div>

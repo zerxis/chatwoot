@@ -180,7 +180,6 @@
               <woot-button
                 class-names="button--upload"
                 icon="attach"
-                emoji="📎"
                 color-scheme="secondary"
                 variant="smooth"
                 size="small"
