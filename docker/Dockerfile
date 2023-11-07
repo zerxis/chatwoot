@@ -1,3 +1,33 @@
+# Use the official Ruby Alpine Linux image as a base
+FROM ruby:3.2.2-alpine3.18 AS frontend-builder
+
+# Install system dependencies
+RUN apk update && \
+    apk add --no-cache git yarn
+
+# Set the working directory inside the container
+WORKDIR /frontend
+
+# Clone the Git repository
+RUN git clone https://github.com/chatwoot/chatwoot-ui-monorepo.git ui
+
+# Install Turbo for improved yarn performance
+RUN yarn global add turbo
+
+# Change the working directory to the "ui" directory
+WORKDIR /frontend/ui
+
+# Install project dependencies
+RUN yarn install
+
+# Build the frontend
+RUN yarn run build
+
+# Optionally, you can clean up dependencies and cache to reduce the image size
+RUN yarn cache clean && \
+    apk del git && \
+    rm -rf /var/cache/apk/* /tmp/*
+
 # pre-build stage
 FROM ruby:3.2.2-alpine3.18 AS pre-builder
 
@@ -52,6 +82,8 @@ COPY package.json yarn.lock ./
 RUN yarn install
 
 COPY . /app
+
+RUN rm /app/app/javascript/packs/sdk.js /app/app/javascript/packs/widget.js
 
 # creating a log directory so that image wont fail when RAILS_LOG_TO_STDOUT is false
 # https://github.com/chatwoot/chatwoot/issues/701
@@ -112,6 +144,9 @@ COPY --from=pre-builder /app /app
 
 # Copy .git_sha file from pre-builder stage
 COPY --from=pre-builder /app/.git_sha /app/.git_sha
+
+COPY --from=frontend-builder /frontend/ui/apps/sdk/dist/sdk.js /app/public/packs/js/sdk.js
+COPY --from=frontend-builder /frontend/ui/apps/livechat-widget/dist /app/public/widget
 
 WORKDIR /app
 
