@@ -1,7 +1,7 @@
 build:
   docker:
-    web: docker/Dockerfile
-    worker: docker/Dockerfile
+    web: Dockerfile
+    worker: Dockerfile
   config:
     RAILS_ENV: production
 run:
