@@ -3,7 +3,7 @@ class Instagram::SendOnInstagramService < Base::SendOnChannelService
 
   pattr_initialize [:message!]
 
-  base_uri 'https://graph.facebook.com/v11.0/me'
+  base_uri 'https://graph.facebook.com/v18.0/me'
 
   private
 
@@ -58,10 +58,8 @@ class Instagram::SendOnInstagramService < Base::SendOnChannelService
     query = { access_token: access_token }
     query[:appsecret_proof] = app_secret_proof if app_secret_proof
 
-    # url = "https://graph.facebook.com/v11.0/me/messages?access_token=#{access_token}"
-
     response = HTTParty.post(
-      'https://graph.facebook.com/v11.0/me/messages',
+      'https://graph.facebook.com/v18.0/me/messages',
       body: message_content,
       query: query
     )
