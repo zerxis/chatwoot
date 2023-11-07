@@ -149,5 +149,3 @@ COPY --from=frontend-builder /frontend/ui/apps/sdk/dist/sdk.js /app/public/packs
 COPY --from=frontend-builder /frontend/ui/apps/livechat-widget/dist /app/public/widget
 
 WORKDIR /app
-
-EXPOSE 3000
