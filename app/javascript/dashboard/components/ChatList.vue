@@ -275,9 +275,6 @@ export default {
         ...filter,
         attributeName: this.$t(`FILTER.ATTRIBUTES.${filter.attributeI18nKey}`),
       })),
-      // chatsOnView is to store the chats that are currently visible on the screen,
-      // which mirrors the conversationList.
-      chatsOnView: [],
       foldersQuery: {},
       showAddFoldersModal: false,
       showDeleteFoldersModal: false,
@@ -386,43 +383,18 @@ export default {
         this.currentPageFilterKey
       );
     },
-    activeAssigneeTabCount() {
-      const { activeAssigneeTab } = this;
-      const count = this.assigneeTabItems.find(
-        item => item.key === activeAssigneeTab
-      ).count;
-      return count;
-    },
     conversationFilters() {
       return {
         inboxId: this.conversationInbox ? this.conversationInbox : undefined,
         assigneeType: this.activeAssigneeTab,
         status: this.activeStatus,
         sortBy: this.activeSortBy,
-        page: this.conversationListPagination,
+        page: this.currentPage + 1,
         labels: this.label ? [this.label] : undefined,
         teamId: this.teamId || undefined,
         conversationType: this.conversationType || undefined,
         folders: this.hasActiveFolders ? this.savedFoldersValue : undefined,
       };
-    },
-    conversationListPagination() {
-      const conversationsPerPage = 25;
-      const hasChatsOnView =
-        this.chatsOnView &&
-        Array.isArray(this.chatsOnView) &&
-        !this.chatsOnView.length;
-      const isNoFiltersOrFoldersAndChatListNotEmpty =
-        !this.hasAppliedFiltersOrActiveFolders && hasChatsOnView;
-      const isUnderPerPage =
-        this.chatsOnView.length < conversationsPerPage &&
-        this.activeAssigneeTabCount < conversationsPerPage &&
-        this.activeAssigneeTabCount > this.chatsOnView.length;
-
-      if (isNoFiltersOrFoldersAndChatListNotEmpty && isUnderPerPage) {
-        return 1;
-      }
-      return this.currentPage + 1;
     },
     pageTitle() {
       if (this.hasAppliedFilters) {
@@ -513,9 +485,6 @@ export default {
     },
     activeFolder() {
       this.resetAndFetchData();
-    },
-    chatLists() {
-      this.chatsOnView = this.conversationList;
     },
   },
   mounted() {
