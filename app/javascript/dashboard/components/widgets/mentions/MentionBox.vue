@@ -7,14 +7,21 @@
         :key="item.key"
         @mouseover="onHover(index)"
       >
-        <woot-button
+        <button
+          class="flex flex-col cursor-pointer items-start justify-center w-full h-full p-2 text-left text-slate-900 dark:text-slate-100"
+          :class="{ active: index === selectedIndex }"
+          @click="onListItemSelection(index)"
+        >
+          <p>{{ item.label }}</p>
+          <p>{{ item.description }}</p>
+        </button>
+        <!-- <woot-button
           class="canned-item__button"
           :variant="index === selectedIndex ? '' : 'clear'"
           :class="{ active: index === selectedIndex }"
           @click="onListItemSelection(index)"
         >
-          <strong>{{ item.label }}</strong> - {{ item.description }}
-        </woot-button>
+        </woot-button> -->
       </woot-dropdown-item>
     </ul>
   </div>
@@ -79,17 +86,17 @@ export default {
 
 <style scoped lang="scss">
 .mention--box {
-  @apply bg-white dark:bg-slate-700 rounded-md overflow-auto absolute w-full z-20 pt-2 px-2 pb-0 shadow-md left-0 bottom-full max-h-[9.75rem] border-t border-solid border-slate-75 dark:border-slate-800;
+  @apply bg-white dark:bg-slate-700 rounded-md overflow-auto absolute w-full z-20 pb-0 shadow-md left-0 bottom-full max-h-[9.75rem] border border-solid border-slate-75 dark:border-slate-800;
 
   .dropdown-menu__item:last-child {
     @apply pb-1;
   }
 
   .active {
-    @apply text-white dark:text-white;
+    @apply text-woot-500  dark:text-woot-500 bg-woot-50 dark:bg-woot-800;
 
     &:hover {
-      @apply bg-woot-700 dark:bg-woot-700;
+      @apply bg-woot-50 dark:bg-woot-800;
     }
   }
 
