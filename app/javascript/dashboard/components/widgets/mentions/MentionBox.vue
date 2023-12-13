@@ -1,27 +1,41 @@
 <template>
-  <div v-if="items.length" ref="mentionsListContainer" class="mention--box">
+  <div
+    v-if="items.length"
+    ref="mentionsListContainer"
+    class="bg-white dark:bg-slate-800 rounded-md overflow-auto absolute w-full z-20 pb-0 shadow-md left-0 bottom-full max-h-[9.75rem] border border-solid border-slate-100 dark:border-slate-700 mention--box"
+  >
     <ul class="vertical dropdown menu">
       <woot-dropdown-item
         v-for="(item, index) in items"
         :id="`mention-item-${index}`"
         :key="item.key"
+        class="!mb-0"
         @mouseover="onHover(index)"
       >
         <button
-          class="flex flex-col cursor-pointer items-start justify-center w-full h-full p-2 text-left text-slate-900 dark:text-slate-100"
-          :class="{ active: index === selectedIndex }"
+          class="flex group flex-col gap-0.5 cursor-pointer items-start py-4 px-3.5 justify-center w-full h-full text-left hover:bg-woot-25 dark:hover:bg-woot-800 border-b border-solid border-slate-100 dark:border-slate-700"
+          :class="{
+            ' bg-woot-25 dark:bg-woot-800': index === selectedIndex,
+          }"
           @click="onListItemSelection(index)"
         >
-          <p>{{ item.label }}</p>
-          <p>{{ item.description }}</p>
+          <p
+            class="text-slate-900 dark:text-slate-100 group-hover:text-woot-500 dark:group-hover:text-woot-500 font-medium mb-0 text-sm"
+            :class="{
+              'text-woot-500 dark:text-woot-500': index === selectedIndex,
+            }"
+          >
+            {{ item.label }}
+          </p>
+          <p
+            class="text-slate-700 dark:text-slate-300 group-hover:text-woot-500 dark:group-hover:text-woot-500 mb-0 text-xs"
+            :class="{
+              'text-woot-500 dark:text-woot-500': index === selectedIndex,
+            }"
+          >
+            {{ item.description }}
+          </p>
         </button>
-        <!-- <woot-button
-          class="canned-item__button"
-          :variant="index === selectedIndex ? '' : 'clear'"
-          :class="{ active: index === selectedIndex }"
-          @click="onListItemSelection(index)"
-        >
-        </woot-button> -->
       </woot-dropdown-item>
     </ul>
   </div>
@@ -86,22 +100,8 @@ export default {
 
 <style scoped lang="scss">
 .mention--box {
-  @apply bg-white dark:bg-slate-700 rounded-md overflow-auto absolute w-full z-20 pb-0 shadow-md left-0 bottom-full max-h-[9.75rem] border border-solid border-slate-75 dark:border-slate-800;
-
-  .dropdown-menu__item:last-child {
-    @apply pb-1;
-  }
-
-  .active {
-    @apply text-woot-500  dark:text-woot-500 bg-woot-50 dark:bg-woot-800;
-
-    &:hover {
-      @apply bg-woot-50 dark:bg-woot-800;
-    }
-  }
-
-  .button {
-    @apply transition-none h-8 leading-[1.4];
+  .dropdown-menu__item:last-child > button {
+    @apply border-0;
   }
 }
 
